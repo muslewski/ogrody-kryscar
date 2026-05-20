@@ -96,7 +96,7 @@ export default function Example5() {
 
           {/* Floating Glass Cards */}
           <HeroReveal delay={0.25} className="relative lg:col-span-5">
-            <div className="relative h-[380px] sm:h-[480px] lg:h-[520px]">
+            <div className="relative aspect-[4/5] w-full overflow-visible sm:aspect-[3/4] lg:aspect-[4/5]">
               <div className="absolute inset-0 overflow-hidden rounded-[28px] sm:rounded-[36px]">
                 <WarpedHoverImage
                   src={IMG.gardenerYard}
@@ -104,16 +104,25 @@ export default function Example5() {
                   className="h-full w-full object-cover"
                 />
               </div>
-              <div className="absolute right-3 top-3 w-48 rounded-2xl border border-white/90 bg-white/85 p-3 text-emerald-950 backdrop-blur-xl sm:right-4 sm:top-4 sm:w-56 sm:p-4">
-                <p className="text-[11px] uppercase tracking-wider text-emerald-800 sm:text-xs">
+              {/* Top-right: next available slot. Pulled inward from the
+                  corner (top-6 / right-6) so it breathes against the
+                  photo edge instead of sitting flush in the corner. */}
+              <div className="absolute right-4 top-6 w-44 rounded-2xl border border-white/90 bg-white/85 p-3 text-emerald-950 shadow-lg shadow-emerald-900/5 backdrop-blur-xl sm:right-6 sm:top-8 sm:w-56 sm:p-4">
+                <p className="text-[10px] uppercase tracking-wider text-emerald-800 sm:text-xs">
                   Najbliższy termin
                 </p>
-                <p className="mt-1 text-base font-semibold sm:text-lg">w tym tygodniu</p>
-                <p className="mt-1.5 text-[11px] text-emerald-800 sm:mt-2 sm:text-xs">
+                <p className="mt-1 text-sm font-semibold sm:text-lg">
+                  w tym tygodniu
+                </p>
+                <p className="mt-1 text-[10px] text-emerald-800 sm:mt-2 sm:text-xs">
                   Pn – Pt, 8:00 – 18:00
                 </p>
               </div>
-              <div className="absolute left-3 top-1/2 hidden w-60 -translate-y-1/2 rounded-2xl border border-white/90 bg-white/85 p-4 text-emerald-950 backdrop-blur-xl sm:block sm:w-64 lg:-left-6 lg:translate-y-0">
+              {/* 4.9/5 — sits mid-left from sm up. At lg it pokes 24px
+                  outside the photo column into the gap, breaking the
+                  rigid rectangle silhouette. Hidden on mobile to keep
+                  the photo readable. */}
+              <div className="absolute left-3 top-1/2 hidden w-60 -translate-y-1/2 rounded-2xl border border-white/90 bg-white/85 p-4 text-emerald-950 shadow-lg shadow-emerald-900/5 backdrop-blur-xl sm:block sm:w-64 lg:-left-6">
                 <div className="flex items-center gap-3">
                   <div className="grid h-10 w-10 place-items-center rounded-full bg-amber-400/30 text-xl">
                     ⭐
@@ -126,7 +135,9 @@ export default function Example5() {
                   </div>
                 </div>
               </div>
-              <div className="absolute bottom-3 right-3 rounded-2xl border border-white/90 bg-white/85 p-3 text-[11px] text-emerald-950 backdrop-blur-xl sm:bottom-6 sm:right-6 sm:p-4 sm:text-xs">
+              {/* Bottom-right: contact bubble. Pulled inward to mirror
+                  the top-right card's breathing room. */}
+              <div className="absolute bottom-5 right-4 rounded-2xl border border-white/90 bg-white/85 p-3 text-[11px] text-emerald-950 shadow-lg shadow-emerald-900/5 backdrop-blur-xl sm:bottom-7 sm:right-6 sm:p-4 sm:text-xs">
                 <p className="font-semibold">{COMPANY.phone}</p>
                 <p className="text-emerald-800">{COMPANY.email}</p>
               </div>
@@ -149,7 +160,7 @@ export default function Example5() {
           {SERVICES.slice(0, 6).map((s, i) => (
             <StaggerItem
               key={s.slug}
-              className="group relative overflow-hidden rounded-3xl border border-white/60 bg-white/30 p-6 backdrop-blur-xl transition hover:bg-white/50"
+              className="group relative overflow-hidden rounded-3xl border border-white/60 bg-white/30 p-6 backdrop-blur-xl transition-colors hover:bg-white/50"
             >
               <span className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-emerald-200 to-teal-100 text-xl">
                 {["🌿", "🪴", "🍂", "🌱", "✂️", "🧹"][i]}

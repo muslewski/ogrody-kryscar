@@ -328,13 +328,18 @@ export function CalculatorForm({
 
       {/* Result */}
       <div className="mt-2 flex flex-col gap-3 border-t pt-6" style={{ borderColor: "currentColor" }}>
-        <div className="flex items-baseline justify-between gap-4">
+        {/* Stack label + price vertically on mobile to keep the price on
+            one line. The previous `flex justify-between` cramped both
+            into a single row that kept wrapping/unwrapping below ~360 px
+            as the price string grew — that wrap toggle on every slider
+            tick read as flicker. */}
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
           <span className="text-xs font-medium uppercase tracking-[0.18em] opacity-70">
             Orientacyjnie
           </span>
           <span
             className={cn(
-              "tabular-nums leading-none",
+              "whitespace-nowrap tabular-nums leading-none",
               theme.priceFontClass ?? "font-medium",
             )}
             style={{ color: theme.priceColor }}
@@ -342,7 +347,7 @@ export function CalculatorForm({
             {c.state.services.length === 0 ? (
               <span className="text-base opacity-50">Wybierz usługę</span>
             ) : (
-              <span className="text-3xl sm:text-4xl">
+              <span className="text-2xl sm:text-3xl md:text-4xl">
                 <AnimatedNumber value={c.result.min} format={formatPLN} />
                 {" – "}
                 <AnimatedNumber value={c.result.max} format={formatPLN} />

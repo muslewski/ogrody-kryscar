@@ -177,7 +177,7 @@ export default function Example1() {
 
         <StaggerGrid className="mt-10 grid gap-px overflow-hidden rounded-2xl border border-stone-200 bg-stone-200 sm:mt-14 sm:grid-cols-2 lg:grid-cols-4">
           {SERVICES.map((s, i) => (
-            <StaggerItem key={s.slug} className="group flex flex-col gap-5 bg-stone-50 p-7 transition hover:bg-white">
+            <StaggerItem key={s.slug} className="group flex flex-col gap-5 bg-stone-50 p-7 transition-colors hover:bg-white">
               <span className="text-xs text-stone-400">
                 {String(i + 1).padStart(2, "0")}
               </span>

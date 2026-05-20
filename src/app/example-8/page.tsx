@@ -287,7 +287,7 @@ export default function Example8() {
           {SERVICES.slice(0, 6).map((s, i) => (
             <StaggerItem
               key={s.slug}
-              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition hover:border-emerald-400/30 hover:bg-white/[0.06]"
+              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition-colors hover:border-emerald-400/30 hover:bg-white/[0.06]"
             >
               <div className="pointer-events-none absolute -right-12 -top-12 h-48 w-48 rounded-full bg-emerald-500/0 transition group-hover:bg-emerald-500/10" />
               <div className="relative">

@@ -108,18 +108,18 @@ export default function Example3() {
           </div>
 
           {/* RATING CARD */}
-          <div className="col-span-6 row-span-1 flex flex-col justify-between rounded-3xl bg-stone-900 p-6 text-stone-50 lg:col-span-4">
+          <div className="col-span-6 row-span-1 flex flex-col justify-between gap-4 rounded-3xl bg-stone-900 p-4 text-stone-50 sm:p-6 lg:col-span-4">
             <div>
-              <p className="text-xs uppercase tracking-wider text-stone-500">
+              <p className="text-[10px] uppercase tracking-wider text-stone-500 sm:text-xs">
                 Oceny klientów
               </p>
-              <p className="mt-3 font-[family-name:var(--font-fraunces)] text-7xl italic">
+              <p className="mt-2 font-[family-name:var(--font-fraunces)] text-4xl italic leading-none sm:mt-3 sm:text-5xl md:text-6xl lg:text-7xl">
                 4.9
                 <span className="text-stone-500">/5</span>
               </p>
-              <div className="mt-2 flex gap-0.5 text-amber-300">★★★★★</div>
+              <div className="mt-2 flex gap-0.5 text-sm text-amber-300 sm:text-base">★★★★★</div>
             </div>
-            <p className="text-sm text-stone-400">
+            <p className="text-xs text-stone-400 sm:text-sm">
               Średnia z 187 opinii w 3 sezonach.
             </p>
           </div>

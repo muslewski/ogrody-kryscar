@@ -110,7 +110,7 @@ export default function Example10() {
       taglineClassName="text-[10px] uppercase tracking-[0.4em] font-medium text-emerald-300/80"
       tagline="Cztery pory roku · jeden ogród"
     />
-    <main className="min-h-screen bg-stone-50 font-[family-name:var(--font-newsreader)] text-stone-900">
+    <main className="min-h-screen overflow-x-clip bg-stone-50 font-[family-name:var(--font-newsreader)] text-stone-900">
       {/* NAV */}
       <header className="fixed inset-x-0 top-0 z-50 mix-blend-difference">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 text-white sm:px-6 sm:py-5">
@@ -349,8 +349,12 @@ export default function Example10() {
         >
           <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:py-28">
             <div className="grid gap-10 sm:gap-12 lg:grid-cols-12 lg:items-center">
+              {/* `min-w-0` on grid children is the canonical fix for
+                  the "long word expands the column" overflow — CSS grid
+                  tracks default to min-content, so we have to opt them
+                  back into shrinking. */}
               <Reveal
-                className={`lg:col-span-6 ${i % 2 === 1 ? "lg:order-2" : ""}`}
+                className={`min-w-0 lg:col-span-6 ${i % 2 === 1 ? "lg:order-2" : ""}`}
               >
                 <div className="flex items-center gap-3 sm:gap-4">
                   <span
@@ -371,7 +375,11 @@ export default function Example10() {
                     </p>
                   </div>
                 </div>
-                <h2 className="mt-6 font-[family-name:var(--font-newsreader)] text-4xl leading-[1.02] sm:mt-8 sm:text-6xl md:text-7xl lg:text-8xl">
+                {/* `break-words` + a tamer scale up to lg keep long
+                    Polish words (Zamknięcie, Wertykulacja…) from
+                    blowing out the grid column at large breakpoints
+                    and causing horizontal scroll. */}
+                <h2 className="mt-6 break-words font-[family-name:var(--font-newsreader)] text-4xl leading-[1.02] sm:mt-8 sm:text-5xl md:text-6xl lg:text-7xl">
                   {s.title}{" "}
                   <em style={{ color: s.color }}>
                     {s.name.toLowerCase()}.
@@ -401,7 +409,7 @@ export default function Example10() {
               </Reveal>
 
               <Reveal delay={0.1}
-                className={`relative lg:col-span-6 ${
+                className={`relative min-w-0 lg:col-span-6 ${
                   i % 2 === 1 ? "lg:order-1" : ""
                 }`}
               ><figure className="contents">

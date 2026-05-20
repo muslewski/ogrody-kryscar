@@ -190,10 +190,11 @@ export default function Example9() {
       <section id="katalog" className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-12">
         <StaggerGrid className="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
           {services.map((s, i) => (
-            <StaggerItem
-              key={s.slug}
-              className="group flex flex-col overflow-hidden rounded-3xl border border-neutral-200 bg-white transition hover:-translate-y-1 hover:shadow-xl hover:shadow-neutral-900/5"
-            >
+            <StaggerItem key={s.slug} className="h-full">
+              {/* Inner wrapper owns the transform + shadow hover so
+                  motion's transform on StaggerItem isn't smeared by a
+                  competing CSS `transition: all`. */}
+              <div className="group flex h-full flex-col overflow-hidden rounded-3xl border border-neutral-200 bg-white transition-[transform,box-shadow] duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:shadow-neutral-900/5">
               <div className="relative aspect-[4/3] overflow-hidden bg-neutral-100">
                 <WarpedHoverImage
                   src={s.img}
@@ -232,11 +233,12 @@ export default function Example9() {
                   </div>
                   <a
                     href="#kontakt"
-                    className="inline-flex items-center gap-1.5 rounded-full bg-neutral-900 px-3.5 py-2 text-xs font-medium text-white transition group-hover:bg-emerald-700"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-neutral-900 px-3.5 py-2 text-xs font-medium text-white transition-colors group-hover:bg-emerald-700"
                   >
                     Zamów →
                   </a>
                 </div>
+              </div>
               </div>
             </StaggerItem>
           ))}
@@ -363,23 +365,22 @@ export default function Example9() {
         </Reveal>
         <StaggerGrid className="grid gap-4 sm:gap-5 md:grid-cols-2 lg:grid-cols-4" amount={0.05}>
           {TEAM.map((m) => (
-            <StaggerItem
-              key={m.name}
-              className="overflow-hidden rounded-3xl border border-neutral-200 bg-white transition hover:-translate-y-1 hover:shadow-xl hover:shadow-neutral-900/5"
-            >
-              <div className="relative aspect-[3/4] overflow-hidden bg-neutral-100">
-                <WarpedHoverImage
-                  src={m.photo}
-                  alt={`Portret ${m.name}`}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div className="p-5">
-                <p className="text-lg font-semibold tracking-tight">{m.name}</p>
-                <p className="mt-1 text-xs text-emerald-700">{m.role}</p>
-                <p className="mt-3 text-sm leading-relaxed text-neutral-600">
-                  {m.bio}
-                </p>
+            <StaggerItem key={m.name} className="h-full">
+              <div className="h-full overflow-hidden rounded-3xl border border-neutral-200 bg-white transition-[transform,box-shadow] duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:shadow-neutral-900/5">
+                <div className="relative aspect-[3/4] overflow-hidden bg-neutral-100">
+                  <WarpedHoverImage
+                    src={m.photo}
+                    alt={`Portret ${m.name}`}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <div className="p-5">
+                  <p className="text-lg font-semibold tracking-tight">{m.name}</p>
+                  <p className="mt-1 text-xs text-emerald-700">{m.role}</p>
+                  <p className="mt-3 text-sm leading-relaxed text-neutral-600">
+                    {m.bio}
+                  </p>
+                </div>
               </div>
             </StaggerItem>
           ))}

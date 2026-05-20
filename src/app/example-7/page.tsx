@@ -252,35 +252,39 @@ export default function Example7() {
             ];
             const p = palettes[i];
             return (
-              <StaggerItem
-                key={s.slug}
-                className={`group relative flex h-full flex-col rounded-[24px] p-6 transition hover:-translate-y-1 sm:rounded-[28px] sm:p-7 ${
-                  p.border ? "border-2" : ""
-                }`}
-                style={{
-                  background: p.bg,
-                  color: p.ink,
-                  borderColor: p.border ? colors.ink + "20" : undefined,
-                }}
-              >
-                <span
-                  className="font-[family-name:var(--font-dm-serif)] text-2xl"
-                  style={{ opacity: 0.6 }}
+              <StaggerItem key={s.slug} className="h-full">
+                {/* Inner wrapper owns the hover transform + transition so
+                    motion's entrance transform on StaggerItem isn't
+                    smeared by a competing CSS `transition`. */}
+                <div
+                  className={`group relative flex h-full flex-col rounded-[24px] p-6 transition-transform duration-300 ease-out hover:-translate-y-1 sm:rounded-[28px] sm:p-7 ${
+                    p.border ? "border-2" : ""
+                  }`}
+                  style={{
+                    background: p.bg,
+                    color: p.ink,
+                    borderColor: p.border ? colors.ink + "20" : undefined,
+                  }}
                 >
-                  0{i + 1}
-                </span>
-                <h3 className="mt-4 font-[family-name:var(--font-dm-serif)] text-2xl leading-tight sm:mt-5 sm:text-3xl">
-                  {s.title}
-                </h3>
-                <p className="mt-2.5 text-sm leading-relaxed opacity-90 sm:mt-3 sm:text-[15px]">
-                  {s.description}
-                </p>
-                <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium sm:mt-7">
-                  Dowiedz się więcej
-                  <span className="transition group-hover:translate-x-1">
-                    →
+                  <span
+                    className="font-[family-name:var(--font-dm-serif)] text-2xl"
+                    style={{ opacity: 0.6 }}
+                  >
+                    0{i + 1}
                   </span>
-                </span>
+                  <h3 className="mt-4 font-[family-name:var(--font-dm-serif)] text-2xl leading-tight sm:mt-5 sm:text-3xl">
+                    {s.title}
+                  </h3>
+                  <p className="mt-2.5 text-sm leading-relaxed opacity-90 sm:mt-3 sm:text-[15px]">
+                    {s.description}
+                  </p>
+                  <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium sm:mt-7">
+                    Dowiedz się więcej
+                    <span className="transition-transform duration-200 group-hover:translate-x-1">
+                      →
+                    </span>
+                  </span>
+                </div>
               </StaggerItem>
             );
           })}
@@ -732,8 +736,12 @@ export default function Example7() {
         </div>
       </AntigravitySection>
 
-      {/* CTA */}
-      <section id="kontakt" className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 sm:pb-20">
+      {/* CTA — top padding is critical here: the antigravity section
+          above uses colors.ink (dark green) and this CTA card uses
+          colors.sage (dark sage). Without `pt-*` the two dark greens
+          stack edge-to-edge and read as one ambiguous block. Padding
+          re-exposes the cream page background between them. */}
+      <section id="kontakt" className="mx-auto max-w-7xl px-4 pb-16 pt-16 sm:px-6 sm:pb-20 sm:pt-20">
         <Reveal>
         <div
           className="relative overflow-hidden rounded-[28px] p-6 sm:rounded-[36px] sm:p-10 md:p-16"

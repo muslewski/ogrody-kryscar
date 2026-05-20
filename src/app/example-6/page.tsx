@@ -203,23 +203,30 @@ export default function Example6() {
             </Reveal>
             <StaggerGrid className="grid gap-3 sm:gap-4 lg:col-span-7 lg:grid-cols-2">
               {SERVICES.slice(0, 6).map((s) => (
-                <StaggerItem
-                  key={s.slug}
-                  className="rounded-[36px] p-6 transition hover:rotate-[-1deg]"
-                  style={{ background: palette.cream, color: palette.ink }}
-                >
-                  <span
-                    className="grid h-10 w-10 place-items-center rounded-full text-sm font-medium"
-                    style={{ background: palette.terracotta, color: palette.cream }}
+                <StaggerItem key={s.slug}>
+                  {/* Inner wrapper owns the hover rotation + its CSS
+                      transition. Keeping that off the StaggerItem
+                      (which is a motion.div) means the entrance animation
+                      sets transform every frame without a competing
+                      CSS `transition: all` smearing the values — that
+                      was the flicker. */}
+                  <div
+                    className="rounded-[36px] p-6 transition-transform duration-300 ease-out hover:-rotate-1"
+                    style={{ background: palette.cream, color: palette.ink }}
                   >
-                    ✿
-                  </span>
-                  <h3 className="mt-4 font-[family-name:var(--font-fraunces)] text-2xl">
-                    {s.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed opacity-80">
-                    {s.short}
-                  </p>
+                    <span
+                      className="grid h-10 w-10 place-items-center rounded-full text-sm font-medium"
+                      style={{ background: palette.terracotta, color: palette.cream }}
+                    >
+                      ✿
+                    </span>
+                    <h3 className="mt-4 font-[family-name:var(--font-fraunces)] text-2xl">
+                      {s.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed opacity-80">
+                      {s.short}
+                    </p>
+                  </div>
                 </StaggerItem>
               ))}
             </StaggerGrid>

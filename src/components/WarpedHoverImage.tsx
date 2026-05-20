@@ -137,20 +137,25 @@ export function WarpedHoverImage({
     }, UNMOUNT_DELAY_MS);
   }, []);
 
-  if (disabled || reduced || !hasHover) {
-    // eslint-disable-next-line @next/next/no-img-element
-    return <img src={src} alt={alt} className={className} />;
-  }
-
+  // ALWAYS render the same wrapper structure — `<div><img></div>` —
+  // regardless of whether the warp is active or not. This prevents a
+  // hydration-time DOM swap on mobile: SSR runs with `hasHover=true`
+  // (desktop default) and `useSyncExternalStore` flips it false on the
+  // client. If we conditionally returned a bare `<img>` for the
+  // touch/reduced-motion path, React would re-parent the image, the
+  // browser would treat it as a new node, and the StaggerItem entrance
+  // would flash through a half-loaded image.  Keeping the wrapper means
+  // only the event handlers + Canvas vary; the img keeps its identity.
+  const isInteractive = !(disabled || reduced || !hasHover);
   return (
     <div
       className="relative size-full"
-      onPointerEnter={handleEnter}
-      onPointerLeave={handleLeave}
+      onPointerEnter={isInteractive ? handleEnter : undefined}
+      onPointerLeave={isInteractive ? handleLeave : undefined}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={src} alt={alt} className={className} />
-      {mounted && (
+      {isInteractive && mounted && (
         <WarpedCard
           imageSrc={src}
           radius={radius}
