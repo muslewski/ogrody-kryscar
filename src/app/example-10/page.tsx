@@ -149,13 +149,19 @@ export default function Example10() {
           {/* Dark gradient under nav + masthead */}
           <div className="pointer-events-none absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-black/65 via-black/30 to-transparent" />
 
-          {/* Masthead band */}
+          {/* Masthead band — letter-spaced caps with the "/ 4 pory roku"
+              suffix hidden on small phones (Galaxy Fold cover, narrow
+              Androids), where wide tracking on 26 caps pushed the line
+              past the viewport and clipped the year mid-digit. */}
           <div
             className="absolute inset-x-0 top-0 z-10 px-4 pt-20 pb-3 sm:px-6 sm:pt-24"
             style={{ textShadow: "0 2px 14px rgba(0,0,0,0.7)" }}
           >
-            <div className="mx-auto flex max-w-7xl items-center justify-between text-[10px] font-medium uppercase tracking-[0.25em] text-white sm:text-xs sm:tracking-[0.3em]">
-              <span>Wydanie {new Date().getFullYear()} / 4 pory roku</span>
+            <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 text-[10px] font-medium uppercase tracking-[0.15em] text-white sm:text-xs sm:tracking-[0.3em]">
+              <span>
+                Wydanie {new Date().getFullYear()}
+                <span className="hidden sm:inline"> / 4 pory roku</span>
+              </span>
               <span className="hidden md:inline">Pracownia ogrodnicza</span>
             </div>
           </div>
@@ -234,9 +240,9 @@ export default function Example10() {
                 return (
                   <a
                     href={`#${now.name.toLowerCase()}`}
-                    className="mt-2 flex items-center gap-4 rounded-2xl border border-stone-200 bg-white p-3 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md"
+                    className="mt-2 flex items-center gap-3 rounded-2xl border border-stone-200 bg-white p-3 transition-[transform,border-color,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md sm:gap-4"
                   >
-                    <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl">
+                    <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl sm:h-16 sm:w-16">
                       <img
                         src={now.img}
                         alt=""
@@ -245,23 +251,27 @@ export default function Example10() {
                     </div>
                     <div className="min-w-0 flex-1">
                       <p
-                        className="flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-[0.25em]"
+                        className="flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-[0.2em]"
                         style={{ color: now.color }}
                       >
                         <span
-                          className="h-1.5 w-1.5 rounded-full"
+                          className="h-1.5 w-1.5 shrink-0 rounded-full"
                           style={{ background: now.color }}
                         />
-                        Teraz w ogrodach
+                        <span className="truncate">Teraz w ogrodach</span>
                       </p>
-                      <p className="mt-1 truncate font-[family-name:var(--font-newsreader)] text-lg text-stone-900">
+                      {/* line-clamp-2 instead of single-line truncate so the
+                          bullet ("Wertykulacja i aeracja trawnika") wraps
+                          to two lines on phones instead of being clipped
+                          mid-word with an ellipsis. */}
+                      <p className="mt-1 font-[family-name:var(--font-newsreader)] text-base leading-snug text-stone-900 line-clamp-2 sm:text-lg">
                         {now.name} ·{" "}
                         <span className="text-stone-500">
                           {now.bullets[0]}
                         </span>
                       </p>
                     </div>
-                    <span className="text-stone-400">→</span>
+                    <span className="shrink-0 text-stone-400">→</span>
                   </a>
                 );
               })()}
@@ -356,21 +366,24 @@ export default function Example10() {
               <Reveal
                 className={`min-w-0 lg:col-span-6 ${i % 2 === 1 ? "lg:order-2" : ""}`}
               >
+                {/* Big chapter number + meta. Numbers scaled down on
+                    mobile so the row doesn't push past narrow viewports
+                    when combined with the side meta column. */}
                 <div className="flex items-center gap-3 sm:gap-4">
                   <span
-                    className="font-[family-name:var(--font-bricolage)] text-[88px] leading-none sm:text-[120px] lg:text-[140px]"
+                    className="font-[family-name:var(--font-bricolage)] text-[64px] leading-none sm:text-[110px] lg:text-[140px]"
                     style={{ color: s.color }}
                   >
                     {s.no}
                   </span>
-                  <div>
+                  <div className="min-w-0">
                     <p
-                      className="text-[10px] uppercase tracking-[0.25em] sm:text-xs sm:tracking-[0.3em]"
+                      className="text-[10px] uppercase tracking-[0.18em] sm:text-xs sm:tracking-[0.3em]"
                       style={{ color: s.color }}
                     >
                       Pora {s.no} / 04
                     </p>
-                    <p className="font-[family-name:var(--font-bricolage)] text-2xl sm:text-3xl">
+                    <p className="font-[family-name:var(--font-bricolage)] text-xl sm:text-3xl">
                       {s.name}
                     </p>
                   </div>

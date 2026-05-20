@@ -37,8 +37,13 @@ export default function Example5() {
       {/* NAV — fixed with isScrolled */}
       <Ex5Nav />
 
-      {/* HERO */}
-      <section className="relative mx-auto max-w-6xl px-4 pt-12 pb-12 sm:px-6 sm:pt-16 sm:pb-16 lg:pt-20">
+      {/* HERO — pt-* values clear the fixed pill nav. Ex5Nav sits at
+          top-2 (mobile) / sm:top-4 with a pill height of ~52px, so it
+          occupies the first ~60–72px of the viewport. The hero's top
+          padding has to be larger than that, otherwise the "Sezon 2026
+          — wolne terminy" badge tucks underneath the nav and gets
+          obscured. */}
+      <section className="relative mx-auto max-w-6xl px-4 pt-24 pb-12 sm:px-6 sm:pt-28 sm:pb-16 lg:pt-28">
         <div className="grid items-center gap-10 lg:grid-cols-12">
           <div className="lg:col-span-7">
             <HeroReveal delay={0.05}>
