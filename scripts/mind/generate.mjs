@@ -36,6 +36,9 @@ const globMatches = (glob) =>
   trackedSet.has(glob) ? [glob] : tracked.filter((f) => globToRegExp(glob).test(f));
 
 // --- exported symbol index ---
+// Indexes named exports + `export { ... }` lists. `export default <ident>`
+// (anonymous/identifier defaults) is intentionally NOT indexed — anchor those
+// via route: or glob: instead of symbol:.
 const SRC_EXT = /\.(ts|tsx|js|jsx|mjs|cjs)$/;
 const exported = new Set();
 const declRe =
@@ -75,7 +78,9 @@ function anchorResolves(anchor) {
 // --- freshness ---
 function isStale(zone) {
   const sha = (zone.verifiedAt || "").toString().trim();
-  if (!sha) return true;
+  // Only a real commit SHA is interpolated into the git command below.
+  // Anything else (empty, typo, shell metachars) ⇒ treat as stale, never exec.
+  if (!/^[0-9a-f]{7,40}$/.test(sha)) return true;
   let changed;
   try { changed = sh(`git diff --name-only ${sha} HEAD`).split("\n").filter(Boolean); }
   catch { return true; }
