@@ -4,7 +4,7 @@ export const COMPANY = {
   tagline: "Ogrodnictwo z pasją",
   phone: "+48 668 994 483",
   phoneRaw: "+48668994483",
-  email: "kontakt@ogrody.kryscar.pl",
+  email: "ogrody@kryscar.pl",
   established: 2014,
   city: "Polska",
   description:

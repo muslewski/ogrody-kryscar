@@ -59,7 +59,7 @@ const LEGACY_BROWSER_CHECK = [
   "var p3=d.createElement('p');p3.style.marginTop='24px';",
   "var a1=d.createElement('a');a1.href='tel:+48668994483';a1.appendChild(d.createTextNode('+48 668 994 483'));p3.appendChild(a1);",
   "p3.appendChild(d.createTextNode(' \\u00b7 '));",
-  "var a2=d.createElement('a');a2.href='mailto:kontakt@ogrody.kryscar.pl';a2.appendChild(d.createTextNode('kontakt@ogrody.kryscar.pl'));p3.appendChild(a2);",
+  "var a2=d.createElement('a');a2.href='mailto:ogrody@kryscar.pl';a2.appendChild(d.createTextNode('ogrody@kryscar.pl'));p3.appendChild(a2);",
   "m.appendChild(p3);",
   "d.body.appendChild(m);",
   "}catch(e){}})();",
@@ -192,8 +192,8 @@ export default function RootLayout({
                 +48 668 994 483
               </a>{" "}
               ·{" "}
-              <a href="mailto:kontakt@ogrody.kryscar.pl" style={{ color: "#047857" }}>
-                kontakt@ogrody.kryscar.pl
+              <a href="mailto:ogrody@kryscar.pl" style={{ color: "#047857" }}>
+                ogrody@kryscar.pl
               </a>
             </p>
           </div>
