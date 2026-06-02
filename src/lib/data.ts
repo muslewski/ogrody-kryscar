@@ -44,6 +44,7 @@ export const LEGAL_LINKS = [
 export const SERVICES = [
   {
     slug: "koszenie",
+    category: "trawnik",
     title: "Koszenie trawników",
     short: "Równe, zdrowe i gęste trawniki.",
     description:
@@ -52,6 +53,7 @@ export const SERVICES = [
   },
   {
     slug: "pielegnacja",
+    category: "porzadki",
     title: "Pielęgnacja ogrodu",
     short: "Stała opieka przez cały sezon.",
     description:
@@ -60,6 +62,7 @@ export const SERVICES = [
   },
   {
     slug: "grabienie",
+    category: "porzadki",
     title: "Grabienie liści",
     short: "Czystość po jesieni i wiosną.",
     description:
@@ -68,6 +71,7 @@ export const SERVICES = [
   },
   {
     slug: "sadzenie",
+    category: "sadzenie",
     title: "Sadzenie roślin",
     short: "Drzewa, krzewy, kwiaty, byliny.",
     description:
@@ -76,6 +80,7 @@ export const SERVICES = [
   },
   {
     slug: "ciecie",
+    category: "ciecie",
     title: "Cięcie i formowanie",
     short: "Krzewy, żywopłoty, drzewa ozdobne.",
     description:
@@ -84,6 +89,7 @@ export const SERVICES = [
   },
   {
     slug: "porzadki",
+    category: "porzadki",
     title: "Wiosenne i jesienne porządki",
     short: "Kompleksowa zmiana sezonu.",
     description:
@@ -92,6 +98,7 @@ export const SERVICES = [
   },
   {
     slug: "aranzacja",
+    category: "projekt",
     title: "Aranżacja ogrodu",
     short: "Pomysł, dobór roślin, realizacja.",
     description:
@@ -100,6 +107,7 @@ export const SERVICES = [
   },
   {
     slug: "rabaty",
+    category: "sadzenie",
     title: "Zakładanie rabat",
     short: "Nowe rabaty bylinowe i ozdobne.",
     description:
@@ -107,6 +115,17 @@ export const SERVICES = [
     icon: "flowers",
   },
 ];
+
+// Catalog filter categories. `id` is matched against each service's
+// `category` field; `all` is the reset pill that shows everything.
+export const CATEGORIES = [
+  { id: "all", label: "Wszystkie" },
+  { id: "trawnik", label: "Trawnik" },
+  { id: "ciecie", label: "Cięcie" },
+  { id: "sadzenie", label: "Sadzenie" },
+  { id: "porzadki", label: "Porządki" },
+  { id: "projekt", label: "Projekt" },
+] as const;
 
 export const PROCESS = [
   {

@@ -10,6 +10,7 @@ import { AntigravitySection } from "@/components/AntigravitySection";
 import { Socials } from "@/components/Socials";
 import { CalculatorForm } from "@/components/CalculatorForm";
 import { WarpedHoverImage } from "@/components/WarpedHoverImage";
+import { ServiceCatalog } from "@/components/service-catalog";
 
 export const metadata: Metadata = {
   title: `${COMPANY.name} — ${COMPANY.tagline} | Usługi ogrodnicze`,
@@ -47,15 +48,6 @@ const services: Catalog[] = SERVICES.map((s) => ({
   from: PRICES[s.slug]?.from ?? "wycena",
   duration: PRICES[s.slug]?.duration ?? "indywidualnie",
 }));
-
-const filters = [
-  { label: "Wszystkie", active: true },
-  { label: "Trawnik" },
-  { label: "Cięcie" },
-  { label: "Sadzenie" },
-  { label: "Porządki" },
-  { label: "Projekt" },
-];
 
 export default function Example9() {
   return (
@@ -164,91 +156,10 @@ export default function Example9() {
             </div>
           </HeroReveal>
         </div>
-
-        {/* Filter bar */}
-        <div className="border-y border-neutral-200 bg-white">
-          <div className="mx-auto flex max-w-7xl items-center gap-3 overflow-x-auto px-4 py-3 sm:px-6">
-            <span className="shrink-0 text-xs uppercase tracking-widest text-neutral-500">
-              Kategoria:
-            </span>
-            {filters.map((f) => (
-              <button
-                key={f.label}
-                type="button"
-                className={`shrink-0 rounded-full border px-4 py-1.5 text-sm transition ${
-                  f.active
-                    ? "border-neutral-900 bg-neutral-900 text-white"
-                    : "border-neutral-200 bg-white text-neutral-700 hover:border-neutral-400"
-                }`}
-              >
-                {f.label}
-              </button>
-            ))}
-            <span className="ml-auto hidden shrink-0 text-xs text-neutral-500 md:inline">
-              {services.length} usług dostępnych
-            </span>
-          </div>
-        </div>
       </section>
 
       {/* CATALOG */}
-      <section id="katalog" className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-12">
-        <StaggerGrid className="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
-          {services.map((s, i) => (
-            <StaggerItem key={s.slug} className="h-full">
-              {/* HoverCard owns the lift + shadow as a motion gesture
-                  (touch-filtered, spring) so it can't stick/flicker on
-                  mobile. `group` stays for the child group-hover effects. */}
-              <HoverCard className="group flex h-full flex-col overflow-hidden rounded-3xl border border-neutral-200 bg-white">
-              <div className="relative aspect-[4/3] overflow-hidden bg-neutral-100">
-                <WarpedHoverImage
-                  src={s.img}
-                  alt=""
-                  className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                />
-                {i === 1 && (
-                  <span className="absolute left-3 top-3 z-10 rounded-full bg-emerald-700 px-3 py-1 text-xs font-medium text-white">
-                    Najpopularniejsze
-                  </span>
-                )}
-                {i === 6 && (
-                  <span className="absolute left-3 top-3 z-10 rounded-full bg-amber-400 px-3 py-1 text-xs font-medium text-neutral-900">
-                    Projekt + realizacja
-                  </span>
-                )}
-                <span className="absolute right-3 top-3 z-10 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-medium text-neutral-700">
-                  0{i + 1}
-                </span>
-              </div>
-              <div className="flex flex-1 flex-col p-5">
-                <h3 className="text-lg font-semibold leading-tight tracking-tight">
-                  {s.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-neutral-600">
-                  {s.short}
-                </p>
-                <div className="mt-5 flex items-end justify-between border-t border-neutral-100 pt-4">
-                  <div>
-                    <p className="text-xs uppercase tracking-wider text-neutral-500">
-                      {s.duration}
-                    </p>
-                    <p className="text-lg font-semibold tracking-tight">
-                      {s.from}
-                    </p>
-                  </div>
-                  <a
-                    href="#kontakt"
-                    className="inline-flex items-center gap-1.5 rounded-full bg-neutral-900 px-3.5 py-2 text-xs font-medium text-white transition-colors group-hover:bg-emerald-700"
-                  >
-                    Zamów →
-                  </a>
-                </div>
-              </div>
-              </HoverCard>
-            </StaggerItem>
-          ))}
-        </StaggerGrid>
-      </section>
+      <ServiceCatalog services={services} />
 
       {/* DETAIL / PROCESS */}
       <section id="proces" className="bg-neutral-50">
