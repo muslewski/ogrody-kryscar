@@ -155,6 +155,7 @@ export default async function OgrodnikMiastoPage({
             aspect="16/9"
             center={{ lat: loc.lat, lng: loc.lng }}
             zoom={11}
+            focus={{ lat: loc.lat, lng: loc.lng }}
             rounded="rounded-[20px]"
             alt={`Mapa — ogrodnik ${loc.name} i okolice`}
           />

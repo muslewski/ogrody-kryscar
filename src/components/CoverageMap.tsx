@@ -69,6 +69,12 @@ export interface CoverageMapProps {
   zoom?: number;
   /** Image alt text. Defaults to the area-wide coverage description. */
   alt?: string;
+  /**
+   * Highlighted marker drawn on top of the coverage pins — used on the
+   * per-city landing pages so the focused locality always has a pin, even
+   * when it isn't one of the COVERAGE_CITIES towns.
+   */
+  focus?: { lat: number; lng: number };
 }
 
 function buildMapboxUrl({
@@ -79,6 +85,7 @@ function buildMapboxUrl({
   hqColor,
   center,
   zoom,
+  focus,
 }: {
   variant: CoverageMapVariant;
   width: number;
@@ -87,17 +94,21 @@ function buildMapboxUrl({
   hqColor: string;
   center: { lat: number; lng: number };
   zoom: number;
+  focus?: { lat: number; lng: number };
 }): string | null {
   const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
   if (!token) return null;
 
   const style = MAPBOX_STYLE[variant];
-  const markers = COVERAGE_CITIES.map((c) => {
+  const cityMarkers = COVERAGE_CITIES.map((c) => {
     const isHQ = c.km === 0;
     const color = isHQ ? hqColor : pinColor;
     const pin = isHQ ? "pin-l" : "pin-s"; // large pin for HQ
     return `${pin}+${color}(${c.lng},${c.lat})`;
-  }).join(",");
+  });
+  // Focus pin drawn last so it sits on top, large + emerald to stand out.
+  const focusMarker = focus ? `pin-l+${pinColor}(${focus.lng},${focus.lat})` : null;
+  const markers = [...cityMarkers, focusMarker].filter(Boolean).join(",");
 
   const c = `${center.lng},${center.lat},${zoom},0`;
   return (
@@ -111,20 +122,26 @@ function buildOsmUrl({
   height,
   center,
   zoom,
+  focus,
 }: {
   width: number;
   height: number;
   center: { lat: number; lng: number };
   zoom: number;
+  focus?: { lat: number; lng: number };
 }): string {
   // staticmap.openstreetmap.de — public OSM static map service. One style
   // only (mapnik), markers limited but adequate. Pipe between markers is
   // URL-encoded as %7C.
-  const markers = COVERAGE_CITIES.map((c) => {
+  const cityMarkers = COVERAGE_CITIES.map((c) => {
     const isHQ = c.km === 0;
     const color = isHQ ? "ol-marker-green" : "ol-marker";
     return `${c.lat},${c.lng},${color}`;
-  }).join("%7C");
+  });
+  // Focus pin (green) for the landing-page city — appended so it's present
+  // even when the city isn't in COVERAGE_CITIES.
+  const focusMarker = focus ? `${focus.lat},${focus.lng},ol-marker-green` : null;
+  const markers = [...cityMarkers, focusMarker].filter(Boolean).join("%7C");
 
   return (
     `https://staticmap.openstreetmap.de/staticmap.php` +
@@ -156,13 +173,14 @@ export function CoverageMap({
   center = MAP_CENTER,
   zoom = MAP_ZOOM,
   alt = "Mapa zasięgu — Bydgoszcz, Toruń i województwo kujawsko-pomorskie.",
+  focus,
 }: CoverageMapProps) {
   const ratio = ASPECT_RATIO[aspect];
   const height = Math.round(width / ratio);
 
   const url =
-    buildMapboxUrl({ variant, width, height, pinColor, hqColor, center, zoom }) ??
-    buildOsmUrl({ width, height, center, zoom });
+    buildMapboxUrl({ variant, width, height, pinColor, hqColor, center, zoom, focus }) ??
+    buildOsmUrl({ width, height, center, zoom, focus });
 
   const imgClass = [
     "block h-auto w-full select-none object-cover",
