@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
-import { SERVICES, CATEGORIES } from "@/lib/data";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { SERVICES, CATEGORIES, SERVICE_BADGES } from "@/lib/data";
 import { HoverCard } from "@/components/motion";
 import { WarpedHoverImage } from "@/components/WarpedHoverImage";
 
@@ -15,6 +15,7 @@ export type CatalogItem = Service & {
 
 export function ServiceCatalog({ services }: { services: CatalogItem[] }) {
   const [active, setActive] = useState<string>("all");
+  const reduce = useReducedMotion();
   const shown =
     active === "all"
       ? services
@@ -24,7 +25,11 @@ export function ServiceCatalog({ services }: { services: CatalogItem[] }) {
     <>
       {/* Filter bar */}
       <div className="border-y border-neutral-200 bg-white">
-        <div className="mx-auto flex max-w-7xl items-center gap-3 overflow-x-auto px-4 py-3 sm:px-6">
+        <div
+          role="group"
+          aria-label="Filtr kategorii usług"
+          className="mx-auto flex max-w-7xl items-center gap-3 overflow-x-auto px-4 py-3 sm:px-6"
+        >
           <span className="shrink-0 text-xs uppercase tracking-widest text-neutral-500">
             Kategoria:
           </span>
@@ -32,6 +37,7 @@ export function ServiceCatalog({ services }: { services: CatalogItem[] }) {
             <button
               key={c.id}
               type="button"
+              aria-pressed={active === c.id}
               onClick={() => setActive(c.id)}
               className={`shrink-0 rounded-full border px-4 py-1.5 text-sm transition ${
                 active === c.id
@@ -57,18 +63,23 @@ export function ServiceCatalog({ services }: { services: CatalogItem[] }) {
           <AnimatePresence mode="popLayout">
             {shown.map((s, i) => {
               const num = services.findIndex((x) => x.slug === s.slug) + 1;
+              const badge = SERVICE_BADGES[s.slug];
               return (
                 <motion.article
                   key={s.slug}
                   layout
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.96 }}
-                  transition={{
-                    layout: { type: "spring", stiffness: 260, damping: 30 },
-                    duration: 0.3,
-                    delay: i * 0.03,
-                  }}
+                  initial={reduce ? false : { opacity: 0, scale: 0.96 }}
+                  animate={reduce ? {} : { opacity: 1, scale: 1 }}
+                  exit={reduce ? {} : { opacity: 0, scale: 0.96 }}
+                  transition={
+                    reduce
+                      ? { duration: 0 }
+                      : {
+                          layout: { type: "spring", stiffness: 260, damping: 30 },
+                          duration: 0.3,
+                          delay: i * 0.03,
+                        }
+                  }
                   className="h-full"
                 >
                   {/* HoverCard owns the lift + shadow as a motion gesture
@@ -81,14 +92,15 @@ export function ServiceCatalog({ services }: { services: CatalogItem[] }) {
                         alt=""
                         className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
                       />
-                      {s.slug === "pielegnacja" && (
-                        <span className="absolute left-3 top-3 z-10 rounded-full bg-emerald-700 px-3 py-1 text-xs font-medium text-white">
-                          Najpopularniejsze
-                        </span>
-                      )}
-                      {s.slug === "aranzacja" && (
-                        <span className="absolute left-3 top-3 z-10 rounded-full bg-amber-400 px-3 py-1 text-xs font-medium text-neutral-900">
-                          Projekt + realizacja
+                      {badge && (
+                        <span
+                          className={`absolute left-3 top-3 z-10 rounded-full px-3 py-1 text-xs font-medium ${
+                            badge.tone === "primary"
+                              ? "bg-emerald-700 text-white"
+                              : "bg-amber-400 text-neutral-900"
+                          }`}
+                        >
+                          {badge.label}
                         </span>
                       )}
                       <span className="absolute right-3 top-3 z-10 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-medium text-neutral-700">

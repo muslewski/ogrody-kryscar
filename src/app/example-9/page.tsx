@@ -10,15 +10,12 @@ import { AntigravitySection } from "@/components/AntigravitySection";
 import { Socials } from "@/components/Socials";
 import { CalculatorForm } from "@/components/CalculatorForm";
 import { WarpedHoverImage } from "@/components/WarpedHoverImage";
-import { ServiceCatalog } from "@/components/service-catalog";
+import { ServiceCatalog, type CatalogItem } from "@/components/service-catalog";
 
 export const metadata: Metadata = {
   title: `${COMPANY.name} — ${COMPANY.tagline} | Usługi ogrodnicze`,
   description: COMPANY.description,
 };
-
-type Service = (typeof SERVICES)[number];
-type Catalog = Service & { img: string; from: string; duration: string };
 
 const SERVICE_IMAGES: Record<string, string> = {
   koszenie: IMG.lawnTexture,
@@ -42,7 +39,7 @@ const PRICES: Record<string, { from: string; duration: string }> = {
   rabaty: { from: "od 599 zł", duration: "projekt + sadzenie" },
 };
 
-const services: Catalog[] = SERVICES.map((s) => ({
+const services: CatalogItem[] = SERVICES.map((s) => ({
   ...s,
   img: SERVICE_IMAGES[s.slug] ?? IMG.parkGarden,
   from: PRICES[s.slug]?.from ?? "wycena",

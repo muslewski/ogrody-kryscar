@@ -127,6 +127,16 @@ export const CATEGORIES = [
   { id: "projekt", label: "Projekt" },
 ] as const;
 
+// Optional promo badge per service slug, rendered on the catalog card.
+// tone: "primary" = emerald, "accent" = amber.
+export const SERVICE_BADGES: Record<
+  string,
+  { label: string; tone: "primary" | "accent" }
+> = {
+  pielegnacja: { label: "Najpopularniejsze", tone: "primary" },
+  aranzacja: { label: "Projekt + realizacja", tone: "accent" },
+};
+
 export const PROCESS = [
   {
     no: "01",
