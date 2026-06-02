@@ -53,6 +53,7 @@ export default async function OgrodnikMiastoPage({
   const services = getCatalogServices();
   const neighbours = (await getAllLocations())
     .filter((l) => l.slug !== loc.slug)
+    .sort((a, b) => Math.abs(a.km - loc.km) - Math.abs(b.km - loc.km))
     .slice(0, 6);
 
   return (
@@ -155,6 +156,7 @@ export default async function OgrodnikMiastoPage({
             center={{ lat: loc.lat, lng: loc.lng }}
             zoom={11}
             rounded="rounded-[20px]"
+            alt={`Mapa — ogrodnik ${loc.name} i okolice`}
           />
         </div>
       </section>

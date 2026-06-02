@@ -67,6 +67,8 @@ export interface CoverageMapProps {
   center?: { lat: number; lng: number };
   /** Override zoom (defaults to MAP_ZOOM). */
   zoom?: number;
+  /** Image alt text. Defaults to the area-wide coverage description. */
+  alt?: string;
 }
 
 function buildMapboxUrl({
@@ -153,6 +155,7 @@ export function CoverageMap({
   warp = true,
   center = MAP_CENTER,
   zoom = MAP_ZOOM,
+  alt = "Mapa zasięgu — Bydgoszcz, Toruń i województwo kujawsko-pomorskie.",
 }: CoverageMapProps) {
   const ratio = ASPECT_RATIO[aspect];
   const height = Math.round(width / ratio);
@@ -179,7 +182,7 @@ export function CoverageMap({
       >
         <WarpedHoverImage
           src={url}
-          alt="Mapa zasięgu — Bydgoszcz, Toruń i województwo kujawsko-pomorskie."
+          alt={alt}
           className={[
             "absolute inset-0 block h-full w-full select-none object-cover",
             className ?? "",
@@ -192,7 +195,7 @@ export function CoverageMap({
   return (
     <img
       src={url}
-      alt="Mapa zasięgu — Bydgoszcz, Toruń i województwo kujawsko-pomorskie."
+      alt={alt}
       width={width}
       height={height}
       loading="lazy"

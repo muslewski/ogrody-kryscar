@@ -27,7 +27,7 @@ export function LocationJsonLd({ location }: { location: Location }) {
         "@type": "BreadcrumbList",
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Strona główna", item: SITE_URL },
-          { "@type": "ListItem", position: 2, name: "Ogrodnik", item: `${SITE_URL}/ogrodnik` },
+          { "@type": "ListItem", position: 2, name: "Ogrodnik" },
           { "@type": "ListItem", position: 3, name: location.name, item: url },
         ],
       },
