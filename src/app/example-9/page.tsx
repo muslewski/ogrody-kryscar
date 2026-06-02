@@ -15,15 +15,23 @@ import { getCatalogServices } from "@/lib/catalog";
 import { SiteFooter } from "@/components/SiteFooter";
 import { getAllLocations } from "@/lib/locations";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { getWinterServices } from "@/lib/winter";
+import { isWinterNow } from "@/lib/season";
+import { WinterServiceCard } from "@/components/WinterServiceCard";
 
 export const metadata: Metadata = {
   title: `${COMPANY.name} — ${COMPANY.tagline} | Usługi ogrodnicze`,
   description: COMPANY.description,
 };
 
+// Daily ISR so the seasonal winter escalation flips without a redeploy.
+export const revalidate = 86400;
+
 export default async function Example9() {
   const services = getCatalogServices();
   const locations = await getAllLocations();
+  const winterServices = await getWinterServices();
+  const winter = isWinterNow();
   return (
     <>
     <SitePreloader
@@ -38,6 +46,15 @@ export default async function Example9() {
       tagline="Katalog usług ogrodniczych"
     />
     <main className="min-h-screen bg-white font-[family-name:var(--font-manrope)] text-neutral-900">
+      {winter && (
+        <Link
+          href="/zima"
+          className="block bg-emerald-900 px-4 py-2 text-center text-sm text-emerald-50 transition-colors hover:bg-emerald-800"
+        >
+          ❄ Sezon zimowy — odśnieżanie, świąteczne oświetlenie i zabezpieczanie roślin{" "}
+          <span className="font-semibold underline underline-offset-2">Zobacz →</span>
+        </Link>
+      )}
       {/* NAV */}
       <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-3.5">
@@ -56,6 +73,7 @@ export default async function Example9() {
           </a>
           <nav className="hidden gap-7 text-sm text-neutral-700 md:flex">
             <a href="#katalog" className="hover:text-emerald-700">Katalog</a>
+            <Link href="/zima" className="hover:text-emerald-700">Zima</Link>
             <a href="#proces" className="hover:text-emerald-700">Jak to działa</a>
             <a href="#opinie" className="hover:text-emerald-700">Opinie</a>
             <a href="#kontakt" className="hover:text-emerald-700">Kontakt</a>
@@ -85,7 +103,9 @@ export default async function Example9() {
             <HeroReveal delay={0.05}>
               <span className="inline-flex items-center gap-2 rounded-full border border-emerald-700/20 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-800">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
-                Sezon {new Date().getFullYear()} — przyjmujemy zlecenia
+                {winter
+                  ? "Sezon zimowy — odśnieżanie i zabezpieczanie ogrodu"
+                  : `Sezon ${new Date().getFullYear()} — przyjmujemy zlecenia`}
               </span>
             </HeroReveal>
             <HeroReveal delay={0.15}>
@@ -383,6 +403,43 @@ export default async function Example9() {
               <p className="mt-4 text-xs italic text-neutral-500">{COVERAGE_NOTE}</p>
             </div>
           </Reveal>
+        </div>
+      </section>
+
+      {/* WINTER SERVICES — always present; escalates in winter */}
+      <section
+        id="zima"
+        className={winter ? "bg-emerald-900 text-emerald-50" : "border-t border-neutral-200 bg-white"}
+      >
+        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20">
+          <Reveal className="mb-10 flex flex-wrap items-end justify-between gap-5 sm:mb-12 sm:gap-6">
+            <div>
+              <p className={`text-xs uppercase tracking-[0.3em] ${winter ? "text-emerald-300" : "text-emerald-700"}`}>
+                {winter ? "Sezon zimowy — teraz" : "Cały rok"}
+              </p>
+              <h2 className="mt-3 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl md:text-5xl">
+                {winter ? "Zima? Działamy dalej." : "Działamy też zimą."}
+              </h2>
+              <p className={`mt-5 max-w-2xl text-sm sm:text-base ${winter ? "text-emerald-100/80" : "text-neutral-600"}`}>
+                Odśnieżanie, świąteczne oświetlenie ogrodów i zimowe zabezpieczanie roślin — ten sam zespół, który dba o Twój ogród latem.
+              </p>
+            </div>
+            <Link
+              href="/zima"
+              className={`rounded-full px-5 py-3 text-sm font-medium transition-colors ${
+                winter ? "bg-emerald-50 text-emerald-900 hover:bg-white" : "bg-neutral-900 text-white hover:bg-emerald-700"
+              }`}
+            >
+              Wszystkie usługi zimowe →
+            </Link>
+          </Reveal>
+          <StaggerGrid className="grid gap-4 sm:gap-5 md:grid-cols-3">
+            {winterServices.map((s) => (
+              <StaggerItem key={s.slug} className="h-full">
+                <WinterServiceCard service={s} tone={winter ? "dark" : "light"} />
+              </StaggerItem>
+            ))}
+          </StaggerGrid>
         </div>
       </section>
 
