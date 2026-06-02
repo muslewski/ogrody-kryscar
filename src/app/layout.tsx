@@ -131,6 +131,7 @@ const newsreader = Newsreader({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://kryscar.pl"),
   title: "Ogrody Kryscar — Profesjonalne usługi ogrodnicze",
   description:
     "Koszenie trawników, pielęgnacja ogrodu, grabienie liści, sadzenie roślin i przycinanie krzewów. Zadbamy o Twój ogród.",
