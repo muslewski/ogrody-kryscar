@@ -163,11 +163,35 @@ export const TESTIMONIALS = [
   },
 ];
 
-export const STATS = [
+// ⚠️ ASPIRATIONAL — kept for future use once we can back these numbers up
+// with real data (review counts, project totals, retention %). Do NOT show
+// on the live site until verified. Swap these back into STATS / the hero
+// grid when the claims become true.
+export const STATS_ASPIRATIONAL = [
   { value: "10+", label: "lat doświadczenia" },
   { value: "500+", label: "zadbanych ogrodów" },
   { value: "98%", label: "klientów wraca" },
   { value: "0", label: "porzuconych projektów" },
+];
+
+// Aspirational hero stat grid + rating row (used on /example-9 hero).
+// Same rule: reinstate only when we have real reviews to support it.
+export const HERO_STATS_ASPIRATIONAL = {
+  grid: [
+    { v: "10+", l: "lat" },
+    { v: "500+", l: "ogrodów" },
+    { v: "4.9", l: "ocena" },
+  ],
+  rating: { score: "4.9 / 5", reviews: "187 opinii klientów", area: "Polska, cały kraj" },
+};
+
+// Current, safe-to-publish stats. "10+ lat" is true (firma od 2014).
+// The rest are factual / policy-based, not invented metrics.
+export const STATS = [
+  { value: "10+", label: "lat doświadczenia" },
+  { value: "8", label: "rodzajów usług" },
+  { value: "100%", label: "bezpłatna wycena" },
+  { value: "Cały rok", label: "dostępni sezonowo" },
 ];
 
 export const FAQ = [

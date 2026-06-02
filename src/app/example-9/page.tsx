@@ -136,7 +136,7 @@ export default function Example9() {
             <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
               {[
                 { v: "10+", l: "lat" },
-                { v: "500+", l: "ogrodów" },
+                { v: "8", l: "usług" },
                 { v: "4.9", l: "ocena" },
               ].map((s) => (
                 <div
@@ -155,8 +155,6 @@ export default function Example9() {
             <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-neutral-500">
               <span className="text-amber-500">★★★★★</span>
               <span>4.9 / 5</span>
-              <span>·</span>
-              <span>187 opinii klientów</span>
               <span>·</span>
               <span>Polska, cały kraj</span>
             </div>
