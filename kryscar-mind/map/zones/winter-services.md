@@ -4,8 +4,8 @@ summary: "Winter-services arc: /zima hub + /zima/[usluga] pages, the Payload-rea
 tags: [feature, seo, data, seasonal]
 status: active
 created: 2026-06-02
-updated: 2026-06-02
-related: ["[[city-landing-pages]]", "[[seo]]", "[[homepage-and-variants]]", "[[coverage-map]]"]
+updated: 2026-06-03
+related: ["[[city-landing-pages]]", "[[seo]]", "[[homepage-and-variants]]", "[[coverage-map]]", "[[service-pages]]"]
 sources: ["[[2026-06-02-winter-services-design]]"]
 owns:
   routes: ["/zima", "/zima/[usluga]"]
@@ -17,13 +17,13 @@ invariants:
     enforcedBy: []
   - rule: "Pages that branch on the season set revalidate=86400 so the winter toggle flips without a redeploy"
     enforcedBy: []
-verifiedAt: "777b2d897f2306e857ee098cc94995f81f64de89"
+verifiedAt: "fa9a5e3cac79d83545f7d25ff3a3a8c4bd16f5e2"
 ---
 ## Purpose
 The winter revenue arc — three landing pages + a hub, a Payload-ready data layer, and a pure seasonal engine that escalates the homepage Nov–Mar.
 ## Anchors
 `getWinterServices`, `getWinterServiceBySlug`, `WinterService`, `isWinterActive`, `ServiceJsonLd`, `WinterServiceCard`, `route:/zima`, `route:/zima/[usluga]`.
 ## Invariants
-Accessor-only data boundary (mirrors city pages); seasonal pages use daily ISR.
+Accessor-only data boundary (mirrors city pages); seasonal pages use daily ISR. `ServiceJsonLd` was generalized to `{name, description, url, breadcrumbs}` props so it can be shared with [[service-pages]] — the `/zima/[usluga]` call site behavior is unchanged.
 ## Lineage
 sources → [[2026-06-02-winter-services-design]].
