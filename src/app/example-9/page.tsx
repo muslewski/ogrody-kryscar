@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { COMPANY, PROCESS, TESTIMONIALS, STATS, FAQ, TEAM, IMG } from "@/lib/data";
-import { COVERAGE_CITIES, COVERAGE_HEADLINE, COVERAGE_INTRO, COVERAGE_NOTE } from "@/lib/coverage";
+import { COVERAGE_HEADLINE, COVERAGE_INTRO, COVERAGE_NOTE } from "@/lib/coverage";
 import { Reveal, HeroReveal, StaggerGrid, StaggerItem, HoverCard } from "@/components/motion";
 import { Stat } from "@/components/Stat";
 import { SitePreloader } from "@/components/SitePreloader";
@@ -12,14 +13,17 @@ import { WarpedHoverImage } from "@/components/WarpedHoverImage";
 import { ServiceCatalog } from "@/components/service-catalog";
 import { getCatalogServices } from "@/lib/catalog";
 import { SiteFooter } from "@/components/SiteFooter";
+import { getAllLocations } from "@/lib/locations";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export const metadata: Metadata = {
   title: `${COMPANY.name} — ${COMPANY.tagline} | Usługi ogrodnicze`,
   description: COMPANY.description,
 };
 
-export default function Example9() {
+export default async function Example9() {
   const services = getCatalogServices();
+  const locations = await getAllLocations();
   return (
     <>
     <SitePreloader
@@ -356,22 +360,26 @@ export default function Example9() {
                 Pokażemy, kiedy najbliższa wizyta jest dostępna w Waszej
                 okolicy.
               </p>
-              <ul className="mt-6 flex flex-col gap-1.5 border-t border-neutral-200 pt-5">
-                {COVERAGE_CITIES.slice(0, 9).map((c) => (
-                  <li
-                    key={c.name}
-                    className="flex items-center justify-between border-b border-neutral-100 pb-1.5 text-sm"
-                  >
-                    <span className="font-medium text-neutral-900">{c.name}</span>
-                    <span className="flex items-center gap-3 text-xs text-neutral-500">
-                      <span className="tabular-nums">{c.zip}</span>
-                      <span className="tabular-nums">
-                        {c.km === 0 ? "baza" : `${c.km} km`}
-                      </span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
+              <ScrollArea className="mt-6 h-72 border-t border-neutral-200 pt-3">
+                <ul className="flex flex-col gap-1 pr-3">
+                  {locations.map((l) => (
+                    <li key={l.slug}>
+                      <Link
+                        href={`/ogrodnik/${l.slug}`}
+                        className="group flex items-center justify-between rounded-xl px-2 py-2 text-sm transition-colors hover:bg-neutral-50"
+                      >
+                        <span className="font-medium text-neutral-900 group-hover:text-emerald-700">
+                          Ogrodnik {l.name}
+                        </span>
+                        <span className="flex items-center gap-3 text-xs text-neutral-500">
+                          <span className="tabular-nums">{l.km === 0 ? "baza" : `${l.km} km`}</span>
+                          <span aria-hidden className="text-emerald-700">→</span>
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </ScrollArea>
               <p className="mt-4 text-xs italic text-neutral-500">{COVERAGE_NOTE}</p>
             </div>
           </Reveal>
