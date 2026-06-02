@@ -1,17 +1,23 @@
 import type { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/data";
+import { getLocationSlugs } from "@/lib/locations";
 
-// Single-page site: the root re-exports the chosen design (example-9).
-// The /example-N routes are internal design variants and are intentionally
-// excluded to avoid duplicate-content indexing (see robots.ts).
-const BASE_URL = "https://kryscar.pl";
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const slugs = await getLocationSlugs();
+  const now = new Date();
 
-export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: BASE_URL,
-      lastModified: new Date(),
+      url: SITE_URL,
+      lastModified: now,
       changeFrequency: "monthly",
       priority: 1,
     },
+    ...slugs.map((slug) => ({
+      url: `${SITE_URL}/ogrodnik/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
   ];
 }
