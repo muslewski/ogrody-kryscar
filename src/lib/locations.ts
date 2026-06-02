@@ -70,8 +70,8 @@ const LOCATIONS: Location[] = [
     powiat: "bydgoski",
     km: 8,
     travel: "ok. 15 minut od naszej bazy w Bydgoszczy",
-    lat: 53.1736,
-    lng: 18.0950,
+    lat: 53.1844,
+    lng: 18.0328,
     zip: "86-032",
     nearbyAreas: ["Osielsko", "Żołędowo", "Maksymilianowo", "Jarużyn", "Myślęcinek"],
     intro: [
@@ -259,8 +259,8 @@ const LOCATIONS: Location[] = [
     powiat: "bydgoski",
     km: 18,
     travel: "około 25 minut jazdy na północny wschód od bazy",
-    lat: 53.2386,
-    lng: 18.1928,
+    lat: 53.2653,
+    lng: 18.1464,
     zip: "86-022",
     nearbyAreas: ["Kotomierz", "Włóki", "Strzelce Górne", "Borówno", "Wudzyn"],
     intro: [
@@ -286,8 +286,8 @@ const LOCATIONS: Location[] = [
     powiat: "bydgoski",
     km: 10,
     travel: "około 15 minut od Bydgoszczy, tuż za Niemczem",
-    lat: 53.1772,
-    lng: 18.0858,
+    lat: 53.2175,
+    lng: 18.0568,
     zip: "86-031",
     nearbyAreas: ["Niemcz", "Osielsko", "Maksymilianowo", "Jarużyn", "Bożenkowo"],
     intro: [
@@ -313,8 +313,8 @@ const LOCATIONS: Location[] = [
     powiat: "bydgoski",
     km: 14,
     travel: "niespełna 20 minut jazdy w kierunku północno-wschodnim",
-    lat: 53.2025,
-    lng: 18.1772,
+    lat: 53.2128,
+    lng: 18.0324,
     zip: "86-022",
     nearbyAreas: ["Żołędowo", "Osielsko", "Wilcze", "Jarużyn", "Kotomierz"],
     intro: [
