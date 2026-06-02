@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { COMPANY, SERVICES, PROCESS, TESTIMONIALS, STATS, FAQ, TEAM, ADDRESS, LEGAL_LINKS, IMG } from "@/lib/data";
+import { COMPANY, PROCESS, TESTIMONIALS, STATS, FAQ, TEAM, IMG } from "@/lib/data";
 import { COVERAGE_CITIES, COVERAGE_HEADLINE, COVERAGE_INTRO, COVERAGE_NOTE } from "@/lib/coverage";
 import { Reveal, HeroReveal, StaggerGrid, StaggerItem, HoverCard } from "@/components/motion";
 import { Stat } from "@/components/Stat";
 import { SitePreloader } from "@/components/SitePreloader";
 import { CoverageMap } from "@/components/CoverageMap";
 import { AntigravitySection } from "@/components/AntigravitySection";
-import { Socials } from "@/components/Socials";
 import { CalculatorForm } from "@/components/CalculatorForm";
 import { WarpedHoverImage } from "@/components/WarpedHoverImage";
 import { ServiceCatalog } from "@/components/service-catalog";
 import { getCatalogServices } from "@/lib/catalog";
+import { SiteFooter } from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
   title: `${COMPANY.name} — ${COMPANY.tagline} | Usługi ogrodnicze`,
@@ -529,93 +529,7 @@ export default function Example9() {
         </Reveal>
       </section>
 
-      {/* FOOTER — catalog */}
-      <footer className="border-t border-neutral-200 bg-white">
-        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16">
-          <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
-            {/* Brand */}
-            <div className="lg:col-span-4">
-              <a href="#" className="flex items-center gap-2.5">
-                <Image
-                  src="/logo.png"
-                  alt={`${COMPANY.name} logo`}
-                  width={36}
-                  height={36}
-                  className="h-9 w-9 rounded-lg"
-                />
-                <span className="text-base font-semibold tracking-tight">{COMPANY.name}</span>
-              </a>
-              <p className="mt-4 max-w-sm text-sm leading-relaxed text-neutral-600">
-                Katalog usług ogrodniczych dla Bydgoszczy i województwa
-                Kujawsko-Pomorskiego. Wybierz pakiet, my dojeżdżamy.
-              </p>
-              <Socials className="mt-6 text-neutral-700" variant="outline" />
-            </div>
-
-            {/* Katalog */}
-            <div className="lg:col-span-3">
-              <p className="text-xs uppercase tracking-[0.3em] text-neutral-500">Katalog</p>
-              <ul className="mt-5 space-y-2.5 text-sm text-neutral-700">
-                {SERVICES.slice(0, 5).map((s) => (
-                  <li key={s.slug}>
-                    <a href={`#${s.slug}`} className="underline-offset-4 hover:text-emerald-700 hover:underline">
-                      {s.title}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Firma */}
-            <div className="lg:col-span-2">
-              <p className="text-xs uppercase tracking-[0.3em] text-neutral-500">Firma</p>
-              <ul className="mt-5 space-y-2.5 text-sm text-neutral-700">
-                <li><a href="#zespol" className="underline-offset-4 hover:text-emerald-700 hover:underline">Zespół</a></li>
-                <li><a href="#proces" className="underline-offset-4 hover:text-emerald-700 hover:underline">Jak to działa</a></li>
-                <li><a href="#opinie" className="underline-offset-4 hover:text-emerald-700 hover:underline">Opinie</a></li>
-                <li><a href="#faq" className="underline-offset-4 hover:text-emerald-700 hover:underline">FAQ</a></li>
-              </ul>
-            </div>
-
-            {/* Kontakt */}
-            <div className="lg:col-span-3">
-              <p className="text-xs uppercase tracking-[0.3em] text-neutral-500">Kontakt</p>
-              <address className="mt-5 space-y-3 text-sm not-italic">
-                <a
-                  href={`tel:${COMPANY.phoneRaw}`}
-                  className="block rounded-2xl bg-neutral-900 px-4 py-3 text-white transition hover:bg-emerald-700"
-                >
-                  <span className="text-xs uppercase tracking-wider text-neutral-400">Telefon</span>
-                  <span className="mt-1 block text-lg font-semibold">{COMPANY.phone}</span>
-                </a>
-                <a
-                  href={`mailto:${COMPANY.email}`}
-                  className="block rounded-2xl border border-neutral-200 px-4 py-3 transition hover:border-emerald-700"
-                >
-                  <span className="text-xs uppercase tracking-wider text-neutral-500">E-mail</span>
-                  <span className="mt-1 block text-sm font-semibold text-neutral-900">{COMPANY.email}</span>
-                </a>
-                <p className="px-1 text-xs text-neutral-500">
-                  {ADDRESS.fullLine}
-                  <br />
-                  {ADDRESS.hours}
-                </p>
-              </address>
-            </div>
-          </div>
-
-          <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-neutral-200 pt-6 text-xs text-neutral-500">
-            <p>© {new Date().getFullYear()} {ADDRESS.legalName} · NIP {ADDRESS.nip}</p>
-            <ul className="flex flex-wrap gap-x-5 gap-y-2">
-              {LEGAL_LINKS.map((l) => (
-                <li key={l.href}>
-                  <a href={l.href} className="hover:text-neutral-900 hover:underline">{l.label}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </main>
     </>
   );
