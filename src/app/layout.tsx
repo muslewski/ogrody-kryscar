@@ -14,6 +14,7 @@ import {
   Newsreader,
   Manrope,
 } from "next/font/google";
+import { SITE_URL } from "@/lib/data";
 import "./globals.css";
 
 /**
@@ -131,7 +132,7 @@ const newsreader = Newsreader({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://kryscar.pl"),
+  metadataBase: new URL(SITE_URL),
   title: "Ogrody Kryscar — Profesjonalne usługi ogrodnicze",
   description:
     "Koszenie trawników, pielęgnacja ogrodu, grabienie liści, sadzenie roślin i przycinanie krzewów. Zadbamy o Twój ogród.",

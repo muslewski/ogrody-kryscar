@@ -1,3 +1,5 @@
+export const SITE_URL = "https://kryscar.pl";
+
 export const COMPANY = {
   name: "Ogrody Kryscar",
   shortName: "Kryscar",
