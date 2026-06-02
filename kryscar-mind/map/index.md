@@ -2,7 +2,7 @@
 
 # 🧠 kryscar-mind — Map index
 
-_11 zones · 4 verification gaps._
+_12 zones · 6 verification gaps._
 
 | Zone | Status | Freshness | Summary |
 |---|---|---|---|
@@ -11,12 +11,13 @@ _11 zones · 4 verification gaps._
 | [[coverage-map]] | active | ✓ fresh | Service-area geography and the static coverage map (Mapbox/OSM). |
 | [[homepage-and-variants]] | active | ✓ fresh | The root homepage (re-exports example-9) plus the ten design-variant pages. |
 | [[layout-chrome]] | active | ✓ fresh | Root layout, header, footer, preloader, and social links — the shared page shell. |
-| [[motion-and-3d]] | active | ✓ fresh | Motion primitives (HoverCard), warped-hover image, the 3D section, counters, and the scroll hook. |
+| [[motion-and-3d]] | active | ⚠ stale | Motion primitives (HoverCard), warped-hover image, the 3D section, counters, and the scroll hook. |
 | [[pricing-calculator]] | active | ✓ fresh | Pricing algorithm and the interactive area/frequency calculator form. |
 | [[seo]] | active | ✓ fresh | sitemap.xml, robots.txt, and canonical/metadataBase wiring. |
 | [[service-catalog]] | active | ✓ fresh | Service definitions, categories, catalog enrichment, and the single-select filter + motion reorder island. |
 | [[the-mind]] | active | ✓ fresh | The knowledge-base system itself — generator, status hook, navigating skill, and /map-sync command. |
 | [[ui-primitives]] | active | ✓ fresh | shadcn/radix UI primitives (new-york): checkbox, label, radio-group, scroll-area, separator, slider. |
+| [[winter-services]] | active | ✓ fresh | Winter-services arc: /zima hub + /zima/[usluga] pages, the Payload-ready winter data layer, and the seasonal engine. |
 
 ## ⚠ Verification gaps
 
@@ -24,6 +25,8 @@ _11 zones · 4 verification gaps._
 - zone layout-chrome: invariant "SiteFooter anchors are root-relative (/#...) so it works on every page" has no enforcedBy
 - zone seo: invariant "every public route has a sitemap entry" has no enforcedBy
 - zone service-catalog: invariant "SERVICES drives both the homepage catalog and the city pages" has no enforcedBy
+- zone winter-services: invariant "Components consume winter services only via async accessors — no component imports the WINTER_SERVICES array (Payload-migration boundary)" has no enforcedBy
+- zone winter-services: invariant "Pages that branch on the season set revalidate=86400 so the winter toggle flips without a redeploy" has no enforcedBy
 
 ## Attic (unmounted)
 

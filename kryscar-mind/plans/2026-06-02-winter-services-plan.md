@@ -2,7 +2,7 @@
 type: plan
 summary: "Task-by-task plan for the winter-services arc: /zima pages, winter data layer, seasonal engine, homepage escalation, SEO."
 tags: [seo, feature, data, seasonal]
-status: draft
+status: done
 created: 2026-06-02
 updated: 2026-06-02
 related: ["[[city-landing-pages]]", "[[seo]]", "[[homepage-and-variants]]"]

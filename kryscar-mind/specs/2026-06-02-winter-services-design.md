@@ -2,7 +2,7 @@
 type: spec
 summary: "Winter-services arc: /zima/[usluga] landing pages, a Payload-ready winter data layer, and a seasonal auto/override switch that escalates the homepage in winter."
 tags: [seo, feature, data, seasonal]
-status: planned
+status: done
 created: 2026-06-02
 updated: 2026-06-02
 related: ["[[city-landing-pages]]", "[[service-catalog]]", "[[seo]]", "[[homepage-and-variants]]", "[[coverage-map]]"]

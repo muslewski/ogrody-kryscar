@@ -5,7 +5,7 @@ tags: [ui]
 status: active
 created: 2026-06-02
 updated: 2026-06-02
-related: ["[[seo]]", "[[brand-data]]"]
+related: ["[[seo]]", "[[brand-data]]", "[[winter-services]]"]
 sources: []
 owns:
   routes: []
@@ -15,7 +15,7 @@ depends: ["[[brand-data]]"]
 invariants:
   - rule: "SiteFooter anchors are root-relative (/#...) so it works on every page"
     enforcedBy: []
-verifiedAt: "74d28486554072404071920bafd9c109390994e7"
+verifiedAt: "777b2d897f2306e857ee098cc94995f81f64de89"
 ---
 ## Purpose
 Shared chrome reused by the homepage and city pages.
