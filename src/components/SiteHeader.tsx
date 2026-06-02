@@ -18,12 +18,20 @@ export function SiteHeader() {
             {COMPANY.name}
           </span>
         </Link>
-        <a
-          href={`tel:${COMPANY.phoneRaw}`}
-          className="rounded-full bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700"
-        >
-          {COMPANY.phone}
-        </a>
+        <div className="flex items-center gap-4">
+          <Link
+            href="/zima"
+            className="hidden text-sm font-medium text-neutral-700 transition-colors hover:text-emerald-700 sm:block"
+          >
+            Zima
+          </Link>
+          <a
+            href={`tel:${COMPANY.phoneRaw}`}
+            className="rounded-full bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700"
+          >
+            {COMPANY.phone}
+          </a>
+        </div>
       </div>
     </header>
   );
