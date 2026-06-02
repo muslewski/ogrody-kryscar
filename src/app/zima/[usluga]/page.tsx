@@ -2,7 +2,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { COMPANY, PROCESS } from "@/lib/data";
+import { COMPANY, PROCESS, SITE_URL } from "@/lib/data";
 import {
   getWinterServices,
   getWinterServiceBySlug,
@@ -59,7 +59,16 @@ export default async function ZimaUslugaPage({
 
   return (
     <main className="bg-white text-neutral-900">
-      <ServiceJsonLd service={svc} />
+      <ServiceJsonLd
+        name={svc.name}
+        description={svc.metaDescription}
+        url={`${SITE_URL}/zima/${svc.slug}`}
+        breadcrumbs={[
+          { name: "Strona główna", item: SITE_URL },
+          { name: "Zima", item: `${SITE_URL}/zima` },
+          { name: svc.name, item: `${SITE_URL}/zima/${svc.slug}` },
+        ]}
+      />
       <SiteHeader />
 
       {/* Breadcrumb */}
