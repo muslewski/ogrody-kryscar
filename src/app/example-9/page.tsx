@@ -718,7 +718,7 @@ export default function Example9() {
           </div>
 
           <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-neutral-200 pt-6 text-xs text-neutral-500">
-            <p>© {new Date().getFullYear()} {COMPANY.name} · NIP {ADDRESS.nip}</p>
+            <p>© {new Date().getFullYear()} {ADDRESS.legalName} · NIP {ADDRESS.nip}</p>
             <ul className="flex flex-wrap gap-x-5 gap-y-2">
               {LEGAL_LINKS.map((l) => (
                 <li key={l.href}>

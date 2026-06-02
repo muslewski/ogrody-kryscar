@@ -17,7 +17,8 @@ export const ADDRESS = {
   postal: "85-110",
   city: "Bydgoszcz",
   fullLine: "ul. Mostowa 5, 85-110 Bydgoszcz",
-  nip: "554-289-12-34", // placeholder
+  nip: "953-281-57-01", // KRYSCAR SP. Z O.O.
+  legalName: "KRYSCAR Spółka z ograniczoną odpowiedzialnością",
   hours: "pn–pt 8:00–17:00 · sob 9:00–14:00",
 };
 
