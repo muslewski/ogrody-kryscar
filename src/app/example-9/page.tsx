@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { COMPANY, SERVICES, PROCESS, TESTIMONIALS, STATS, FAQ, TEAM, ADDRESS, LEGAL_LINKS, IMG } from "@/lib/data";
 import { COVERAGE_CITIES, COVERAGE_HEADLINE, COVERAGE_INTRO, COVERAGE_NOTE } from "@/lib/coverage";
 import { Reveal, HeroReveal, StaggerGrid, StaggerItem } from "@/components/motion";
@@ -75,11 +76,14 @@ export default function Example9() {
       <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-3.5">
           <a href="#" className="flex items-center gap-2.5">
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-emerald-700 text-white">
-              <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current">
-                <path d="M12 2c-3 4-6 7-6 11a6 6 0 0 0 12 0c0-4-3-7-6-11z" />
-              </svg>
-            </span>
+            <Image
+              src="/logo.png"
+              alt={`${COMPANY.name} logo`}
+              width={36}
+              height={36}
+              className="h-9 w-9 rounded-lg"
+              priority
+            />
             <span className="font-semibold tracking-tight">
               {COMPANY.name}
             </span>
@@ -651,11 +655,13 @@ export default function Example9() {
             {/* Brand */}
             <div className="lg:col-span-4">
               <a href="#" className="flex items-center gap-2.5">
-                <span className="grid h-8 w-8 place-items-center rounded-lg bg-emerald-700 text-white">
-                  <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden>
-                    <path d="M12 2c-3 4-6 7-6 11a6 6 0 0 0 12 0c0-4-3-7-6-11z" />
-                  </svg>
-                </span>
+                <Image
+                  src="/logo.png"
+                  alt={`${COMPANY.name} logo`}
+                  width={36}
+                  height={36}
+                  className="h-9 w-9 rounded-lg"
+                />
                 <span className="text-base font-semibold tracking-tight">{COMPANY.name}</span>
               </a>
               <p className="mt-4 max-w-sm text-sm leading-relaxed text-neutral-600">
