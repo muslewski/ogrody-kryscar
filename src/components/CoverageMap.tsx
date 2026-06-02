@@ -63,6 +63,10 @@ export interface CoverageMapProps {
    * interaction).
    */
   warp?: boolean;
+  /** Override map center (defaults to MAP_CENTER from coverage.ts). */
+  center?: { lat: number; lng: number };
+  /** Override zoom (defaults to MAP_ZOOM). */
+  zoom?: number;
 }
 
 function buildMapboxUrl({
@@ -71,12 +75,16 @@ function buildMapboxUrl({
   height,
   pinColor,
   hqColor,
+  center,
+  zoom,
 }: {
   variant: CoverageMapVariant;
   width: number;
   height: number;
   pinColor: string;
   hqColor: string;
+  center: { lat: number; lng: number };
+  zoom: number;
 }): string | null {
   const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
   if (!token) return null;
@@ -89,19 +97,23 @@ function buildMapboxUrl({
     return `${pin}+${color}(${c.lng},${c.lat})`;
   }).join(",");
 
-  const center = `${MAP_CENTER.lng},${MAP_CENTER.lat},${MAP_ZOOM},0`;
+  const c = `${center.lng},${center.lat},${zoom},0`;
   return (
     `https://api.mapbox.com/styles/v1/${style}/static/` +
-    `${markers}/${center}/${width}x${height}@2x?access_token=${token}`
+    `${markers}/${c}/${width}x${height}@2x?access_token=${token}`
   );
 }
 
 function buildOsmUrl({
   width,
   height,
+  center,
+  zoom,
 }: {
   width: number;
   height: number;
+  center: { lat: number; lng: number };
+  zoom: number;
 }): string {
   // staticmap.openstreetmap.de — public OSM static map service. One style
   // only (mapnik), markers limited but adequate. Pipe between markers is
@@ -114,8 +126,8 @@ function buildOsmUrl({
 
   return (
     `https://staticmap.openstreetmap.de/staticmap.php` +
-    `?center=${MAP_CENTER.lat},${MAP_CENTER.lng}` +
-    `&zoom=${MAP_ZOOM}` +
+    `?center=${center.lat},${center.lng}` +
+    `&zoom=${zoom}` +
     `&size=${width}x${height}` +
     `&maptype=mapnik` +
     `&markers=${markers}`
@@ -139,13 +151,15 @@ export function CoverageMap({
   rounded = "rounded-3xl",
   className,
   warp = true,
+  center = MAP_CENTER,
+  zoom = MAP_ZOOM,
 }: CoverageMapProps) {
   const ratio = ASPECT_RATIO[aspect];
   const height = Math.round(width / ratio);
 
   const url =
-    buildMapboxUrl({ variant, width, height, pinColor, hqColor }) ??
-    buildOsmUrl({ width, height });
+    buildMapboxUrl({ variant, width, height, pinColor, hqColor, center, zoom }) ??
+    buildOsmUrl({ width, height, center, zoom });
 
   const imgClass = [
     "block h-auto w-full select-none object-cover",
