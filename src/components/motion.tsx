@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion, type Variants } from "motion/react";
 import type { ReactNode } from "react";
+import { cn } from "@/lib/utils";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -140,47 +141,73 @@ export function HoverLift({
   );
 }
 
+const cardLiftVariants: Variants = {
+  rest: { y: 0, scale: 1 },
+  hover: { y: -6, scale: 1 },
+  tap: { y: -6, scale: 0.985 },
+};
+
+const cardShadowVariants: Variants = {
+  rest: { opacity: 0 },
+  hover: { opacity: 1 },
+  tap: { opacity: 1 },
+};
+
 /**
- * Card-sized hover affordance: a spring-driven lift + elevating shadow on
- * pointer hover, and a subtle press on tap.
+ * Card-sized hover affordance: a spring-driven lift, plus an elevating
+ * shadow that *crossfades* on hover.
  *
- * Why motion instead of CSS `hover:-translate-y`:
+ * Why not animate `box-shadow` directly: JS box-shadow interpolation is
+ * unreliable and tends to pop in suddenly. Instead we stack a dedicated
+ * shadow layer behind the card and animate its `opacity` (GPU-composited,
+ * always smooth). The wrapper is NOT `overflow-hidden`, so the shadow
+ * layer isn't clipped — the caller's `overflow-hidden` lives on the inner
+ * card element and only clips that element's own children (e.g. the image).
+ *
+ * Why motion instead of CSS `hover:`:
  *  - Motion's hover gesture only fires for real pointer (mouse) input and
- *    ignores `touch`, so the lift can never get "stuck" or flicker on a
- *    phone after a tap. `whileTap` still gives touch users press feedback
- *    via `scale` (a transform — no layout shift, no reflow flicker).
- *  - A spring feels considered; the old linear 300ms tween snapped.
+ *    ignores touch, so the lift can't stick or flicker on mobile.
+ *  - `tap` keeps the lift and adds a subtle press scale — deliberate touch
+ *    feedback that resolves on release (no sticking).
  *
- * Keep the `group` class on this element so existing `group-hover:` child
- * effects (image zoom, button color) still work on hover-capable devices.
+ * The caller's `className` (incl. `group`) stays on the inner card so the
+ * existing `group-hover:` child effects keep working.
  */
 export function HoverCard({
   children,
   className,
-  lift = 6,
+  radiusClassName = "rounded-3xl",
 }: {
   children: ReactNode;
   className?: string;
-  lift?: number;
+  radiusClassName?: string;
 }) {
   const reduced = useReducedMotion();
   if (reduced) return <div className={className}>{children}</div>;
   return (
     <motion.div
-      className={className}
-      initial={{ y: 0, boxShadow: "0 1px 2px 0 rgba(17,24,39,0)" }}
-      whileHover={{
-        y: -lift,
-        boxShadow: "0 22px 45px -16px rgba(17,24,39,0.18)",
-      }}
-      whileTap={{ scale: 0.985 }}
+      className="relative h-full"
+      initial="rest"
+      animate="rest"
+      whileHover="hover"
+      whileTap="tap"
+      variants={cardLiftVariants}
       transition={{
         y: { type: "spring", stiffness: 320, damping: 26, mass: 0.6 },
         scale: { type: "spring", stiffness: 400, damping: 30 },
-        boxShadow: { duration: 0.3, ease: EASE },
       }}
     >
-      {children}
+      {/* Unclipped shadow layer — crossfaded via opacity, never pops. */}
+      <motion.span
+        aria-hidden
+        className={cn(
+          "pointer-events-none absolute inset-0 shadow-2xl shadow-neutral-900/15",
+          radiusClassName,
+        )}
+        variants={cardShadowVariants}
+        transition={{ duration: 0.35, ease: EASE }}
+      />
+      <div className={className}>{children}</div>
     </motion.div>
   );
 }
