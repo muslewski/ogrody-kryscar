@@ -134,6 +134,9 @@ export const metadata: Metadata = {
   title: "Ogrody Kryscar — Profesjonalne usługi ogrodnicze",
   description:
     "Koszenie trawników, pielęgnacja ogrodu, grabienie liści, sadzenie roślin i przycinanie krzewów. Zadbamy o Twój ogród.",
+  // Emits <meta name="apple-mobile-web-app-title" content="Kryscar" />
+  // (per realfavicongenerator instructions, the App Router way).
+  appleWebApp: { title: "Kryscar" },
 };
 
 export default function RootLayout({
