@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { COMPANY, SERVICES, PROCESS, TESTIMONIALS, STATS, FAQ, TEAM, ADDRESS, LEGAL_LINKS, IMG } from "@/lib/data";
 import { COVERAGE_CITIES, COVERAGE_HEADLINE, COVERAGE_INTRO, COVERAGE_NOTE } from "@/lib/coverage";
-import { Reveal, HeroReveal, StaggerGrid, StaggerItem } from "@/components/motion";
+import { Reveal, HeroReveal, StaggerGrid, StaggerItem, HoverCard } from "@/components/motion";
 import { Stat } from "@/components/Stat";
 import { SitePreloader } from "@/components/SitePreloader";
 import { CoverageMap } from "@/components/CoverageMap";
@@ -196,10 +196,10 @@ export default function Example9() {
         <StaggerGrid className="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
           {services.map((s, i) => (
             <StaggerItem key={s.slug} className="h-full">
-              {/* Inner wrapper owns the transform + shadow hover so
-                  motion's transform on StaggerItem isn't smeared by a
-                  competing CSS `transition: all`. */}
-              <div className="group flex h-full flex-col overflow-hidden rounded-3xl border border-neutral-200 bg-white transition-[transform,box-shadow] duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:shadow-neutral-900/5">
+              {/* HoverCard owns the lift + shadow as a motion gesture
+                  (touch-filtered, spring) so it can't stick/flicker on
+                  mobile. `group` stays for the child group-hover effects. */}
+              <HoverCard className="group flex h-full flex-col overflow-hidden rounded-3xl border border-neutral-200 bg-white">
               <div className="relative aspect-[4/3] overflow-hidden bg-neutral-100">
                 <WarpedHoverImage
                   src={s.img}
@@ -244,7 +244,7 @@ export default function Example9() {
                   </a>
                 </div>
               </div>
-              </div>
+              </HoverCard>
             </StaggerItem>
           ))}
         </StaggerGrid>
@@ -371,7 +371,7 @@ export default function Example9() {
         <StaggerGrid className="grid gap-4 sm:gap-5 md:grid-cols-2 lg:grid-cols-4" amount={0.05}>
           {TEAM.map((m) => (
             <StaggerItem key={m.name} className="h-full">
-              <div className="h-full overflow-hidden rounded-3xl border border-neutral-200 bg-white transition-[transform,box-shadow] duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:shadow-neutral-900/5">
+              <HoverCard className="h-full overflow-hidden rounded-3xl border border-neutral-200 bg-white">
                 <div className="relative aspect-[3/4] overflow-hidden bg-neutral-100">
                   <WarpedHoverImage
                     src={m.photo}
@@ -386,7 +386,7 @@ export default function Example9() {
                     {m.bio}
                   </p>
                 </div>
-              </div>
+              </HoverCard>
             </StaggerItem>
           ))}
         </StaggerGrid>

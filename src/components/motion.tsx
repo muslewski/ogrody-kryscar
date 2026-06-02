@@ -140,6 +140,51 @@ export function HoverLift({
   );
 }
 
+/**
+ * Card-sized hover affordance: a spring-driven lift + elevating shadow on
+ * pointer hover, and a subtle press on tap.
+ *
+ * Why motion instead of CSS `hover:-translate-y`:
+ *  - Motion's hover gesture only fires for real pointer (mouse) input and
+ *    ignores `touch`, so the lift can never get "stuck" or flicker on a
+ *    phone after a tap. `whileTap` still gives touch users press feedback
+ *    via `scale` (a transform — no layout shift, no reflow flicker).
+ *  - A spring feels considered; the old linear 300ms tween snapped.
+ *
+ * Keep the `group` class on this element so existing `group-hover:` child
+ * effects (image zoom, button color) still work on hover-capable devices.
+ */
+export function HoverCard({
+  children,
+  className,
+  lift = 6,
+}: {
+  children: ReactNode;
+  className?: string;
+  lift?: number;
+}) {
+  const reduced = useReducedMotion();
+  if (reduced) return <div className={className}>{children}</div>;
+  return (
+    <motion.div
+      className={className}
+      initial={{ y: 0, boxShadow: "0 1px 2px 0 rgba(17,24,39,0)" }}
+      whileHover={{
+        y: -lift,
+        boxShadow: "0 22px 45px -16px rgba(17,24,39,0.18)",
+      }}
+      whileTap={{ scale: 0.985 }}
+      transition={{
+        y: { type: "spring", stiffness: 320, damping: 26, mass: 0.6 },
+        scale: { type: "spring", stiffness: 400, damping: 30 },
+        boxShadow: { duration: 0.3, ease: EASE },
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 export function ScaleIn({
   children,
   delay = 0,
