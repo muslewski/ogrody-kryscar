@@ -44,11 +44,11 @@ function subscribeHover(onChange: () => void): () => void {
     return () => {};
   const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
   if (mq.addEventListener) mq.addEventListener("change", onChange);
-  // eslint-disable-next-line @typescript-eslint/no-deprecated
+   
   else mq.addListener(onChange);
   return () => {
     if (mq.removeEventListener) mq.removeEventListener("change", onChange);
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
+     
     else mq.removeListener(onChange);
   };
 }

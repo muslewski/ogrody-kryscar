@@ -109,8 +109,12 @@ export function SitePreloader({
       alreadySeen = true; // private mode / blocked → skip
     }
     if (alreadySeen) {
+      // Client-only: sessionStorage is unavailable during SSR, so this
+      // already-seen check must run in an effect. Intentional setState here.
+      /* eslint-disable react-hooks/set-state-in-effect */
       setSkip(true);
       setLoading(false);
+      /* eslint-enable react-hooks/set-state-in-effect */
       return;
     }
     const id = window.setTimeout(() => {

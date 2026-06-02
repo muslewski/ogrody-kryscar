@@ -63,6 +63,10 @@ export function AnimatedNumber({
   useEffect(() => {
     if (reduced) {
       mv.jump(value);
+      // Reduced-motion: sync the displayed value immediately. This intentional
+      // setState-in-effect mirrors an external value; there's no render-time
+      // equivalent without animation.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setDisplay(value);
       return;
     }
