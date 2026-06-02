@@ -1,3 +1,14 @@
+---
+type: spec
+summary: "Single-select category filter + Framer Motion reorder for the homepage service catalog."
+tags: [ui, feature]
+status: planned
+created: 2026-06-02
+updated: 2026-06-02
+related: ["[[service-catalog]]"]
+sources: []
+origin: "User: make catalog categories actually filter, with the pol-med /edukacja reorder animation."
+---
 # Catalog category filter with reorder animation — Design
 
 **Date:** 2026-06-02

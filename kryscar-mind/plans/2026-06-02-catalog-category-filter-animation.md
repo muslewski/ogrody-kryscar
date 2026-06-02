@@ -1,3 +1,15 @@
+---
+type: plan
+summary: "Task-by-task plan for the single-select catalog filter + reorder animation."
+tags: [ui, feature]
+status: done
+created: 2026-06-02
+updated: 2026-06-02
+related: ["[[service-catalog]]"]
+sources: ["[[2026-06-02-catalog-category-filter-animation-design]]"]
+implements: "[[2026-06-02-catalog-category-filter-animation-design]]"
+produced: ["[[service-catalog]]", "[[single-select-catalog-filter]]"]
+---
 # Catalog Category Filter with Reorder Animation — Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.

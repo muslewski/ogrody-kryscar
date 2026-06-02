@@ -1,3 +1,15 @@
+---
+type: plan
+summary: "Task-by-task plan for the /ogrodnik/[miasto] city pages and migration-ready location layer."
+tags: [seo, feature, data]
+status: done
+created: 2026-06-02
+updated: 2026-06-02
+related: ["[[city-landing-pages]]", "[[seo]]"]
+sources: ["[[2026-06-02-local-seo-city-pages-design]]"]
+implements: "[[2026-06-02-local-seo-city-pages-design]]"
+produced: ["[[city-landing-pages]]", "[[seo]]", "[[payload-ready-location-layer]]", "[[single-source-site-url]]", "[[city-pages-avoid-thin-content]]"]
+---
 # Local SEO City Landing Pages — Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.

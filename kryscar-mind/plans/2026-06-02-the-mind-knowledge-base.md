@@ -1,3 +1,15 @@
+---
+type: plan
+summary: "Task-by-task plan for building the Mind: vault, generator, hook, zones, projections, migration."
+tags: [meta, tooling]
+status: done
+created: 2026-06-02
+updated: 2026-06-02
+related: ["[[the-mind]]"]
+sources: ["[[2026-06-02-the-mind-knowledge-base-design]]"]
+implements: "[[2026-06-02-the-mind-knowledge-base-design]]"
+produced: ["[[the-mind]]"]
+---
 # "The Mind" Knowledge Base — Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.

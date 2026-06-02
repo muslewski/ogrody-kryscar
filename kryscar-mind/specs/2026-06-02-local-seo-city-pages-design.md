@@ -1,3 +1,14 @@
+---
+type: spec
+summary: "Local-SEO /ogrodnik/[miasto] landing pages with a Payload-migration-ready location layer."
+tags: [seo, feature, data]
+status: planned
+created: 2026-06-02
+updated: 2026-06-02
+related: ["[[city-landing-pages]]", "[[seo]]"]
+sources: []
+origin: "User: add ~10-12 per-city subpages to boost local SEO; promote the homepage map locations into links."
+---
 # Local SEO city landing pages — Design
 
 **Date:** 2026-06-02

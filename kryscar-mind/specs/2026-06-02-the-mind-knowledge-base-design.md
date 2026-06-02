@@ -1,3 +1,14 @@
+---
+type: spec
+summary: "The Mind: an Obsidian-vault repository knowledge base with a verifying generator and .claude projections."
+tags: [meta, tooling]
+status: planned
+created: 2026-06-02
+updated: 2026-06-02
+related: ["[[the-mind]]"]
+sources: []
+origin: "User: set up 'the Mind' — a queryable repository knowledge system so agents don't reinvent the wheel."
+---
 # "The Mind" — repository knowledge base — Design
 
 **Date:** 2026-06-02
