@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "mind": "node scripts/mind/generate.mjs",
+    "check": "tsc --noEmit && eslint && node scripts/mind/generate.mjs"
   },
   "browserslist": [
     "> 0.5%",
@@ -39,6 +41,7 @@
     "@types/three": "^0.167.2",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
+    "gray-matter": "^4.0.3",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
