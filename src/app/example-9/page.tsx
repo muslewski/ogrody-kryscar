@@ -10,7 +10,10 @@ import { Socials } from "@/components/Socials";
 import { CalculatorForm } from "@/components/CalculatorForm";
 import { WarpedHoverImage } from "@/components/WarpedHoverImage";
 
-export const metadata: Metadata = { title: `${COMPANY.name} — Catalog` };
+export const metadata: Metadata = {
+  title: `${COMPANY.name} — ${COMPANY.tagline} | Usługi ogrodnicze`,
+  description: COMPANY.description,
+};
 
 type Service = (typeof SERVICES)[number];
 type Catalog = Service & { img: string; from: string; duration: string };
