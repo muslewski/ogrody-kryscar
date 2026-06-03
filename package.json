@@ -9,7 +9,9 @@
     "lint": "eslint",
     "blur": "node scripts/gen-blur.mjs",
     "mind": "node scripts/mind/generate.mjs",
-    "check": "tsc --noEmit && eslint && node scripts/mind/generate.mjs"
+    "generate:types": "payload generate:types",
+    "seed": "tsx scripts/seed.ts",
+    "check": "tsc --noEmit && eslint && payload generate:types && node scripts/mind/generate.mjs"
   },
   "browserslist": [
     "> 0.5%",
@@ -23,20 +25,29 @@
     "Edge >= 90"
   ],
   "dependencies": {
+    "@payloadcms/db-postgres": "^3.85.0",
+    "@payloadcms/next": "^3.85.0",
+    "@payloadcms/richtext-lexical": "^3.85.0",
     "@react-three/fiber": "^9.6.1",
+    "better-auth": "^1.6.14",
     "clsx": "^2.1.1",
     "lucide-react": "^1.16.0",
     "motion": "^12.39.0",
     "next": "16.2.6",
+    "payload": "^3.85.0",
+    "pg": "^8.21.0",
     "radix-ui": "^1.4.3",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "sharp": "^0.34.5",
     "tailwind-merge": "^3.6.0",
-    "three": "^0.167.1"
+    "three": "^0.167.1",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/pg": "^8.20.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/three": "^0.167.2",
@@ -44,6 +55,7 @@
     "eslint-config-next": "16.2.6",
     "gray-matter": "^4.0.3",
     "tailwindcss": "^4",
+    "tsx": "^4.22.4",
     "typescript": "^5"
   }
 }
