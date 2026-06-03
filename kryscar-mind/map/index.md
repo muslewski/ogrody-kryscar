@@ -13,7 +13,7 @@ _20 zones · 22 verification gaps._
 | [[customer-auth]] | active | ⚠ stale | Better Auth as the customer/gardener auth surface, persisting through a custom BA→Payload Local-API adapter so its user/session/account/verification models are Payload collections. |
 | [[homepage-and-variants]] | active | ✓ fresh | The root homepage (re-exports example-9) plus the ten design-variant pages. |
 | [[image-loading]] | active | ⚠ stale | Blur-up image loading: a generated blurDataURL map + the BlurImage next/image wrapper that paints an instant blurred preview, used by the /uslugi hero. |
-| [[layout-chrome]] | active | ✓ fresh | Root layout, header, footer, preloader, and social links — the shared page shell, now with a responsive mobile nav and a session-aware Zaloguj/Panel auth button. |
+| [[layout-chrome]] | active | ✓ fresh | Root layout, header, footer, preloader, and social links — the shared page shell, with a session-aware Zaloguj/Panel button and a mobile nav that is a left-sliding shadcn Sheet drawer. |
 | [[motion-and-3d]] | active | ⚠ stale | Motion primitives (HoverCard), warped-hover image, the 3D section, counters, and the scroll hook. |
 | [[ogrodowe-abc]] | active | ✓ fresh | Ogrodowe ABC — seasonal gardening-guide content section (/ogrodowe-abc + /ogrodowe-abc/[slug]) and its Payload-ready guides data layer; two-way internal links with /uslugi & /zima. |
 | [[payload-backend]] | active | ✓ fresh | Payload CMS as the app backend: the /admin panel (staff/dev auth via the admins collection), the Postgres (Neon) adapter, ESM/withPayload wiring, and the seed. |
@@ -24,7 +24,7 @@ _20 zones · 22 verification gaps._
 | [[service-pages]] | active | ✓ fresh | Per-service landing pages: /uslugi/[usluga] for all 8 catalog services + the Payload-ready service-page data layer that composes SERVICES + catalog price + landing content. |
 | [[tenancy-and-roles]] | active | ✓ fresh | The tenancy seam (a single Kryscar tenant) + the customer/gardener role model on the BA users collection, including the default-tenant assignment hook. |
 | [[the-mind]] | active | ✓ fresh | The knowledge-base system itself — generator, status hook, navigating skill, and /map-sync command. |
-| [[ui-primitives]] | active | ✓ fresh | shadcn/radix UI primitives (new-york): checkbox, label, radio-group, scroll-area, separator, slider. |
+| [[ui-primitives]] | active | ⚠ stale | shadcn/radix UI primitives (new-york): checkbox, label, radio-group, scroll-area, separator, slider. |
 | [[winter-services]] | active | ✓ fresh | Winter-services arc: /zima hub + /zima/[usluga] pages, the Payload-ready winter data layer, and the seasonal engine. |
 
 ## ⚠ Verification gaps
