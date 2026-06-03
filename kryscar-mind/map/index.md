@@ -2,7 +2,7 @@
 
 # 🧠 kryscar-mind — Map index
 
-_15 zones · 11 verification gaps._
+_16 zones · 14 verification gaps._
 
 | Zone | Status | Freshness | Summary |
 |---|---|---|---|
@@ -10,11 +10,12 @@ _15 zones · 11 verification gaps._
 | [[city-landing-pages]] | active | ✓ fresh | Local-SEO /ogrodnik/[miasto] pages and the Payload-migration-ready location data layer. |
 | [[coverage-map]] | active | ✓ fresh | Service-area geography and the static coverage map (Mapbox/OSM). |
 | [[homepage-and-variants]] | active | ✓ fresh | The root homepage (re-exports example-9) plus the ten design-variant pages. |
-| [[image-loading]] | active | ⚠ stale | Blur-up image loading: a generated blurDataURL map + the BlurImage next/image wrapper that paints an instant blurred preview, used by the /uslugi hero. |
+| [[image-loading]] | active | ✓ fresh | Blur-up image loading: a generated blurDataURL map + the BlurImage next/image wrapper that paints an instant blurred preview, used by the /uslugi hero. |
 | [[layout-chrome]] | active | ✓ fresh | Root layout, header, footer, preloader, and social links — the shared page shell. |
 | [[motion-and-3d]] | active | ⚠ stale | Motion primitives (HoverCard), warped-hover image, the 3D section, counters, and the scroll hook. |
 | [[ogrodowe-abc]] | active | ✓ fresh | Ogrodowe ABC — seasonal gardening-guide content section (/ogrodowe-abc + /ogrodowe-abc/[slug]) and its Payload-ready guides data layer; two-way internal links with /uslugi & /zima. |
 | [[pricing-calculator]] | active | ✓ fresh | Pricing algorithm and the interactive area/frequency calculator form. |
+| [[realizacje]] | active | ✓ fresh | Realizacje — before/after project gallery (/realizacje + /realizacje/[slug]) for aranżacja/rabaty, its Payload-ready projects data layer, and the BeforeAfterSlider client island. |
 | [[seo]] | active | ✓ fresh | sitemap.xml, robots.txt, and canonical/metadataBase wiring. |
 | [[service-catalog]] | active | ⚠ stale | Service definitions, categories, catalog enrichment, and the single-select filter + motion reorder island. |
 | [[service-pages]] | active | ✓ fresh | Per-service landing pages: /uslugi/[usluga] for all 8 catalog services + the Payload-ready service-page data layer that composes SERVICES + catalog price + landing content. |
@@ -30,6 +31,9 @@ _15 zones · 11 verification gaps._
 - zone layout-chrome: invariant "SiteHeader is the single header for the homepage and all subpages; its nav uses root-relative /#anchors and it renders the seasonal winter banner, so every page that renders it sets revalidate=86400" has no enforcedBy
 - zone ogrodowe-abc: invariant "Components consume guides only via async accessors — no component imports the GUIDES array (Payload-migration boundary)" has no enforcedBy
 - zone ogrodowe-abc: invariant "every guide img is a path present in BLUR_DATA so the hero always blurs up" has no enforcedBy
+- zone realizacje: invariant "Components consume projects only via async accessors — no component imports the PROJECTS array (Payload-migration boundary)" has no enforcedBy
+- zone realizacje: invariant "every before/after image path is present in BLUR_DATA so the slider always blurs up" has no enforcedBy
+- zone realizacje: invariant "pages render SiteHeader, so they set revalidate=86400 (site-wide winter banner)" has no enforcedBy
 - zone seo: invariant "every public route has a sitemap entry" has no enforcedBy
 - zone service-catalog: invariant "SERVICES drives both the homepage catalog and the city pages" has no enforcedBy
 - zone service-pages: invariant "Components consume service pages only via async accessors — no component imports SERVICE_CONTENT (Payload-migration boundary)" has no enforcedBy
