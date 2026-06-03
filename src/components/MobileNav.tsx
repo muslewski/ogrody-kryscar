@@ -10,6 +10,7 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -52,6 +53,9 @@ export function MobileNav() {
             <SheetTitle className="text-base tracking-tight">
               {COMPANY.name}
             </SheetTitle>
+            <SheetDescription className="sr-only">
+              Menu nawigacyjne, logowanie i kontakt.
+            </SheetDescription>
           </SheetHeader>
 
           <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto p-3 text-sm">
