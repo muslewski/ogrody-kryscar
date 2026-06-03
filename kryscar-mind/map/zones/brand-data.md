@@ -13,7 +13,7 @@ owns:
   globs: ["src/lib/data.ts"]
 depends: []
 invariants: []
-verifiedAt: "94b557442a444376e7f587b5c0afc0ea02d43a6e"
+verifiedAt: "0ce75a61c93c17c3e42db876c2ec52830a4dca17"
 ---
 ## Purpose
 Single home for brand constants used site-wide.
