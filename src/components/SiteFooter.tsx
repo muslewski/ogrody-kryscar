@@ -46,6 +46,7 @@ export function SiteFooter() {
           <div className="lg:col-span-2">
             <p className="text-xs uppercase tracking-[0.3em] text-neutral-500">Firma</p>
             <ul className="mt-5 space-y-2.5 text-sm text-neutral-700">
+              <li><Link href="/realizacje" className="underline-offset-4 hover:text-emerald-700 hover:underline">Realizacje</Link></li>
               <li><Link href="/#zespol" className="underline-offset-4 hover:text-emerald-700 hover:underline">Zespół</Link></li>
               <li><Link href="/#proces" className="underline-offset-4 hover:text-emerald-700 hover:underline">Jak to działa</Link></li>
               <li><Link href="/#opinie" className="underline-offset-4 hover:text-emerald-700 hover:underline">Opinie</Link></li>

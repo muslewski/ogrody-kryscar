@@ -4,13 +4,15 @@ import { getLocationSlugs } from "@/lib/locations";
 import { getWinterServiceSlugs } from "@/lib/winter";
 import { getServiceSlugs } from "@/lib/services";
 import { getAllGuides } from "@/lib/guides";
+import { getProjectSlugs } from "@/lib/projects";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [citySlugs, winterSlugs, serviceSlugs, guides] = await Promise.all([
+  const [citySlugs, winterSlugs, serviceSlugs, guides, projectSlugs] = await Promise.all([
     getLocationSlugs(),
     getWinterServiceSlugs(),
     getServiceSlugs(),
     getAllGuides(),
+    getProjectSlugs(),
   ]);
   const now = new Date();
 
@@ -56,6 +58,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.8,
+    })),
+    {
+      url: `${SITE_URL}/realizacje`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    ...projectSlugs.map((slug) => ({
+      url: `${SITE_URL}/realizacje/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
     })),
   ];
 }

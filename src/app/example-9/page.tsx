@@ -20,6 +20,8 @@ import { isWinterNow } from "@/lib/season";
 import { WinterServiceCard } from "@/components/WinterServiceCard";
 import { getAllGuides } from "@/lib/guides";
 import { GuideCard } from "@/components/GuideCard";
+import { getAllProjects } from "@/lib/projects";
+import { ProjectCard } from "@/components/ProjectCard";
 
 export const metadata: Metadata = {
   title: `${COMPANY.name} — ${COMPANY.tagline} | Usługi ogrodnicze`,
@@ -34,6 +36,7 @@ export default async function Example9() {
   const locations = await getAllLocations();
   const winterServices = await getWinterServices();
   const latestGuides = (await getAllGuides()).slice(0, 3);
+  const latestProjects = (await getAllProjects()).slice(0, 3);
   const winter = isWinterNow();
   return (
     <>
@@ -109,6 +112,30 @@ export default async function Example9() {
 
       {/* CATALOG */}
       <ServiceCatalog services={services} />
+
+      {/* Realizacje teaser */}
+      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20">
+        <Reveal>
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="text-xs uppercase tracking-[0.3em] text-emerald-700">Realizacje</p>
+              <h2 className="mt-3 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
+                Metamorfozy ogrodów — przed i po
+              </h2>
+            </div>
+            <Link href="/realizacje" className="text-sm font-medium text-emerald-700 transition-colors hover:text-emerald-900">
+              Zobacz wszystkie →
+            </Link>
+          </div>
+        </Reveal>
+        <StaggerGrid className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {latestProjects.map((p) => (
+            <StaggerItem key={p.slug}>
+              <ProjectCard project={p} />
+            </StaggerItem>
+          ))}
+        </StaggerGrid>
+      </section>
 
       {/* DETAIL / PROCESS */}
       <section id="proces" className="bg-neutral-50">
