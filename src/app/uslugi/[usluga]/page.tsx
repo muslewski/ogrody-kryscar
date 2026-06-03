@@ -10,6 +10,8 @@ import {
   getServiceSlugs,
 } from "@/lib/services";
 import { getAllLocations } from "@/lib/locations";
+import { getGuidesForService } from "@/lib/guides";
+import { GuideCard } from "@/components/GuideCard";
 import { CoverageMap } from "@/components/CoverageMap";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -60,6 +62,7 @@ export default async function UslugaPage({
     .slice()
     .sort((a, b) => a.km - b.km)
     .slice(0, 8);
+  const guides = await getGuidesForService(svc.slug);
 
   return (
     <main className="bg-white text-neutral-900">
@@ -219,6 +222,21 @@ export default async function UslugaPage({
           ))}
         </div>
       </section>
+
+      {/* Warto wiedzieć (related guides) */}
+      {guides.length > 0 && (
+        <section className="mx-auto max-w-7xl px-4 pb-12 sm:px-6">
+          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">Warto wiedzieć</h2>
+          <p className="mt-3 max-w-2xl text-sm text-neutral-600">
+            Z naszego poradnika Ogrodowe ABC — praktyczna wiedza powiązana z tą usługą.
+          </p>
+          <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {guides.map((g) => (
+              <GuideCard key={g.slug} guide={g} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Other services */}
       <section className="mx-auto max-w-7xl px-4 pb-12 sm:px-6">
