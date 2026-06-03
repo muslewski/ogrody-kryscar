@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { COMPANY, SERVICES, ADDRESS, LEGAL_LINKS } from "@/lib/data";
 import { Socials } from "@/components/Socials";
+import { HeaderAuth } from "@/components/HeaderAuth";
 
 export function SiteFooter() {
   return (
@@ -51,6 +52,7 @@ export function SiteFooter() {
               <li><Link href="/#proces" className="underline-offset-4 hover:text-emerald-700 hover:underline">Jak to działa</Link></li>
               <li><Link href="/#opinie" className="underline-offset-4 hover:text-emerald-700 hover:underline">Opinie</Link></li>
               <li><Link href="/#faq" className="underline-offset-4 hover:text-emerald-700 hover:underline">FAQ</Link></li>
+              <li><HeaderAuth variant="inline" /></li>
             </ul>
           </div>
 

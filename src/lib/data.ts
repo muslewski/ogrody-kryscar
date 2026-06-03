@@ -44,6 +44,17 @@ export const LEGAL_LINKS = [
   { label: "Cookies", href: "#cookies" },
 ];
 
+/** The canonical header navigation — consumed by SiteHeader (desktop) + MobileNav. */
+export const NAV_LINKS: { href: string; label: string }[] = [
+  { href: "/#katalog", label: "Katalog" },
+  { href: "/realizacje", label: "Realizacje" },
+  { href: "/zima", label: "Zima" },
+  { href: "/ogrodowe-abc", label: "Ogrodowe ABC" },
+  { href: "/#proces", label: "Jak to działa" },
+  { href: "/#opinie", label: "Opinie" },
+  { href: "/#kontakt", label: "Kontakt" },
+];
+
 export const SERVICES = [
   {
     slug: "koszenie",
