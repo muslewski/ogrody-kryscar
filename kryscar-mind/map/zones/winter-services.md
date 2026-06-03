@@ -5,7 +5,7 @@ tags: [feature, seo, data, seasonal]
 status: active
 created: 2026-06-02
 updated: 2026-06-03
-related: ["[[city-landing-pages]]", "[[seo]]", "[[homepage-and-variants]]", "[[coverage-map]]", "[[service-pages]]", "[[image-loading]]"]
+related: ["[[city-landing-pages]]", "[[seo]]", "[[homepage-and-variants]]", "[[coverage-map]]", "[[service-pages]]", "[[image-loading]]", "[[ogrodowe-abc]]"]
 sources: ["[[2026-06-02-winter-services-design]]"]
 owns:
   routes: ["/zima", "/zima/[usluga]"]
@@ -17,7 +17,7 @@ invariants:
     enforcedBy: []
   - rule: "Pages that branch on the season set revalidate=86400 so the winter toggle flips without a redeploy"
     enforcedBy: []
-verifiedAt: "94b557442a444376e7f587b5c0afc0ea02d43a6e"
+verifiedAt: "6f6884f5bfdefdb7a22fc35cbfe6fc498815837a"
 ---
 ## Purpose
 The winter revenue arc — three landing pages + a hub, a Payload-ready data layer, and a pure seasonal engine that escalates the homepage Nov–Mar.
