@@ -13,10 +13,10 @@ owns:
   globs: ["src/app/page.tsx", "src/app/example-*/**"]
 depends: ["[[service-catalog]]", "[[layout-chrome]]", "[[motion-and-3d]]"]
 invariants: []
-verifiedAt: "6f6884f5bfdefdb7a22fc35cbfe6fc498815837a"
+verifiedAt: "86e5aaa6d37df606fb12826663fc91ecf40ce6f7"
 ---
 ## Purpose
-The marketing homepage and its design explorations. `/` re-exports `example-9`.
+The marketing homepage and its design explorations. `/` re-exports `example-9`, which now renders the shared `SiteHeader` ([[layout-chrome]]) instead of its old inline header/banner, and uses daily ISR so the seasonal banner flips. See [[nav-unification]].
 ## Anchors
 `route:/`, `route:/example-9`, `src/app/example-*/**`.
 ## Lineage

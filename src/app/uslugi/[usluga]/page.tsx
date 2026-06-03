@@ -18,6 +18,9 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { ServiceJsonLd } from "@/components/ServiceJsonLd";
 import { Reveal } from "@/components/motion";
 
+// Daily ISR so the seasonal winter banner (SiteHeader) flips without a redeploy.
+export const revalidate = 86400;
+
 export async function generateStaticParams() {
   const slugs = await getServiceSlugs();
   return slugs.map((usluga) => ({ usluga }));
