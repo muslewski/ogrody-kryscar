@@ -528,25 +528,29 @@ export default async function Example9() {
 
       {/* Ogrodowe ABC teaser */}
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-emerald-700">Ogrodowe ABC</p>
-            <h2 className="mt-3 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
-              Z naszego poradnika
-            </h2>
+        <Reveal>
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="text-xs uppercase tracking-[0.3em] text-emerald-700">Ogrodowe ABC</p>
+              <h2 className="mt-3 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
+                Z naszego poradnika
+              </h2>
+            </div>
+            <Link
+              href="/ogrodowe-abc"
+              className="text-sm font-medium text-emerald-700 transition-colors hover:text-emerald-900"
+            >
+              Zobacz wszystkie →
+            </Link>
           </div>
-          <Link
-            href="/ogrodowe-abc"
-            className="text-sm font-medium text-emerald-700 transition-colors hover:text-emerald-900"
-          >
-            Zobacz wszystkie →
-          </Link>
-        </div>
-        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        </Reveal>
+        <StaggerGrid className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {latestGuides.map((g) => (
-            <GuideCard key={g.slug} guide={g} />
+            <StaggerItem key={g.slug}>
+              <GuideCard guide={g} />
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerGrid>
       </section>
 
       {/* CTA */}
