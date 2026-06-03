@@ -10,14 +10,14 @@ sources: []
 owns:
   routes: ["/", "/example-9"]
   anchors: []
-  globs: ["src/app/page.tsx", "src/app/example-*/**"]
+  globs: ["src/app/(public)/page.tsx", "src/app/(public)/example-*/**"]
 depends: ["[[service-catalog]]", "[[layout-chrome]]", "[[motion-and-3d]]"]
 invariants: []
-verifiedAt: "6f6884f5bfdefdb7a22fc35cbfe6fc498815837a"
+verifiedAt: "f51a2305c2c1052a667a67ee2c10e0458843d733"
 ---
 ## Purpose
 The marketing homepage and its design explorations. `/` re-exports `example-9`.
 ## Anchors
-`route:/`, `route:/example-9`, `src/app/example-*/**`.
+`route:/`, `route:/example-9`, `src/app/(public)/example-*/**`.
 ## Lineage
 The example-N variants predate the Mind.

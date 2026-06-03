@@ -10,12 +10,12 @@ sources: ["[[2026-06-03-service-landing-pages-design]]"]
 owns:
   routes: ["/uslugi/[usluga]"]
   anchors: ["symbol:getAllServices", "symbol:getServiceBySlug", "symbol:getServiceSlugs", "symbol:ServicePage", "symbol:ServiceFaq"]
-  globs: ["src/app/uslugi/**", "src/lib/services.ts"]
+  globs: ["src/app/(public)/uslugi/**", "src/lib/services.ts"]
 depends: ["[[service-catalog]]", "[[coverage-map]]", "[[layout-chrome]]", "[[city-landing-pages]]", "[[winter-services]]"]
 invariants:
   - rule: "Components consume service pages only via async accessors — no component imports SERVICE_CONTENT (Payload-migration boundary)"
     enforcedBy: []
-verifiedAt: "6f6884f5bfdefdb7a22fc35cbfe6fc498815837a"
+verifiedAt: "f51a2305c2c1052a667a67ee2c10e0458843d733"
 ---
 ## Purpose
 A statically-rendered landing page per catalog service, mirroring the city/winter arcs. The data layer composes the thin SERVICES list + catalog pricing + net-new page content; the catalog cards link here. The `/uslugi/[usluga]` hero now renders via `BlurImage` (blur-up) — an instant blurred preview sharpens into the full photo, replacing the prior gray-box-then-pop.

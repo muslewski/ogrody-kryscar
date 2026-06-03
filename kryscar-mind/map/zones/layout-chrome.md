@@ -10,14 +10,14 @@ sources: []
 owns:
   routes: []
   anchors: ["symbol:SiteHeader", "symbol:SiteFooter", "symbol:Socials"]
-  globs: ["src/app/layout.tsx", "src/components/SiteHeader.tsx", "src/components/SiteFooter.tsx", "src/components/SitePreloader.tsx", "src/components/Socials.tsx"]
+  globs: ["src/app/(public)/layout.tsx", "src/components/SiteHeader.tsx", "src/components/SiteFooter.tsx", "src/components/SitePreloader.tsx", "src/components/Socials.tsx"]
 depends: ["[[brand-data]]"]
 invariants:
   - rule: "SiteFooter anchors are root-relative (/#...) so it works on every page"
     enforcedBy: []
-verifiedAt: "6f6884f5bfdefdb7a22fc35cbfe6fc498815837a"
+verifiedAt: "f51a2305c2c1052a667a67ee2c10e0458843d733"
 ---
 ## Purpose
 Shared chrome reused by the homepage, city pages, winter pages, and service pages. `SiteHeader` has a "Usługi" nav link pointing at `/#katalog` and an "Ogrodowe ABC" link pointing at `/ogrodowe-abc`, sitting beside the existing "Zima" link.
 ## Anchors
-`SiteHeader`, `SiteFooter`, `Socials`, `src/app/layout.tsx`.
+`SiteHeader`, `SiteFooter`, `Socials`, `src/app/(public)/layout.tsx`.

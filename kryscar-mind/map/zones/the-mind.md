@@ -17,7 +17,7 @@ invariants:
     enforcedBy: ["[[the-mind]]"]
   - rule: "this zone owns its implementation scripts, not the vault markdown (avoids self-stale)"
     enforcedBy: ["[[the-mind]]"]
-verifiedAt: "dd2584a7e8d945b3d2ad784b5cd8e950830ac4d5"
+verifiedAt: "f51a2305c2c1052a667a67ee2c10e0458843d733"
 ---
 ## Purpose
 Makes the repo agent-native and human-queryable. The generator verifies the Map against code and gates `npm run check`.

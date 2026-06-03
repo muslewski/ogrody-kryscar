@@ -56,12 +56,30 @@ for (const f of tracked) {
 }
 
 // --- route resolution ---
+// Route groups (dirs like `(public)`) are stripped — Next ignores them in the
+// URL — so a page anywhere under a group still resolves its public route.
+const stripGroups = (p) => p.replace(/\/\([^/]+\)/g, "");
+const logicalPaths = new Set([...trackedSet].map(stripGroups));
+const reEsc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 function routeResolves(route) {
-  if (route === "/sitemap.xml") return trackedSet.has("src/app/sitemap.ts");
-  if (route === "/robots.txt") return trackedSet.has("src/app/robots.ts");
+  if (route === "/sitemap.xml") return logicalPaths.has("src/app/sitemap.ts");
+  if (route === "/robots.txt") return logicalPaths.has("src/app/robots.ts");
   const p = route.replace(/^\//, "");
   const base = p === "" ? "src/app" : `src/app/${p}`;
-  return trackedSet.has(`${base}/page.tsx`) || trackedSet.has(`${base}/page.ts`);
+  if (
+    logicalPaths.has(`${base}/page.tsx`) ||
+    logicalPaths.has(`${base}/page.ts`) ||
+    logicalPaths.has(`${base}/route.ts`) ||
+    logicalPaths.has(`${base}/route.tsx`)
+  )
+    return true;
+  // Catch-all / optional-catch-all directly under base (e.g. /admin →
+  // admin/[[...segments]]/page.tsx, /api/auth → api/auth/[...all]/route.ts).
+  const catchAll = new RegExp(
+    `^${reEsc(base)}/\\[\\[?\\.\\.\\.[^/]+\\]\\]?/(page|route)\\.(tsx?|jsx?)$`,
+  );
+  for (const f of logicalPaths) if (catchAll.test(f)) return true;
+  return false;
 }
 
 // --- anchor resolution ---
