@@ -15,7 +15,7 @@ import {
   Manrope,
 } from "next/font/google";
 import { SITE_URL } from "@/lib/data";
-import "./globals.css";
+import "../globals.css";
 
 /**
  * Inline browser-capability check that runs BEFORE any module bundle is
