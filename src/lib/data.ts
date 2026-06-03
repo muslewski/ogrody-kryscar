@@ -30,7 +30,7 @@ export const ADDRESS = {
 export type SocialId = "instagram" | "facebook" | "youtube";
 export const SOCIALS: { id: SocialId; label: string; url: string }[] = [
   { id: "instagram", label: "Instagram", url: "https://instagram.com/" },
-  { id: "facebook", label: "Facebook", url: "https://facebook.com/" },
+  { id: "facebook", label: "Facebook", url: "https://www.facebook.com/ogrody.kryscar/" },
   { id: "youtube", label: "YouTube", url: "https://youtube.com/" },
 ];
 
