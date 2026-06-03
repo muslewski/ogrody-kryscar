@@ -22,6 +22,7 @@ export function BeforeAfterSlider({
   before: SliderImage;
   after: SliderImage;
 }) {
+  const STEP = 4;
   const [pos, setPos] = useState(50); // % revealed of "before" (from left)
   const ref = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
@@ -89,14 +90,21 @@ export function BeforeAfterSlider({
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={Math.round(pos)}
+        aria-valuetext={`${Math.round(pos)}% odsłonięcia zdjęcia „przed”`}
         tabIndex={0}
         onKeyDown={(e) => {
-          if (e.key === "ArrowLeft") {
+          if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
             e.preventDefault();
-            setPos((p) => Math.max(0, p - 4));
-          } else if (e.key === "ArrowRight") {
+            setPos((p) => Math.max(0, p - STEP));
+          } else if (e.key === "ArrowRight" || e.key === "ArrowUp") {
             e.preventDefault();
-            setPos((p) => Math.min(100, p + 4));
+            setPos((p) => Math.min(100, p + STEP));
+          } else if (e.key === "Home") {
+            e.preventDefault();
+            setPos(0);
+          } else if (e.key === "End") {
+            e.preventDefault();
+            setPos(100);
           }
         }}
         className="absolute inset-y-0 z-10 w-0.5 -translate-x-1/2 cursor-ew-resize bg-white/90 outline-none focus-visible:ring-2 focus-visible:ring-emerald-600"
