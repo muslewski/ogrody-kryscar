@@ -21,4 +21,12 @@ don't edit; tombstone (`status: unmounted`), don't delete.
 
 `npm run check` runs the Mind generator and fails on broken anchors — keep zones true.
 
+**External skills (don't break these):** `.claude/skills/` is SHARED. It holds the Mind
+entry-ramp skill (`navigating-kryscar`) **and** external skills vendored via
+`npx skills add --copy` (payload, cms-migration, better-auth, shadcn, …), tracked by
+`skills-lock.json`. They're first-class — use them as before. The Mind is *additive*: it
+never owns, replaces, or clobbers `.claude/skills/`. Add/update with
+`npx skills add <pkg> --copy -y`; restore from the lock with `npx skills experimental_install`.
+Rationale: `kryscar-mind/map/decisions/external-skills-coexist.md`.
+
 @AGENTS.md
