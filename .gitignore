@@ -34,6 +34,10 @@ yarn-error.log*
 .env*
 !.env.example
 
+# external agent skills: vendored into .claude/skills via `npx skills add --copy`.
+# `.agents/` is the CLI's multi-agent fan-out dir — we only keep .claude/skills.
+.agents/
+
 # vercel
 .vercel
 
