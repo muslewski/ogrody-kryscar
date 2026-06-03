@@ -1,23 +1,23 @@
-// src/app/zima/[usluga]/page.tsx
+// src/app/uslugi/[usluga]/page.tsx
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { COMPANY, PROCESS, SITE_URL } from "@/lib/data";
+import { COMPANY, PROCESS, SITE_URL, CATEGORIES } from "@/lib/data";
 import {
-  getWinterServices,
-  getWinterServiceBySlug,
-  getWinterServiceSlugs,
-} from "@/lib/winter";
+  getAllServices,
+  getServiceBySlug,
+  getServiceSlugs,
+} from "@/lib/services";
 import { getAllLocations } from "@/lib/locations";
 import { CoverageMap } from "@/components/CoverageMap";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { ServiceJsonLd } from "@/components/ServiceJsonLd";
-import { WinterServiceIcon } from "@/components/WinterServiceCard";
 import { Reveal } from "@/components/motion";
 
 export async function generateStaticParams() {
-  const slugs = await getWinterServiceSlugs();
+  const slugs = await getServiceSlugs();
   return slugs.map((usluga) => ({ usluga }));
 }
 
@@ -27,31 +27,35 @@ export async function generateMetadata({
   params: Promise<{ usluga: string }>;
 }): Promise<Metadata> {
   const { usluga } = await params;
-  const svc = await getWinterServiceBySlug(usluga);
+  const svc = await getServiceBySlug(usluga);
   if (!svc) return { title: "Nie znaleziono" };
   return {
     title: svc.metaTitle,
     description: svc.metaDescription,
-    alternates: { canonical: `/zima/${svc.slug}` },
+    alternates: { canonical: `/uslugi/${svc.slug}` },
     openGraph: {
       title: svc.metaTitle,
       description: svc.metaDescription,
-      url: `/zima/${svc.slug}`,
+      url: `/uslugi/${svc.slug}`,
       type: "website",
     },
   };
 }
 
-export default async function ZimaUslugaPage({
+function categoryLabel(category: string): string {
+  return CATEGORIES.find((c) => c.id === category)?.label ?? "Usługa ogrodnicza";
+}
+
+export default async function UslugaPage({
   params,
 }: {
   params: Promise<{ usluga: string }>;
 }) {
   const { usluga } = await params;
-  const svc = await getWinterServiceBySlug(usluga);
+  const svc = await getServiceBySlug(usluga);
   if (!svc) notFound();
 
-  const others = (await getWinterServices()).filter((s) => s.slug !== svc.slug);
+  const others = (await getAllServices()).filter((s) => s.slug !== svc.slug);
   const cities = (await getAllLocations())
     .slice()
     .sort((a, b) => a.km - b.km)
@@ -60,13 +64,13 @@ export default async function ZimaUslugaPage({
   return (
     <main className="bg-white text-neutral-900">
       <ServiceJsonLd
-        name={svc.name}
+        name={svc.title}
         description={svc.metaDescription}
-        url={`${SITE_URL}/zima/${svc.slug}`}
+        url={`${SITE_URL}/uslugi/${svc.slug}`}
         breadcrumbs={[
           { name: "Strona główna", item: SITE_URL },
-          { name: "Zima", item: `${SITE_URL}/zima` },
-          { name: svc.name, item: `${SITE_URL}/zima/${svc.slug}` },
+          { name: "Usługi", item: `${SITE_URL}/#katalog` },
+          { name: svc.title, item: `${SITE_URL}/uslugi/${svc.slug}` },
         ]}
       />
       <SiteHeader />
@@ -79,27 +83,33 @@ export default async function ZimaUslugaPage({
         <ol className="flex flex-wrap items-center gap-2">
           <li><Link href="/" className="hover:text-emerald-700">Strona główna</Link></li>
           <li aria-hidden>›</li>
-          <li><Link href="/zima" className="hover:text-emerald-700">Zima</Link></li>
+          <li><Link href="/#katalog" className="hover:text-emerald-700">Usługi</Link></li>
           <li aria-hidden>›</li>
-          <li className="text-neutral-900">{svc.name}</li>
+          <li className="text-neutral-900">{svc.title}</li>
         </ol>
       </nav>
 
       {/* Hero */}
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
         <Reveal>
-          <span className="inline-flex items-center gap-2 rounded-full border border-emerald-700/20 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-800">
-            <WinterServiceIcon icon={svc.icon} className="h-3.5 w-3.5" />
-            Usługi zimowe
-          </span>
-          <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight tracking-tight sm:text-5xl md:text-6xl">
-            {svc.name}
+          <p className="text-xs uppercase tracking-[0.3em] text-emerald-700">
+            {categoryLabel(svc.category)}
+          </p>
+          <h1 className="mt-3 max-w-3xl text-4xl font-semibold leading-tight tracking-tight sm:text-5xl md:text-6xl">
+            {svc.title}
           </h1>
+          <p className="mt-5 max-w-2xl text-base font-medium text-neutral-700">
+            {svc.short}
+          </p>
           {svc.hero.map((p, i) => (
-            <p key={i} className="mt-5 max-w-2xl text-sm leading-relaxed text-neutral-600 sm:text-base">
+            <p key={i} className="mt-4 max-w-2xl text-sm leading-relaxed text-neutral-600 sm:text-base">
               {p}
             </p>
           ))}
+          <div className="mt-6 inline-flex items-baseline gap-2 rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-2">
+            <span className="text-xs uppercase tracking-wider text-neutral-500">{svc.duration}</span>
+            <span className="text-lg font-semibold tracking-tight">{svc.from}</span>
+          </div>
           <div className="mt-8 flex flex-wrap gap-3">
             <a
               href={`tel:${COMPANY.phoneRaw}`}
@@ -115,6 +125,18 @@ export default async function ZimaUslugaPage({
             </a>
           </div>
         </Reveal>
+        <div className="mt-10 overflow-hidden rounded-3xl border border-neutral-200">
+          <div className="relative aspect-[16/9] w-full bg-neutral-100">
+            <Image
+              src={svc.img}
+              alt={svc.title}
+              fill
+              priority
+              className="object-cover"
+              sizes="(min-width: 1280px) 1280px, 100vw"
+            />
+          </div>
+        </div>
       </section>
 
       {/* Co obejmuje */}
@@ -156,7 +178,7 @@ export default async function ZimaUslugaPage({
       <section className="mx-auto max-w-7xl px-4 pb-4 sm:px-6">
         <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">Gdzie działamy</h2>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-neutral-600 sm:text-base">
-          {svc.name} realizujemy w Bydgoszczy i okolicznych gminach — tam, gdzie na co dzień dbamy o ogrody.
+          {svc.title} realizujemy w Bydgoszczy i okolicznych gminach — tam, gdzie na co dzień dbamy o ogrody.
         </p>
         <div className="mt-8 overflow-hidden rounded-3xl border border-neutral-200 bg-white p-2">
           <CoverageMap
@@ -165,7 +187,7 @@ export default async function ZimaUslugaPage({
             pinColor="047857"
             hqColor="171717"
             rounded="rounded-[20px]"
-            alt={`Obszar obsługi — ${svc.name} w Bydgoszczy i okolicy`}
+            alt={`Obszar obsługi — ${svc.title} w Bydgoszczy i okolicy`}
           />
         </div>
         <ul className="mt-6 flex flex-wrap gap-2">
@@ -198,17 +220,17 @@ export default async function ZimaUslugaPage({
         </div>
       </section>
 
-      {/* Other winter services */}
+      {/* Other services */}
       <section className="mx-auto max-w-7xl px-4 pb-12 sm:px-6">
         <p className="text-xs uppercase tracking-[0.3em] text-neutral-500">Zobacz też</p>
         <ul className="mt-4 flex flex-wrap gap-2">
           {others.map((o) => (
             <li key={o.slug}>
               <Link
-                href={`/zima/${o.slug}`}
+                href={`/uslugi/${o.slug}`}
                 className="rounded-full border border-neutral-200 px-3 py-1 text-sm text-neutral-700 transition-colors hover:border-emerald-700 hover:text-emerald-700"
               >
-                {o.name}
+                {o.title}
               </Link>
             </li>
           ))}

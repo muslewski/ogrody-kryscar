@@ -4,8 +4,8 @@ summary: "Root layout, header, footer, preloader, and social links — the share
 tags: [ui]
 status: active
 created: 2026-06-02
-updated: 2026-06-02
-related: ["[[seo]]", "[[brand-data]]", "[[winter-services]]"]
+updated: 2026-06-03
+related: ["[[seo]]", "[[brand-data]]", "[[winter-services]]", "[[service-pages]]"]
 sources: []
 owns:
   routes: []
@@ -15,9 +15,9 @@ depends: ["[[brand-data]]"]
 invariants:
   - rule: "SiteFooter anchors are root-relative (/#...) so it works on every page"
     enforcedBy: []
-verifiedAt: "777b2d897f2306e857ee098cc94995f81f64de89"
+verifiedAt: "fa9a5e3cac79d83545f7d25ff3a3a8c4bd16f5e2"
 ---
 ## Purpose
-Shared chrome reused by the homepage and city pages.
+Shared chrome reused by the homepage, city pages, winter pages, and service pages. `SiteHeader` has a new "Usługi" nav link pointing at `/#katalog`, sitting beside the existing "Zima" link.
 ## Anchors
 `SiteHeader`, `SiteFooter`, `Socials`, `src/app/layout.tsx`.

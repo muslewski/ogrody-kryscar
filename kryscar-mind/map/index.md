@@ -2,7 +2,7 @@
 
 # 🧠 kryscar-mind — Map index
 
-_12 zones · 6 verification gaps._
+_13 zones · 7 verification gaps._
 
 | Zone | Status | Freshness | Summary |
 |---|---|---|---|
@@ -15,6 +15,7 @@ _12 zones · 6 verification gaps._
 | [[pricing-calculator]] | active | ✓ fresh | Pricing algorithm and the interactive area/frequency calculator form. |
 | [[seo]] | active | ✓ fresh | sitemap.xml, robots.txt, and canonical/metadataBase wiring. |
 | [[service-catalog]] | active | ✓ fresh | Service definitions, categories, catalog enrichment, and the single-select filter + motion reorder island. |
+| [[service-pages]] | active | ✓ fresh | Per-service landing pages: /uslugi/[usluga] for all 8 catalog services + the Payload-ready service-page data layer that composes SERVICES + catalog price + landing content. |
 | [[the-mind]] | active | ✓ fresh | The knowledge-base system itself — generator, status hook, navigating skill, and /map-sync command. |
 | [[ui-primitives]] | active | ✓ fresh | shadcn/radix UI primitives (new-york): checkbox, label, radio-group, scroll-area, separator, slider. |
 | [[winter-services]] | active | ✓ fresh | Winter-services arc: /zima hub + /zima/[usluga] pages, the Payload-ready winter data layer, and the seasonal engine. |
@@ -25,6 +26,7 @@ _12 zones · 6 verification gaps._
 - zone layout-chrome: invariant "SiteFooter anchors are root-relative (/#...) so it works on every page" has no enforcedBy
 - zone seo: invariant "every public route has a sitemap entry" has no enforcedBy
 - zone service-catalog: invariant "SERVICES drives both the homepage catalog and the city pages" has no enforcedBy
+- zone service-pages: invariant "Components consume service pages only via async accessors — no component imports SERVICE_CONTENT (Payload-migration boundary)" has no enforcedBy
 - zone winter-services: invariant "Components consume winter services only via async accessors — no component imports the WINTER_SERVICES array (Payload-migration boundary)" has no enforcedBy
 - zone winter-services: invariant "Pages that branch on the season set revalidate=86400 so the winter toggle flips without a redeploy" has no enforcedBy
 

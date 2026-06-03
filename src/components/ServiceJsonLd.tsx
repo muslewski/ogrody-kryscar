@@ -1,17 +1,35 @@
 // src/components/ServiceJsonLd.tsx
-import { COMPANY, ADDRESS, SITE_URL } from "@/lib/data";
-import type { WinterService } from "@/lib/winter";
+import { COMPANY, ADDRESS } from "@/lib/data";
 
-export function ServiceJsonLd({ service }: { service: WinterService }) {
-  const url = `${SITE_URL}/zima/${service.slug}`;
+export interface JsonLdCrumb {
+  name: string;
+  item: string; // absolute URL
+}
+
+/**
+ * Emits JSON-LD `Service` (+ `BreadcrumbList`) for any service landing page.
+ * Generic over name/description/url/breadcrumbs so both /zima/[usluga] and
+ * /uslugi/[usluga] share it. `provider` is the Ogrody Kryscar LocalBusiness.
+ */
+export function ServiceJsonLd({
+  name,
+  description,
+  url,
+  breadcrumbs,
+}: {
+  name: string;
+  description: string;
+  url: string;
+  breadcrumbs: JsonLdCrumb[];
+}) {
   const json = {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "Service",
-        name: service.name,
-        serviceType: service.name,
-        description: service.metaDescription,
+        name,
+        serviceType: name,
+        description,
         url,
         provider: {
           "@type": "LocalBusiness",
@@ -23,11 +41,12 @@ export function ServiceJsonLd({ service }: { service: WinterService }) {
       },
       {
         "@type": "BreadcrumbList",
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Strona główna", item: SITE_URL },
-          { "@type": "ListItem", position: 2, name: "Zima", item: `${SITE_URL}/zima` },
-          { "@type": "ListItem", position: 3, name: service.name, item: url },
-        ],
+        itemListElement: breadcrumbs.map((b, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          name: b.name,
+          item: b.item,
+        })),
       },
     ],
   };

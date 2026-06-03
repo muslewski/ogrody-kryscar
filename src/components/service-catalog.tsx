@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { SERVICES, CATEGORIES, SERVICE_BADGES } from "@/lib/data";
 import { HoverCard } from "@/components/motion";
@@ -86,51 +87,50 @@ export function ServiceCatalog({ services }: { services: CatalogItem[] }) {
                       (touch-filtered, spring) so it can't stick/flicker on
                       mobile. `group` stays for the child group-hover effects. */}
                   <HoverCard className="group flex h-full flex-col overflow-hidden rounded-3xl border border-neutral-200 bg-white">
-                    <div className="relative aspect-[4/3] overflow-hidden bg-neutral-100">
-                      <WarpedHoverImage
-                        src={s.img}
-                        alt=""
-                        className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                      />
-                      {badge && (
-                        <span
-                          className={`absolute left-3 top-3 z-10 rounded-full px-3 py-1 text-xs font-medium ${
-                            badge.tone === "primary"
-                              ? "bg-emerald-700 text-white"
-                              : "bg-amber-400 text-neutral-900"
-                          }`}
-                        >
-                          {badge.label}
+                    <Link href={`/uslugi/${s.slug}`} className="flex h-full flex-col">
+                      <div className="relative aspect-[4/3] overflow-hidden bg-neutral-100">
+                        <WarpedHoverImage
+                          src={s.img}
+                          alt=""
+                          className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                        />
+                        {badge && (
+                          <span
+                            className={`absolute left-3 top-3 z-10 rounded-full px-3 py-1 text-xs font-medium ${
+                              badge.tone === "primary"
+                                ? "bg-emerald-700 text-white"
+                                : "bg-amber-400 text-neutral-900"
+                            }`}
+                          >
+                            {badge.label}
+                          </span>
+                        )}
+                        <span className="absolute right-3 top-3 z-10 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-medium text-neutral-700">
+                          0{num}
                         </span>
-                      )}
-                      <span className="absolute right-3 top-3 z-10 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-medium text-neutral-700">
-                        0{num}
-                      </span>
-                    </div>
-                    <div className="flex flex-1 flex-col p-5">
-                      <h3 className="text-lg font-semibold leading-tight tracking-tight">
-                        {s.title}
-                      </h3>
-                      <p className="mt-2 text-sm leading-relaxed text-neutral-600">
-                        {s.short}
-                      </p>
-                      <div className="mt-5 flex items-end justify-between border-t border-neutral-100 pt-4">
-                        <div>
-                          <p className="text-xs uppercase tracking-wider text-neutral-500">
-                            {s.duration}
-                          </p>
-                          <p className="text-lg font-semibold tracking-tight">
-                            {s.from}
-                          </p>
-                        </div>
-                        <a
-                          href="#kontakt"
-                          className="inline-flex items-center gap-1.5 rounded-full bg-neutral-900 px-3.5 py-2 text-xs font-medium text-white transition-colors group-hover:bg-emerald-700"
-                        >
-                          Zamów →
-                        </a>
                       </div>
-                    </div>
+                      <div className="flex flex-1 flex-col p-5">
+                        <h3 className="text-lg font-semibold leading-tight tracking-tight">
+                          {s.title}
+                        </h3>
+                        <p className="mt-2 text-sm leading-relaxed text-neutral-600">
+                          {s.short}
+                        </p>
+                        <div className="mt-5 flex items-end justify-between border-t border-neutral-100 pt-4">
+                          <div>
+                            <p className="text-xs uppercase tracking-wider text-neutral-500">
+                              {s.duration}
+                            </p>
+                            <p className="text-lg font-semibold tracking-tight">
+                              {s.from}
+                            </p>
+                          </div>
+                          <span className="inline-flex items-center gap-1.5 rounded-full bg-neutral-900 px-3.5 py-2 text-xs font-medium text-white transition-colors group-hover:bg-emerald-700">
+                            Zamów →
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
                   </HoverCard>
                 </motion.article>
               );

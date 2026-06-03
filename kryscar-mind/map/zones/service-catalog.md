@@ -4,8 +4,8 @@ summary: "Service definitions, categories, catalog enrichment, and the single-se
 tags: [feature, data]
 status: active
 created: 2026-06-02
-updated: 2026-06-02
-related: ["[[brand-data]]", "[[city-landing-pages]]"]
+updated: 2026-06-03
+related: ["[[brand-data]]", "[[city-landing-pages]]", "[[service-pages]]"]
 sources: []
 owns:
   routes: []
@@ -15,10 +15,10 @@ depends: ["[[brand-data]]"]
 invariants:
   - rule: "SERVICES drives both the homepage catalog and the city pages"
     enforcedBy: []
-verifiedAt: "74d28486554072404071920bafd9c109390994e7"
+verifiedAt: "fa9a5e3cac79d83545f7d25ff3a3a8c4bd16f5e2"
 ---
 ## Purpose
-Catalog data + the client island that filters/reorders cards.
+Catalog data + the client island that filters/reorders cards. Each catalog card now links to its own `/uslugi/[slug]` service landing page — the whole card is a `next/link`, with "Zamów →" demoted to a `<span>`.
 ## Anchors
 `ServiceCatalog`, `getCatalogServices`, `SERVICES`, `CATEGORIES`.
 ## Lineage

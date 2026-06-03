@@ -20,6 +20,12 @@ export function SiteHeader() {
         </Link>
         <div className="flex items-center gap-4">
           <Link
+            href="/#katalog"
+            className="hidden text-sm font-medium text-neutral-700 transition-colors hover:text-emerald-700 sm:block"
+          >
+            Usługi
+          </Link>
+          <Link
             href="/zima"
             className="hidden text-sm font-medium text-neutral-700 transition-colors hover:text-emerald-700 sm:block"
           >
