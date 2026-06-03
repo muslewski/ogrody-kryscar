@@ -25,7 +25,7 @@ const baseURL = getServerBaseURL();
 const trustedOrigins = [
   ...new Set([
     baseURL,
-    "http://localhost:3000",
+    "http://localhost:1111",
     "https://kryscar.pl",
     "https://www.kryscar.pl",
     "https://*.vercel.app",

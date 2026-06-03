@@ -10,7 +10,7 @@
  *   1. NEXT_PUBLIC_APP_URL           — explicit override (local dev, custom domain)
  *   2. VERCEL_PROJECT_PRODUCTION_URL — stable production alias on Vercel
  *   3. VERCEL_URL                    — per-deployment URL (preview builds)
- *   4. http://localhost:3000         — dev fallback
+ *   4. http://localhost:1111         — dev fallback
  *
  * The browser client (`auth-client.ts`) passes NO `baseURL`, so it always calls
  * the current origin and never needs this. This resolver exists only for
@@ -28,5 +28,5 @@ export function getServerBaseURL(): string {
   const deployment = env.VERCEL_URL;
   if (deployment) return `https://${deployment}`;
 
-  return "http://localhost:3000";
+  return "http://localhost:1111";
 }
