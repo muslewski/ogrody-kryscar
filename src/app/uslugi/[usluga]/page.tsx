@@ -1,6 +1,6 @@
 // src/app/uslugi/[usluga]/page.tsx
 import type { Metadata } from "next";
-import Image from "next/image";
+import { BlurImage } from "@/components/BlurImage";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { COMPANY, PROCESS, SITE_URL, CATEGORIES } from "@/lib/data";
@@ -127,11 +127,11 @@ export default async function UslugaPage({
         </Reveal>
         <div className="mt-10 overflow-hidden rounded-3xl border border-neutral-200">
           <div className="relative aspect-[16/9] w-full bg-neutral-100">
-            <Image
+            <BlurImage
               src={svc.img}
               alt={svc.title}
               fill
-              priority
+              preload
               className="object-cover"
               sizes="(min-width: 1280px) 1280px, 100vw"
             />
