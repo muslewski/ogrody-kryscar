@@ -30,6 +30,15 @@
   --color-secondary-foreground: #1c1917;
   --color-accent: #f5f5f4;
   --color-accent-foreground: #1c1917;
+  /* shadcn sidebar tokens (stone + emerald, matching the brand) */
+  --color-sidebar: #fafaf9;
+  --color-sidebar-foreground: #44403c;
+  --color-sidebar-primary: #047857;
+  --color-sidebar-primary-foreground: #ffffff;
+  --color-sidebar-accent: #ecfdf5;
+  --color-sidebar-accent-foreground: #047857;
+  --color-sidebar-border: #ececeb;
+  --color-sidebar-ring: #047857;
   --color-destructive: #b91c1c;
   --color-destructive-foreground: #ffffff;
 }

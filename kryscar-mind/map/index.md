@@ -2,7 +2,7 @@
 
 # 🧠 kryscar-mind — Map index
 
-_20 zones · 22 verification gaps._
+_20 zones · 24 verification gaps._
 
 | Zone | Status | Freshness | Summary |
 |---|---|---|---|
@@ -24,7 +24,7 @@ _20 zones · 22 verification gaps._
 | [[service-pages]] | active | ✓ fresh | Per-service landing pages: /uslugi/[usluga] for all 8 catalog services + the Payload-ready service-page data layer that composes SERVICES + catalog price + landing content. |
 | [[tenancy-and-roles]] | active | ✓ fresh | The tenancy seam (a single Kryscar tenant) + the customer/gardener role model on the BA users collection, including the default-tenant assignment hook. |
 | [[the-mind]] | active | ✓ fresh | The knowledge-base system itself — generator, status hook, navigating skill, and /map-sync command. |
-| [[ui-primitives]] | active | ⚠ stale | shadcn/radix UI primitives (new-york): checkbox, label, radio-group, scroll-area, separator, slider. |
+| [[ui-primitives]] | active | ✓ fresh | shadcn/radix UI primitives (new-york): button, checkbox, input, label, radio-group, scroll-area, separator, sidebar, skeleton, slider, tooltip. |
 | [[winter-services]] | active | ✓ fresh | Winter-services arc: /zima hub + /zima/[usluga] pages, the Payload-ready winter data layer, and the seasonal engine. |
 
 ## ⚠ Verification gaps
@@ -49,6 +49,8 @@ _20 zones · 22 verification gaps._
 - zone service-pages: invariant "Components consume service pages only via async accessors — no component imports SERVICE_CONTENT (Payload-migration boundary)" has no enforcedBy
 - zone tenancy-and-roles: invariant "Single tenant for MVP: exactly one tenants row (slug 'kryscar'); every user is assigned to it by the default-tenant beforeChange hook on the users collection" has no enforcedBy
 - zone tenancy-and-roles: invariant "users.role defaults to 'customer' and is admin-only writable (field access) — BA signup never sets it; only a Payload superadmin promotes to 'gardener'" has no enforcedBy
+- zone ui-primitives: invariant "undefined" has no enforcedBy
+- zone ui-primitives: invariant "undefined" has no enforcedBy
 - zone winter-services: invariant "Components consume winter services only via async accessors — no component imports the WINTER_SERVICES array (Payload-migration boundary)" has no enforcedBy
 - zone winter-services: invariant "Pages that branch on the season set revalidate=86400 so the winter toggle flips without a redeploy" has no enforcedBy
 
