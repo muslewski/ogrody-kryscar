@@ -33,6 +33,7 @@ export function MobileNav() {
     <div className="md:hidden">
       <Sheet>
         <SheetTrigger
+          type="button"
           aria-label="Otwórz menu"
           className="flex h-10 w-10 items-center justify-center rounded-lg text-neutral-700 transition-colors hover:bg-neutral-100"
         >
