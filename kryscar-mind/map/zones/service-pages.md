@@ -15,13 +15,13 @@ depends: ["[[service-catalog]]", "[[coverage-map]]", "[[layout-chrome]]", "[[cit
 invariants:
   - rule: "Components consume service pages only via async accessors — no component imports SERVICE_CONTENT (Payload-migration boundary)"
     enforcedBy: []
-verifiedAt: "6f6884f5bfdefdb7a22fc35cbfe6fc498815837a"
+verifiedAt: "86e5aaa6d37df606fb12826663fc91ecf40ce6f7"
 ---
 ## Purpose
 A statically-rendered landing page per catalog service, mirroring the city/winter arcs. The data layer composes the thin SERVICES list + catalog pricing + net-new page content; the catalog cards link here. The `/uslugi/[usluga]` hero now renders via `BlurImage` (blur-up) — an instant blurred preview sharpens into the full photo, replacing the prior gray-box-then-pop.
 ## Anchors
 `getAllServices`, `getServiceBySlug`, `getServiceSlugs`, `ServicePage`, `route:/uslugi/[usluga]`.
 ## Invariants
-Accessor-only data boundary (mirrors city/winter); pages are static (no seasonal revalidate). Shares the generalized `ServiceJsonLd` owned by [[winter-services]].
+Accessor-only data boundary (mirrors city/winter). Pages now use daily ISR (revalidate=86400) so the site-wide seasonal banner in `SiteHeader` ([[layout-chrome]]) flips without a redeploy. Shares the generalized `ServiceJsonLd` owned by [[winter-services]].
 ## Lineage
 sources → [[2026-06-03-service-landing-pages-design]]; data-layer rationale → [[service-page-data-module]].
