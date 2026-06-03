@@ -50,3 +50,6 @@ kryscar-mind/.obsidian/workspace*.json
 
 # Brainstorm visual companion
 .superpowers/
+
+# Playwright MCP artifacts
+.playwright-mcp/
