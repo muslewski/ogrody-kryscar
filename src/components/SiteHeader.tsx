@@ -44,7 +44,7 @@ export function SiteHeader() {
               </Link>
             ))}
           </nav>
-          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+          <div className="flex shrink-0 items-center">
             <div className="hidden items-center gap-2 sm:gap-3 md:flex">
               <HeaderAuth variant="header" />
               <Link
