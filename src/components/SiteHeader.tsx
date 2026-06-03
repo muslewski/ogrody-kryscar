@@ -45,20 +45,15 @@ export function SiteHeader() {
             ))}
           </nav>
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-            <a
-              href={`tel:${COMPANY.phoneRaw}`}
-              className="hidden text-sm text-neutral-700 hover:text-emerald-700 md:block"
-            >
-              {COMPANY.phone}
-            </a>
-            <HeaderAuth variant="header" />
-            <Link
-              href="/#kontakt"
-              className="rounded-full bg-neutral-900 px-3 py-2 text-xs font-medium text-white transition-colors hover:bg-emerald-700 sm:px-4 sm:text-sm"
-            >
-              <span className="sm:hidden">Wycena</span>
-              <span className="hidden sm:inline">Zamów wycenę</span>
-            </Link>
+            <div className="hidden items-center gap-2 sm:gap-3 md:flex">
+              <HeaderAuth variant="header" />
+              <Link
+                href="/#kontakt"
+                className="rounded-full bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700"
+              >
+                Zamów wycenę
+              </Link>
+            </div>
             <MobileNav />
           </div>
         </div>
