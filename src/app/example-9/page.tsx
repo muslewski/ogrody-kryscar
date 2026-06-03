@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { COMPANY, PROCESS, TESTIMONIALS, STATS, FAQ, TEAM, IMG } from "@/lib/data";
 import { COVERAGE_HEADLINE, COVERAGE_INTRO, COVERAGE_NOTE } from "@/lib/coverage";
@@ -13,6 +12,7 @@ import { WarpedHoverImage } from "@/components/WarpedHoverImage";
 import { ServiceCatalog } from "@/components/service-catalog";
 import { getCatalogServices } from "@/lib/catalog";
 import { SiteFooter } from "@/components/SiteFooter";
+import { SiteHeader } from "@/components/SiteHeader";
 import { getAllLocations } from "@/lib/locations";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getWinterServices } from "@/lib/winter";
@@ -49,55 +49,7 @@ export default async function Example9() {
       tagline="Katalog usług ogrodniczych"
     />
     <main className="min-h-screen bg-white font-[family-name:var(--font-manrope)] text-neutral-900">
-      {winter && (
-        <Link
-          href="/zima"
-          className="block bg-emerald-900 px-4 py-2 text-center text-sm text-emerald-50 transition-colors hover:bg-emerald-800"
-        >
-          ❄ Sezon zimowy — odśnieżanie, świąteczne oświetlenie i zabezpieczanie roślin{" "}
-          <span className="font-semibold underline underline-offset-2">Zobacz →</span>
-        </Link>
-      )}
-      {/* NAV */}
-      <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-3.5">
-          <a href="#" className="flex items-center gap-2.5">
-            <Image
-              src="/logo.png"
-              alt={`${COMPANY.name} logo`}
-              width={36}
-              height={36}
-              className="h-9 w-9 rounded-lg"
-              priority
-            />
-            <span className="font-semibold tracking-tight">
-              {COMPANY.name}
-            </span>
-          </a>
-          <nav className="hidden gap-7 text-sm text-neutral-700 md:flex">
-            <a href="#katalog" className="hover:text-emerald-700">Katalog</a>
-            <Link href="/zima" className="hover:text-emerald-700">Zima</Link>
-            <a href="#proces" className="hover:text-emerald-700">Jak to działa</a>
-            <a href="#opinie" className="hover:text-emerald-700">Opinie</a>
-            <a href="#kontakt" className="hover:text-emerald-700">Kontakt</a>
-          </nav>
-          <div className="flex shrink-0 items-center gap-3">
-            <a
-              href={`tel:${COMPANY.phoneRaw}`}
-              className="hidden text-sm text-neutral-700 hover:text-emerald-700 md:block"
-            >
-              {COMPANY.phone}
-            </a>
-            <a
-              href="#kontakt"
-              className="rounded-full bg-neutral-900 px-3 py-2 text-xs font-medium text-white sm:px-4 sm:text-sm"
-            >
-              <span className="sm:hidden">Wycena</span>
-              <span className="hidden sm:inline">Zamów wycenę</span>
-            </a>
-          </div>
-        </div>
-      </header>
+      <SiteHeader />
 
       {/* HERO */}
       <section className="relative">
