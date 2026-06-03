@@ -68,7 +68,7 @@ fetch marta         "european woman portrait blonde" "$OUT_TEAM" vertical
 fetch bartek        "european man portrait outdoor" "$OUT_TEAM" vertical
 
 echo "Winter imagery:"
-fetch snowDrive     "snow clearing driveway shovel"          "$OUT_WINTER" horizontal
+fetch snowDrive     "person shoveling snow path"             "$OUT_WINTER" horizontal
 fetch gardenLights  "christmas lights garden outdoor"        "$OUT_WINTER" horizontal
 fetch wrappedPlants "plants winter protection fleece burlap" "$OUT_WINTER" horizontal
 

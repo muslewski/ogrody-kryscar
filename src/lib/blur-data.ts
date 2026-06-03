@@ -31,6 +31,6 @@ export const BLUR_DATA: Record<string, string> = {
   "/img/team/krzysztof.jpg": "data:image/webp;base64,UklGRqoAAABXRUJQVlA4IJ4AAAAwBACdASoQABgAPu1iqU2ppaOiMAgBMB2JQBfnMYxaNTAMYhHDSoFT5wAA/quAEHteJuq1nyUF8UseZcSSM6ExNvnlHelpqmRtRfLGKiGKQrp2NQpdLQEqPhIwKUEyYNmHznBzN9+g1ffCGrYvn8z6y/67ZgMtc6zYLLCyzpnIVGxG8Bj0YFyYp+XUTGmakCKXehBb217N+HCobXIAAA==",
   "/img/team/marta.jpg": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAACQAwCdASoQABgAPu1iqk4ppaQiMAgBMB2JZwAAWp+4ZlB+PhgAAP70MIpH+BljklUtwU3FjyxfmfRiXi/6bBK7X47BAQxN461WT6Da8eeWAdARU3qkegc1QEAAAA==",
   "/img/winter/gardenLights.jpg": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAAAwAgCdASoQAAsAA4BaJbACdFQAA0FzPThmAAD+94Ju7EmQEPM93df8hxiGJDYJZn7ZAXLooJ724PZbYE4MfmSAFWrv5LFT4LONhH+wQiAAAA==",
-  "/img/winter/snowDrive.jpg": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAAAQAgCdASoQAAsAA4BaJYwCdAYtLQkvcMIAAM47TX2rPkoA5eFD4W+Wm+XGbpbZQUyjLncJbE0pBxVbyaw/bmw44swEVzwxEQWNtsA6pPsS+KFi+93jArjWCXCQ+GYyrkH1XAAA",
+  "/img/winter/snowDrive.jpg": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAAAQAgCdASoQAAsAA4BaJaQAD4Txdx775XJAAP7q64wuCXEvxGzzFtZO4RUY7ry0GWh21oZBuJCPkUgsm0LjIq8KAAA=",
   "/img/winter/wrappedPlants.jpg": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAAAQAgCdASoQAAsAA4BaJZACdH8AEqoQM+nAAPhj7d7UyNRXxld6FDuP+7cMP8ghPB6h1ebqNsa5whH5az4QPCnFVrMaZwUDbncE/cCO/JQgev9ianoJdjHZWiECAAAA",
 };
