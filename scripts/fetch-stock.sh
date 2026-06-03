@@ -14,7 +14,8 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUT_GARDEN="$ROOT/public/img/garden"
 OUT_TEAM="$ROOT/public/img/team"
-mkdir -p "$OUT_GARDEN" "$OUT_TEAM"
+OUT_WINTER="$ROOT/public/img/winter"
+mkdir -p "$OUT_GARDEN" "$OUT_TEAM" "$OUT_WINTER"
 
 fetch() {
   local slug="$1"; local query="$2"; local out="$3"; local orientation="${4:-all}"
@@ -65,5 +66,10 @@ fetch krzysztof     "european man beard portrait"  "$OUT_TEAM" vertical
 fetch adam          "european man portrait brunette" "$OUT_TEAM" vertical
 fetch marta         "european woman portrait blonde" "$OUT_TEAM" vertical
 fetch bartek        "european man portrait outdoor" "$OUT_TEAM" vertical
+
+echo "Winter imagery:"
+fetch snowDrive     "snow clearing driveway shovel"          "$OUT_WINTER" horizontal
+fetch gardenLights  "christmas lights garden outdoor"        "$OUT_WINTER" horizontal
+fetch wrappedPlants "plants winter protection fleece burlap" "$OUT_WINTER" horizontal
 
 echo "Done."

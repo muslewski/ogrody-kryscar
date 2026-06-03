@@ -13,6 +13,8 @@
  * consume only these accessors (await) or receive plain props.
  */
 
+import { IMG } from "@/lib/data";
+
 export interface WinterServiceFaq {
   q: string;
   a: string;
@@ -74,6 +76,7 @@ const WINTER_SERVICES: WinterService[] = [
       "Odśnieżanie Bydgoszcz i okolice — podjazdy, chodniki, posesje | Ogrody Kryscar",
     metaDescription:
       "Odśnieżanie podjazdów, chodników i dojść w Bydgoszczy i okolicy. Usuwanie oblodzenia, stała gotowość zimowa, tereny firm i wspólnot. Bezpłatna wycena: +48 668 994 483.",
+    image: IMG.snowDrive,
     order: 1,
   },
   {
@@ -113,6 +116,7 @@ const WINTER_SERVICES: WinterService[] = [
       "Świąteczne oświetlenie ogrodów Bydgoszcz — montaż i demontaż | Ogrody Kryscar",
     metaDescription:
       "Montaż świątecznych iluminacji w ogrodzie i na elewacji w Bydgoszczy i okolicy. Projekt, bezpieczne zasilanie, demontaż po sezonie. Rezerwuj termin: +48 668 994 483.",
+    image: IMG.gardenLights,
     order: 2,
   },
   {
@@ -152,6 +156,7 @@ const WINTER_SERVICES: WinterService[] = [
       "Zimowe zabezpieczanie roślin Bydgoszcz — okrywanie i ochrona | Ogrody Kryscar",
     metaDescription:
       "Zabezpieczanie roślin na zimę w Bydgoszczy i okolicy: okrywanie agrowłókniną, ściółkowanie, ochrona iglaków i młodych drzew. Wiosenne zdjęcie osłon. Tel.: +48 668 994 483.",
+    image: IMG.wrappedPlants,
     order: 3,
   },
 ];

@@ -301,7 +301,13 @@ export const TEAM = [
  * future code can still pull them without 404s.
  */
 const G = "/img/garden";
+const W = "/img/winter";
 export const IMG = {
+  // Winter
+  snowDrive: `${W}/snowDrive.jpg`,
+  gardenLights: `${W}/gardenLights.jpg`,
+  wrappedPlants: `${W}/wrappedPlants.jpg`,
+
   // Hero / wide landscape gardens
   parkGarden: `${G}/parkGarden.jpg`,
   parkPath: `${G}/parkPath.jpg`,
