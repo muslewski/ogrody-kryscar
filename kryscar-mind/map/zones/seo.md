@@ -15,7 +15,7 @@ depends: ["[[brand-data]]", "[[city-landing-pages]]"]
 invariants:
   - rule: "every public route has a sitemap entry"
     enforcedBy: []
-verifiedAt: "a6399f700bbc9492eb3130fdefd18b87bad23bb6"
+verifiedAt: "9cba57ddb7618ae0dc52283a1783b7e9656d7841"
 ---
 ## Purpose
 Search-engine surface: sitemap enumerates the homepage + all /ogrodnik city pages + all /zima winter-service pages + all 8 /uslugi/[slug] service landing pages (priority 0.8) + /ogrodowe-abc and every /ogrodowe-abc/[slug] guide + /realizacje and every /realizacje/[slug] project ([[realizacje]]).

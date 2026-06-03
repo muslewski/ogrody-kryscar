@@ -15,7 +15,7 @@ depends: ["[[service-catalog]]", "[[coverage-map]]", "[[layout-chrome]]", "[[cit
 invariants:
   - rule: "Components consume service pages only via async accessors — no component imports SERVICE_CONTENT (Payload-migration boundary)"
     enforcedBy: []
-verifiedAt: "86e5aaa6d37df606fb12826663fc91ecf40ce6f7"
+verifiedAt: "9cba57ddb7618ae0dc52283a1783b7e9656d7841"
 ---
 ## Purpose
 A statically-rendered landing page per catalog service, mirroring the city/winter arcs. The data layer composes the thin SERVICES list + catalog pricing + net-new page content; the catalog cards link here. The `/uslugi/[usluga]` hero now renders via `BlurImage` (blur-up) — an instant blurred preview sharpens into the full photo, replacing the prior gray-box-then-pop.

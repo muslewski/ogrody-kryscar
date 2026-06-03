@@ -17,7 +17,7 @@ invariants:
     enforcedBy: []
   - rule: "SiteHeader is the single header for the homepage and all subpages; its nav uses root-relative /#anchors and it renders the seasonal winter banner, so every page that renders it sets revalidate=86400"
     enforcedBy: []
-verifiedAt: "a6399f700bbc9492eb3130fdefd18b87bad23bb6"
+verifiedAt: "9cba57ddb7618ae0dc52283a1783b7e9656d7841"
 ---
 ## Purpose
 Shared chrome reused by **every** page — the homepage now renders `SiteHeader` too (it previously had its own inline header). `SiteHeader` is the single canonical nav: Katalog · Zima · Ogrodowe ABC · Jak to działa · Opinie · Kontakt (section links are root-relative `/#...` so they work from any page), plus the phone link and the "Zamów wycenę" CTA. It also renders the ❄ seasonal winter banner site-wide (via `isWinterNow`), so SiteHeader pages use daily ISR (revalidate=86400). The nav and footer also carry a **Realizacje** link to the [[realizacje]] gallery. See [[nav-unification]].

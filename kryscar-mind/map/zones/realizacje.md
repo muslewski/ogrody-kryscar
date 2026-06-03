@@ -19,7 +19,7 @@ invariants:
     enforcedBy: []
   - rule: "pages render SiteHeader, so they set revalidate=86400 (site-wide winter banner)"
     enforcedBy: []
-verifiedAt: "a6399f700bbc9492eb3130fdefd18b87bad23bb6"
+verifiedAt: "9cba57ddb7618ae0dc52283a1783b7e9656d7841"
 ---
 ## Purpose
 Visual before/after proof for the high-ticket aranżacja/rabaty work. Data flows through async accessors (Payload-ready). The drag slider is a `"use client"` island; everything else is static + daily ISR.
