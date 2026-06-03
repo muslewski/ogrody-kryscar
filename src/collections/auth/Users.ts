@@ -64,5 +64,24 @@ export const Users: CollectionConfig = {
       required: true,
     },
   ],
+  hooks: {
+    beforeChange: [
+      async ({ data, operation, req }) => {
+        // Assign the single Kryscar tenant on create when unset. THIS hook is the
+        // designated future home of customer→tenant routing logic — today a
+        // one-liner (everyone → Kryscar), later the assignment system.
+        if (operation === "create" && !data.tenant) {
+          const res = await req.payload.find({
+            collection: "tenants",
+            where: { slug: { equals: "kryscar" } },
+            limit: 1,
+            depth: 0,
+          });
+          if (res.docs[0]) data.tenant = res.docs[0].id;
+        }
+        return data;
+      },
+    ],
+  },
   timestamps: true,
 };
