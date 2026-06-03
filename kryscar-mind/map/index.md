@@ -7,13 +7,13 @@ _20 zones · 22 verification gaps._
 | Zone | Status | Freshness | Summary |
 |---|---|---|---|
 | [[auth-portal]] | active | ✓ fresh | The authenticated portal: the proxy cookie-gate, the (app) route group, role-gated /panel (customer) + /zespol (gardener), and the sign-in/sign-up screens. |
-| [[brand-data]] | active | ✓ fresh | Company identity, address/NIP, socials, legal links, image map, and the canonical SITE_URL. |
+| [[brand-data]] | active | ⚠ stale | Company identity, address/NIP, socials, legal links, image map, and the canonical SITE_URL. |
 | [[city-landing-pages]] | active | ✓ fresh | Local-SEO /ogrodnik/[miasto] pages and the Payload-migration-ready location data layer. |
 | [[coverage-map]] | active | ✓ fresh | Service-area geography and the static coverage map (Mapbox/OSM). |
 | [[customer-auth]] | active | ⚠ stale | Better Auth as the customer/gardener auth surface, persisting through a custom BA→Payload Local-API adapter so its user/session/account/verification models are Payload collections. |
 | [[homepage-and-variants]] | active | ✓ fresh | The root homepage (re-exports example-9) plus the ten design-variant pages. |
 | [[image-loading]] | active | ✓ fresh | Blur-up image loading: a generated blurDataURL map + the BlurImage next/image wrapper that paints an instant blurred preview, used by the /uslugi hero. |
-| [[layout-chrome]] | active | ✓ fresh | Root layout, header, footer, preloader, and social links — the shared page shell. |
+| [[layout-chrome]] | active | ✓ fresh | Root layout, header, footer, preloader, and social links — the shared page shell, now with a responsive mobile nav and a session-aware Zaloguj/Panel auth button. |
 | [[motion-and-3d]] | active | ⚠ stale | Motion primitives (HoverCard), warped-hover image, the 3D section, counters, and the scroll hook. |
 | [[ogrodowe-abc]] | active | ✓ fresh | Ogrodowe ABC — seasonal gardening-guide content section (/ogrodowe-abc + /ogrodowe-abc/[slug]) and its Payload-ready guides data layer; two-way internal links with /uslugi & /zima. |
 | [[payload-backend]] | active | ✓ fresh | Payload CMS as the app backend: the /admin panel (staff/dev auth via the admins collection), the Postgres (Neon) adapter, ESM/withPayload wiring, and the seed. |
