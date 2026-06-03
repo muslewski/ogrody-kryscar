@@ -5,7 +5,7 @@ tags: [ui]
 status: active
 created: 2026-06-02
 updated: 2026-06-03
-related: ["[[seo]]", "[[brand-data]]", "[[winter-services]]", "[[service-pages]]"]
+related: ["[[seo]]", "[[brand-data]]", "[[winter-services]]", "[[service-pages]]", "[[ogrodowe-abc]]"]
 sources: []
 owns:
   routes: []
@@ -15,9 +15,9 @@ depends: ["[[brand-data]]"]
 invariants:
   - rule: "SiteFooter anchors are root-relative (/#...) so it works on every page"
     enforcedBy: []
-verifiedAt: "fa9a5e3cac79d83545f7d25ff3a3a8c4bd16f5e2"
+verifiedAt: "6f6884f5bfdefdb7a22fc35cbfe6fc498815837a"
 ---
 ## Purpose
-Shared chrome reused by the homepage, city pages, winter pages, and service pages. `SiteHeader` has a new "Usługi" nav link pointing at `/#katalog`, sitting beside the existing "Zima" link.
+Shared chrome reused by the homepage, city pages, winter pages, and service pages. `SiteHeader` has a "Usługi" nav link pointing at `/#katalog` and an "Ogrodowe ABC" link pointing at `/ogrodowe-abc`, sitting beside the existing "Zima" link.
 ## Anchors
 `SiteHeader`, `SiteFooter`, `Socials`, `src/app/layout.tsx`.

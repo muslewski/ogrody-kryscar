@@ -5,7 +5,7 @@ tags: [feature, seo, data]
 status: active
 created: 2026-06-03
 updated: 2026-06-03
-related: ["[[service-catalog]]", "[[winter-services]]", "[[city-landing-pages]]", "[[seo]]", "[[homepage-and-variants]]", "[[image-loading]]"]
+related: ["[[service-catalog]]", "[[winter-services]]", "[[city-landing-pages]]", "[[seo]]", "[[homepage-and-variants]]", "[[image-loading]]", "[[ogrodowe-abc]]"]
 sources: ["[[2026-06-03-service-landing-pages-design]]"]
 owns:
   routes: ["/uslugi/[usluga]"]
@@ -15,7 +15,7 @@ depends: ["[[service-catalog]]", "[[coverage-map]]", "[[layout-chrome]]", "[[cit
 invariants:
   - rule: "Components consume service pages only via async accessors — no component imports SERVICE_CONTENT (Payload-migration boundary)"
     enforcedBy: []
-verifiedAt: "2ce2a3391f9a89436caa74539faa348267de81a6"
+verifiedAt: "6f6884f5bfdefdb7a22fc35cbfe6fc498815837a"
 ---
 ## Purpose
 A statically-rendered landing page per catalog service, mirroring the city/winter arcs. The data layer composes the thin SERVICES list + catalog pricing + net-new page content; the catalog cards link here. The `/uslugi/[usluga]` hero now renders via `BlurImage` (blur-up) — an instant blurred preview sharpens into the full photo, replacing the prior gray-box-then-pop.
