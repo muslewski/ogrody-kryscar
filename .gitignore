@@ -47,3 +47,6 @@ next-env.d.ts
 
 # kryscar-mind (the Mind) — commit shared Obsidian config, ignore per-user workspace
 kryscar-mind/.obsidian/workspace*.json
+
+# Brainstorm visual companion
+.superpowers/
