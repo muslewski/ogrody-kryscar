@@ -15,6 +15,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { ServiceJsonLd } from "@/components/ServiceJsonLd";
 import { WinterServiceIcon } from "@/components/WinterServiceCard";
 import { Reveal } from "@/components/motion";
+import { BlurImage, hasBlurImage } from "@/components/BlurImage";
 
 export async function generateStaticParams() {
   const slugs = await getWinterServiceSlugs();
@@ -115,6 +116,20 @@ export default async function ZimaUslugaPage({
             </a>
           </div>
         </Reveal>
+        {hasBlurImage(svc.image) && (
+          <div className="mt-10 overflow-hidden rounded-3xl border border-neutral-200">
+            <div className="relative aspect-[16/9] w-full bg-neutral-100">
+              <BlurImage
+                src={svc.image}
+                alt={svc.name}
+                fill
+                preload
+                className="object-cover"
+                sizes="(min-width: 1280px) 1280px, 100vw"
+              />
+            </div>
+          </div>
+        )}
       </section>
 
       {/* Co obejmuje */}
