@@ -37,6 +37,7 @@ export function SiteHeader() {
           </Link>
           <nav className="hidden gap-7 text-sm text-neutral-700 md:flex">
             <Link href="/#katalog" className="hover:text-emerald-700">Katalog</Link>
+            <Link href="/realizacje" className="hover:text-emerald-700">Realizacje</Link>
             <Link href="/zima" className="hover:text-emerald-700">Zima</Link>
             <Link href="/ogrodowe-abc" className="hover:text-emerald-700">Ogrodowe ABC</Link>
             <Link href="/#proces" className="hover:text-emerald-700">Jak to działa</Link>
