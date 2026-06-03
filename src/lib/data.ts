@@ -29,9 +29,10 @@ export const ADDRESS = {
 // component (Instagram / Facebook / Youtube) used by the footer renderers.
 export type SocialId = "instagram" | "facebook" | "youtube";
 export const SOCIALS: { id: SocialId; label: string; url: string }[] = [
-  { id: "instagram", label: "Instagram", url: "https://instagram.com/" },
+  // Commented out until the accounts exist — re-enable (with real URLs) when we have them.
+  // { id: "instagram", label: "Instagram", url: "https://instagram.com/" },
   { id: "facebook", label: "Facebook", url: "https://www.facebook.com/ogrody.kryscar/" },
-  { id: "youtube", label: "YouTube", url: "https://youtube.com/" },
+  // { id: "youtube", label: "YouTube", url: "https://youtube.com/" },
 ];
 
 // Legal / formal links — currently hash anchors since the actual pages
