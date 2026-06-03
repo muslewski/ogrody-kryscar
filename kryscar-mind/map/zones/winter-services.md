@@ -17,14 +17,14 @@ invariants:
     enforcedBy: []
   - rule: "Pages that branch on the season set revalidate=86400 so the winter toggle flips without a redeploy"
     enforcedBy: []
-verifiedAt: "f51a2305c2c1052a667a67ee2c10e0458843d733"
+verifiedAt: "86e5aaa6d37df606fb12826663fc91ecf40ce6f7"
 ---
 ## Purpose
 The winter revenue arc — three landing pages + a hub, a Payload-ready data layer, and a pure seasonal engine that escalates the homepage Nov–Mar.
 ## Anchors
 `getWinterServices`, `getWinterServiceBySlug`, `WinterService`, `isWinterActive`, `ServiceJsonLd`, `WinterServiceCard`, `route:/zima`, `route:/zima/[usluga]`.
 ## Invariants
-Accessor-only data boundary (mirrors city pages); seasonal pages use daily ISR. `ServiceJsonLd` was generalized to `{name, description, url, breadcrumbs}` props so it can be shared with [[service-pages]] — the `/zima/[usluga]` call site behavior is unchanged.
+Accessor-only data boundary (mirrors city pages); seasonal pages use daily ISR. The ❄ seasonal banner now renders in `SiteHeader` ([[layout-chrome]]) site-wide (see [[nav-unification]]), so this revalidate=86400 rule applies to every SiteHeader page, not just the homepage. `ServiceJsonLd` was generalized to `{name, description, url, breadcrumbs}` props so it can be shared with [[service-pages]] — the `/zima/[usluga]` call site behavior is unchanged.
 ## Images
 The `/zima/[usluga]` hero and `WinterServiceCard` now render service photos (from `WinterService.image`, set via `IMG` in `winter.ts`) when the blur map has an entry for the path (`hasBlurImage` guard from [[image-loading]]). Until the winter photos are fetched (`fetch-stock.sh` + `npm run blur`), both components fall back to the existing gradient/icon variant — no code change required to unlock photos.
 ## Lineage

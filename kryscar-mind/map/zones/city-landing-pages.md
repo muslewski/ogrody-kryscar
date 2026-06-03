@@ -15,7 +15,7 @@ depends: ["[[service-catalog]]", "[[coverage-map]]", "[[layout-chrome]]"]
 invariants:
   - rule: "Components consume locations only via async accessors — no component imports the LOCATIONS array (Payload-migration boundary)"
     enforcedBy: []
-verifiedAt: "f51a2305c2c1052a667a67ee2c10e0458843d733"
+verifiedAt: "86e5aaa6d37df606fb12826663fc91ecf40ce6f7"
 ---
 ## Purpose
 Per-city landing pages; data flows through async accessors so a PayloadCMS swap touches only `locations.ts`.

@@ -15,7 +15,8 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUT_GARDEN="$ROOT/public/img/garden"
 OUT_TEAM="$ROOT/public/img/team"
 OUT_WINTER="$ROOT/public/img/winter"
-mkdir -p "$OUT_GARDEN" "$OUT_TEAM" "$OUT_WINTER"
+OUT_PROJECTS="$ROOT/public/img/projects"
+mkdir -p "$OUT_GARDEN" "$OUT_TEAM" "$OUT_WINTER" "$OUT_PROJECTS"
 
 fetch() {
   local slug="$1"; local query="$2"; local out="$3"; local orientation="${4:-all}"
@@ -71,5 +72,19 @@ echo "Winter imagery:"
 fetch snowDrive     "person shoveling snow path"             "$OUT_WINTER" horizontal
 fetch gardenLights  "christmas lights garden outdoor"        "$OUT_WINTER" horizontal
 fetch wrappedPlants "plants winter protection fleece burlap" "$OUT_WINTER" horizontal
+
+echo "Realizacje (before/after placeholders):"
+fetch metamorfoza-ogrodu-osielsko-before    "overgrown neglected garden weeds"   "$OUT_PROJECTS" horizontal
+fetch metamorfoza-ogrodu-osielsko-after     "manicured landscaped garden lawn"   "$OUT_PROJECTS" horizontal
+fetch rabata-bylinowa-niemcz-before         "plain grass lawn backyard"          "$OUT_PROJECTS" horizontal
+fetch rabata-bylinowa-niemcz-after          "perennial flower bed border garden" "$OUT_PROJECTS" horizontal
+fetch front-domu-fordon-before              "concrete house front yard"          "$OUT_PROJECTS" horizontal
+fetch front-domu-fordon-after               "front yard landscaping shrubs"      "$OUT_PROJECTS" horizontal
+fetch uporzadkowany-ogrod-zoledowo-before   "messy overgrown backyard garden"    "$OUT_PROJECTS" horizontal
+fetch uporzadkowany-ogrod-zoledowo-after    "tidy landscaped backyard garden"    "$OUT_PROJECTS" horizontal
+fetch rabata-przy-tarasie-osielsko-before   "empty patio garden border"          "$OUT_PROJECTS" horizontal
+fetch rabata-przy-tarasie-osielsko-after    "ornamental garden bed patio"        "$OUT_PROJECTS" horizontal
+fetch aranzacja-z-trawnikiem-biale-blota-before "bare soil new build garden plot" "$OUT_PROJECTS" horizontal
+fetch aranzacja-z-trawnikiem-biale-blota-after  "new lawn landscaped garden home"  "$OUT_PROJECTS" horizontal
 
 echo "Done."

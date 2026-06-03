@@ -19,6 +19,9 @@ import { WinterServiceIcon } from "@/components/WinterServiceCard";
 import { Reveal } from "@/components/motion";
 import { BlurImage, hasBlurImage } from "@/components/BlurImage";
 
+// Daily ISR so the seasonal winter banner (SiteHeader) flips without a redeploy.
+export const revalidate = 86400;
+
 export async function generateStaticParams() {
   const slugs = await getWinterServiceSlugs();
   return slugs.map((usluga) => ({ usluga }));

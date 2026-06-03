@@ -17,7 +17,7 @@ invariants:
     enforcedBy: []
   - rule: "every guide img is a path present in BLUR_DATA so the hero always blurs up"
     enforcedBy: []
-verifiedAt: "f51a2305c2c1052a667a67ee2c10e0458843d733"
+verifiedAt: "86e5aaa6d37df606fb12826663fc91ecf40ce6f7"
 ---
 ## Purpose
 Seasonal long-tail SEO + reader content. Data flows through async accessors so a PayloadCMS swap touches only `guides.ts`. Two-way links feed the /uslugi & /zima offers.

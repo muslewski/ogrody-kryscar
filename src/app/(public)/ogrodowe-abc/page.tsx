@@ -20,6 +20,9 @@ export const metadata: Metadata = {
   alternates: { canonical: "/ogrodowe-abc" },
 };
 
+// Daily ISR so the seasonal winter banner (SiteHeader) flips without a redeploy.
+export const revalidate = 86400;
+
 export default async function OgrodoweAbcPage() {
   const guides = await getAllGuides();
 
