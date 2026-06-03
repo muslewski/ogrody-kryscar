@@ -15,7 +15,7 @@ _14 zones · 8 verification gaps._
 | [[motion-and-3d]] | active | ⚠ stale | Motion primitives (HoverCard), warped-hover image, the 3D section, counters, and the scroll hook. |
 | [[pricing-calculator]] | active | ✓ fresh | Pricing algorithm and the interactive area/frequency calculator form. |
 | [[seo]] | active | ✓ fresh | sitemap.xml, robots.txt, and canonical/metadataBase wiring. |
-| [[service-catalog]] | active | ✓ fresh | Service definitions, categories, catalog enrichment, and the single-select filter + motion reorder island. |
+| [[service-catalog]] | active | ⚠ stale | Service definitions, categories, catalog enrichment, and the single-select filter + motion reorder island. |
 | [[service-pages]] | active | ✓ fresh | Per-service landing pages: /uslugi/[usluga] for all 8 catalog services + the Payload-ready service-page data layer that composes SERVICES + catalog price + landing content. |
 | [[the-mind]] | active | ✓ fresh | The knowledge-base system itself — generator, status hook, navigating skill, and /map-sync command. |
 | [[ui-primitives]] | active | ✓ fresh | shadcn/radix UI primitives (new-york): checkbox, label, radio-group, scroll-area, separator, slider. |

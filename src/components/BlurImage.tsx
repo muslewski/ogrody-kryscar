@@ -18,3 +18,13 @@ export function BlurImage({ alt, ...props }: ImageProps) {
   }
   return <Image alt={alt} {...props} />;
 }
+
+/**
+ * True when `src` is a string that has a generated blur entry — i.e. the
+ * image file exists on disk (gen-blur only emits keys for real files). Lets
+ * callers gate an optional image so a not-yet-present file falls back to a
+ * placeholder instead of rendering a broken <img> (404).
+ */
+export function hasBlurImage(src: string | undefined): src is string {
+  return typeof src === "string" && src in BLUR_DATA;
+}
