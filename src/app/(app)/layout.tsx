@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Manrope } from "next/font/google";
 
+import { Toaster } from "@/components/ui/sonner";
+
 import "../globals.css";
 
 /**
@@ -28,6 +30,7 @@ export default function AppRootLayout({
     >
       <body className="min-h-full bg-white text-neutral-900 font-[family-name:var(--font-inter)]">
         {children}
+        <Toaster position="top-center" richColors />
       </body>
     </html>
   );
