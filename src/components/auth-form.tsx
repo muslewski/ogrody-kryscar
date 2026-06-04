@@ -38,7 +38,7 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
   };
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-sm flex-col justify-center px-6">
+    <div className="w-full max-w-sm">
       <h1 className="mb-1 text-2xl font-semibold tracking-tight">
         {isSignUp ? "Załóż konto" : "Zaloguj się"}
       </h1>
