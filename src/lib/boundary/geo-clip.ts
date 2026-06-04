@@ -1,8 +1,9 @@
 // polygon-clipping@0.15 ships a CJS build whose .d.ts declares NAMED exports
-// only (no default). A namespace import satisfies the .d.ts at compile time, but
-// under ESM↔CJS interop the named functions land on `.default` at runtime (the
-// namespace only carries `default` + `module.exports`). So we type against the
-// namespace and pick the real impl object at runtime, falling back to `.default`.
+// only (no default). A namespace import satisfies the .d.ts at compile time. Where
+// the functions actually live at runtime depends on the loader's ESM↔CJS interop:
+// directly on the namespace (Node CJS — `module.exports` IS the functions object),
+// or nested under `.default` (some ESM-interop loaders). We type against the
+// namespace and resolve whichever shape actually carries the impl, so both work.
 import * as polygonClippingNS from "polygon-clipping";
 
 import { computePolygonArea } from "../geo";
