@@ -17,7 +17,7 @@ invariants:
     enforcedBy: []
   - rule: "the sidebar nav is role-driven from app-nav NAV[role]; the gate layouts pass the Payload-verified role + user identity into AppShell"
     enforcedBy: []
-verifiedAt: "5c611c12305983c8f46a2cc2ce18f00551e07b1e"
+verifiedAt: "28b334f49df012d0180c4fe6d3ce0e1e87390e06"
 ---
 ## Purpose
 One shared shell for the authed app. `panel/layout.tsx` + `zespol/layout.tsx` run the
@@ -29,7 +29,9 @@ here (that's [[layout-chrome]], used by the public site + the auth screens).
 ## App-map (for browser agents — orient here first)
 - Customer `/panel`: Pulpit `/panel` · Moje ogrody `/panel/ogrody` · Usługi
   `/panel/uslugi` · Zamówienia `/panel/zamowienia` · Historia `/panel/historia` ·
-  Ustawienia `/panel/ustawienia`. Non-dashboard routes are `ComingSoon` stubs.
+  Ustawienia `/panel/ustawienia`. **Moje ogrody** (`/panel/ogrody`, `/panel/ogrody/nowy`,
+  `/panel/ogrody/[id]/edytuj`) is now REAL — owned by the [[customer-lawns]] zone, no
+  longer a `ComingSoon` stub. The remaining non-dashboard routes are still `ComingSoon` stubs.
 - Gardener `/zespol`: Pulpit `/zespol` · Zlecenia `/zespol/zlecenia` · Klienci
   `/zespol/klienci` · Ustawienia `/zespol/ustawienia`. Non-dashboard routes are stubs.
 - Sign out: the sidebar footer `SignOutButton` ("Wyloguj się").
