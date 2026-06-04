@@ -1,31 +1,21 @@
 import Link from "next/link";
 
-import { buildStaticMapUrl } from "@/lib/maps";
 import type { LawnView } from "@/lib/lawn-types";
 import { LawnActionsMenu } from "./LawnActionsMenu";
+import { LawnSnapshot } from "./LawnSnapshot";
 
 export function LawnCard({ lawn }: { lawn: LawnView }) {
-  const snapshot = buildStaticMapUrl(lawn.polygon, {
-    width: 480,
-    height: 220,
-    buildings: lawn.buildings,
-  });
-
   return (
     <div className="overflow-hidden rounded-2xl border border-neutral-200 bg-white">
       <div className="relative aspect-[16/8] bg-emerald-900/10">
-        {snapshot ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={snapshot}
-            alt={`Mapa — ${lawn.name}`}
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <div className="flex h-full items-center justify-center text-sm text-neutral-400">
-            Podgląd mapy niedostępny
-          </div>
-        )}
+        <LawnSnapshot
+          polygon={lawn.polygon}
+          buildings={lawn.buildings}
+          alt={`Mapa — ${lawn.name}`}
+          width={480}
+          height={220}
+          className="h-full w-full object-cover"
+        />
         <span className="absolute right-2 top-2 rounded-full bg-white px-2.5 py-1 text-xs font-bold text-emerald-700 shadow">
           {lawn.areaM2.toLocaleString("pl-PL")} m²
         </span>
