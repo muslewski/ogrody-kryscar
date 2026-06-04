@@ -138,7 +138,7 @@ export default async function UslugaPage({
               blurDataURL={svc.blurDataURL}
               alt={svc.imageAlt}
               fill
-              priority
+              preload
               className="object-cover"
               sizes="(min-width: 1280px) 1280px, 100vw"
             />
