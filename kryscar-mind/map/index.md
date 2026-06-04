@@ -13,7 +13,7 @@ _20 zones · 24 verification gaps._
 | [[customer-auth]] | active | ⚠ stale | Better Auth as the customer/gardener auth surface, persisting through a custom BA→Payload Local-API adapter so its user/session/account/verification models are Payload collections. |
 | [[homepage-and-variants]] | active | ✓ fresh | The root homepage (re-exports example-9) plus the ten design-variant pages. |
 | [[image-loading]] | active | ⚠ stale | Blur-up image loading: a generated blurDataURL map + the BlurImage next/image wrapper that paints an instant blurred preview, used by the /uslugi hero. |
-| [[layout-chrome]] | active | ✓ fresh | Root layout, header, footer, preloader, and social links — the shared page shell, with a session-aware Zaloguj/Panel button and a mobile nav that is a left-sliding shadcn Sheet drawer. |
+| [[layout-chrome]] | active | ⚠ stale | Root layout, header, footer, preloader, and social links — the shared page shell, with a session-aware Zaloguj/Panel button and a mobile nav that is a left-sliding shadcn Sheet drawer. |
 | [[motion-and-3d]] | active | ⚠ stale | Motion primitives (HoverCard), warped-hover image, the 3D section, counters, and the scroll hook. |
 | [[ogrodowe-abc]] | active | ✓ fresh | Ogrodowe ABC — seasonal gardening-guide content section (/ogrodowe-abc + /ogrodowe-abc/[slug]) and its Payload-ready guides data layer; two-way internal links with /uslugi & /zima. |
 | [[payload-backend]] | active | ✓ fresh | Payload CMS as the app backend: the /admin panel (staff/dev auth via the admins collection), the Postgres (Neon) adapter, ESM/withPayload wiring, and the seed. |
@@ -49,8 +49,8 @@ _20 zones · 24 verification gaps._
 - zone service-pages: invariant "Components consume service pages only via async accessors — no component imports SERVICE_CONTENT (Payload-migration boundary)" has no enforcedBy
 - zone tenancy-and-roles: invariant "Single tenant for MVP: exactly one tenants row (slug 'kryscar'); every user is assigned to it by the default-tenant beforeChange hook on the users collection" has no enforcedBy
 - zone tenancy-and-roles: invariant "users.role defaults to 'customer' and is admin-only writable (field access) — BA signup never sets it; only a Payload superadmin promotes to 'gardener'" has no enforcedBy
-- zone ui-primitives: invariant "undefined" has no enforcedBy
-- zone ui-primitives: invariant "undefined" has no enforcedBy
+- zone ui-primitives: invariant "sidebar tokens are concrete hex values inside the single @theme block in globals.css — no :root or @theme inline layers" has no enforcedBy
+- zone ui-primitives: invariant "sidebar.tsx and use-mobile.ts are vendored as-is from shadcn CLI except for two lint fixes (Math.random in useState lazy init; onChange() replaces inline setIsMobile in useEffect)" has no enforcedBy
 - zone winter-services: invariant "Components consume winter services only via async accessors — no component imports the WINTER_SERVICES array (Payload-migration boundary)" has no enforcedBy
 - zone winter-services: invariant "Pages that branch on the season set revalidate=86400 so the winter toggle flips without a redeploy" has no enforcedBy
 

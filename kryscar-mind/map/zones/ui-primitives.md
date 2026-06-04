@@ -13,9 +13,11 @@ owns:
   globs: ["src/components/ui/**"]
 depends: []
 invariants:
-  - "sidebar tokens are concrete hex values inside the single @theme block in globals.css — no :root or @theme inline layers"
-  - "sidebar.tsx and use-mobile.ts are vendored as-is from shadcn CLI except for two lint fixes (Math.random in useState lazy init; onChange() replaces inline setIsMobile in useEffect)"
-verifiedAt: "4f73ddb3e4374429067aa73c09eca1c06dea7d5e"
+  - rule: "sidebar tokens are concrete hex values inside the single @theme block in globals.css — no :root or @theme inline layers"
+    enforcedBy: []
+  - rule: "sidebar.tsx and use-mobile.ts are vendored as-is from shadcn CLI except for two lint fixes (Math.random in useState lazy init; onChange() replaces inline setIsMobile in useEffect)"
+    enforcedBy: []
+verifiedAt: "bba9006cabbcd402bc759e764f54881c558c1f7b"
 ---
 ## Purpose
 Low-level styled primitives consumed across features.
