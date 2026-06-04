@@ -7,6 +7,8 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { createLawn, updateLawn, deleteLawn } from "@/lib/lawns";
 import type { LawnInput } from "@/lib/lawn-types";
+import { autoFillLawn } from "@/lib/boundary";
+import type { AutoFillResult, AutoFillError } from "@/lib/boundary/types";
 
 type ActionError = { ok: false; error: string };
 
@@ -60,6 +62,20 @@ export async function updateLawnAction(
   revalidatePath("/panel/ogrody");
   revalidatePath("/panel");
   redirect("/panel/ogrody");
+}
+
+/** Read-only: resolve a parcel (minus buildings) for the given point. */
+export async function autoFillLawnAction(
+  lat: number,
+  lng: number,
+): Promise<AutoFillResult | AutoFillError> {
+  const userId = await requireUserId();
+  if (!userId) return { error: "failed" };
+  try {
+    return await autoFillLawn({ lat, lng });
+  } catch {
+    return { error: "failed" };
+  }
 }
 
 export async function deleteLawnAction(
