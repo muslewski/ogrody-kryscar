@@ -9,7 +9,7 @@ related: ["[[app-shell]]", "[[auth-portal]]", "[[tenancy-and-roles]]", "[[payloa
 sources: ["[[2026-06-04-customer-lawns-3a-design]]", "[[2026-06-04-lawns-smart-map-design]]"]
 owns:
   routes: ["/panel/ogrody", "/panel/ogrody/nowy", "/panel/ogrody/[id]/edytuj"]
-  anchors: ["symbol:getMyLawns", "symbol:createLawn", "symbol:computePolygonArea", "symbol:buildStaticMapUrl", "symbol:LawnDrawer", "symbol:autoFillLawn", "symbol:playFillPulse"]
+  anchors: ["symbol:getMyLawns", "symbol:createLawn", "symbol:computePolygonArea", "symbol:buildStaticMapUrl", "symbol:LawnDrawer", "symbol:autoFillLawn", "symbol:playFillPulse", "symbol:LawnSnapshot"]
   globs: ["src/lib/lawns.ts", "src/lib/lawn-types.ts", "src/lib/geo.ts", "src/lib/maps.ts", "src/lib/google-maps-loader.ts", "src/lib/boundary/**", "src/collections/Lawns.ts", "src/components/lawns/**", "src/components/lawns/play-fill-pulse.ts", "src/app/(app)/panel/ogrody/**"]
 depends: ["[[auth-portal]]", "[[payload-backend]]", "[[ui-primitives]]"]
 invariants:
@@ -21,7 +21,7 @@ invariants:
     enforcedBy: []
   - rule: "Auto-fill is server-only: ULDK/OSM fetch + polygon-clipping run in src/lib/boundary/* behind a failover chain (runChain, per-provider timeout, manual floor); the client calls autoFillLawnAction and computes only its display area via Google geometry. areaM2 is net (parcel − buildings), recomputed server-side."
     enforcedBy: []
-verifiedAt: "3a3fecfd9f35538170df3e0a6e6a88a42413fd3d"
+verifiedAt: "1f8f010b5bc250be9f6cd121eabcb1e0fec2eec8"
 ---
 ## Purpose
 The customer's first owned object in the app. A logged-in customer maps their lawn
@@ -71,7 +71,9 @@ buildings), recomputed server-side like the manual path.
   accessors in `src/lib/lawns.ts`; pages and client components never touch Payload directly.
 ## Anchors
 `getMyLawns`, `createLawn`, `computePolygonArea`, `buildStaticMapUrl`, `LawnDrawer`,
-`autoFillLawn`, `playFillPulse`.
+`autoFillLawn`, `playFillPulse`, `LawnSnapshot`. `LawnSnapshot` is the shared
+Static-Maps lawn image (outline + buildings) rendered by both the lawn card and the
+`/panel/ogrody/[id]/zamow` order-page header (so they never drift).
 ## Lineage
 sources → [[2026-06-04-customer-lawns-3a-design]], [[2026-06-04-lawns-smart-map-design]];
 ownership rationale → [[lawns-ownership-in-data-layer]]; maps rationale →

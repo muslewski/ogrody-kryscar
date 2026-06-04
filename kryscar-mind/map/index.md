@@ -12,7 +12,7 @@ _23 zones · 33 verification gaps._
 | [[city-landing-pages]] | active | ⚠ stale | Local-SEO /ogrodnik/[miasto] pages and the Payload-migration-ready location data layer. |
 | [[coverage-map]] | active | ✓ fresh | Service-area geography and the static coverage map (Mapbox/OSM). |
 | [[customer-auth]] | active | ⚠ stale | Better Auth as the customer/gardener auth surface, persisting through a custom BA→Payload Local-API adapter so its user/session/account/verification models are Payload collections. |
-| [[customer-lawns]] | active | ⚠ stale | Customer 'My Lawn' (3a): the /panel/ogrody loop where a logged-in customer adds a lawn from satellite imagery (search → draw polygon → live area → save) backed by an owner-scoped Payload lawns collection. |
+| [[customer-lawns]] | active | ✓ fresh | Customer 'My Lawn' (3a): the /panel/ogrody loop where a logged-in customer adds a lawn from satellite imagery (search → draw polygon → live area → save) backed by an owner-scoped Payload lawns collection. |
 | [[homepage-and-variants]] | active | ⚠ stale | The root homepage (re-exports example-9) plus the ten design-variant pages. |
 | [[image-loading]] | active | ⚠ stale | Blur-up image loading: a generated blurDataURL map + the BlurImage next/image wrapper that paints an instant blurred preview, used by the /uslugi hero. |
 | [[layout-chrome]] | active | ✓ fresh | Root layout, header, footer, preloader, and social links — the shared page shell, with a session-aware Zaloguj/Panel button and a mobile nav that is a left-sliding shadcn Sheet drawer. |
@@ -24,7 +24,7 @@ _23 zones · 33 verification gaps._
 | [[seo]] | active | ✓ fresh | sitemap.xml, robots.txt, and canonical/metadataBase wiring. |
 | [[service-catalog]] | active | ✓ fresh | Service definitions, categories, catalog enrichment, and the single-select filter + motion reorder island. |
 | [[service-pages]] | active | ⚠ stale | Per-service landing pages: /uslugi/[usluga] for all 8 catalog services + the Payload-backed service-page data layer whose accessors read the services collection. |
-| [[service-requests]] | active | ✓ fresh | Service Selection & Pricing (3b.1): the customer 'what should be done' flow — a smart-catalog ServiceConfigurator at /panel/ogrody/[id]/zamow that prices a basket live via the data-driven lib/pricing.estimate, saved as owner-scoped service-requests (server-recomputed snapshot) and listed at /panel/zamowienia. |
+| [[service-requests]] | active | ⚠ stale | Service Selection & Pricing (3b.1): the customer 'what should be done' flow — a smart-catalog ServiceConfigurator at /panel/ogrody/[id]/zamow that prices a basket live via the data-driven lib/pricing.estimate, saved as owner-scoped service-requests (server-recomputed snapshot) and listed at /panel/zamowienia. |
 | [[tenancy-and-roles]] | active | ✓ fresh | The tenancy seam (a single Kryscar tenant) + the customer/gardener role model on the BA users collection, including the default-tenant assignment hook. |
 | [[the-mind]] | active | ✓ fresh | The knowledge-base system itself — generator, status hook, navigating skill, and /map-sync command. |
 | [[ui-primitives]] | active | ⚠ stale | shadcn/radix UI primitives (new-york): button, checkbox, input, label, radio-group, scroll-area, separator, sidebar, skeleton, slider, tooltip. |
