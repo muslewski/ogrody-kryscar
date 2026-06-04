@@ -35,6 +35,8 @@ export default buildConfig({
     vercelBlobStorage({
       enabled: true,
       collections: { media: true },
+      // If BLOB_READ_WRITE_TOKEN is absent the plugin self-disables and falls
+      // back to local disk (files lost on redeploy). Set it in ALL prod envs.
       token: process.env.BLOB_READ_WRITE_TOKEN,
     }),
   ],
