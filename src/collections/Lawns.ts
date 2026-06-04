@@ -47,6 +47,15 @@ export const Lawns: CollectionConfig = {
     // Array of { lat, lng } vertices (>=3). Stored as JSON.
     { name: "polygon", type: "json", required: true },
     { name: "areaM2", type: "number", required: true },
+    // Clipped building rings subtracted from the parcel (auto-fill). Empty for manual.
+    { name: "buildings", type: "json" },
+    {
+      name: "source",
+      type: "select",
+      required: true,
+      defaultValue: "manual",
+      options: ["manual", "auto"],
+    },
     {
       name: "tenant",
       type: "relationship",

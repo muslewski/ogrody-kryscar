@@ -337,6 +337,16 @@ export interface Lawn {
     | boolean
     | null;
   areaM2: number;
+  buildings?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  source: 'manual' | 'auto';
   tenant: string | Tenant;
   updatedAt: string;
   createdAt: string;
@@ -643,6 +653,8 @@ export interface LawnsSelect<T extends boolean = true> {
       };
   polygon?: T;
   areaM2?: T;
+  buildings?: T;
+  source?: T;
   tenant?: T;
   updatedAt?: T;
   createdAt?: T;

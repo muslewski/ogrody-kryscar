@@ -12,7 +12,7 @@ import type { RequiredDataFromCollectionSlug } from "payload";
 
 import type { Lawn } from "@/payload-types";
 import type { LawnInput, LawnPoint, LawnView } from "./lawn-types";
-import { computePolygonArea } from "./geo";
+import { netArea } from "./boundary/geo-clip";
 
 function project(doc: Lawn): LawnView {
   const loc = (doc.location ?? {}) as { lat?: number; lng?: number };
@@ -23,6 +23,8 @@ function project(doc: Lawn): LawnView {
     placeId: doc.placeId ?? null,
     location: { lat: loc.lat ?? 0, lng: loc.lng ?? 0 },
     polygon: (doc.polygon as unknown as LawnPoint[] | null) ?? [],
+    buildings: (doc.buildings as unknown as LawnPoint[][] | null) ?? [],
+    source: (doc.source as "manual" | "auto" | null) ?? "manual",
     areaM2: doc.areaM2,
   };
 }
@@ -71,7 +73,9 @@ export async function createLawn(
     placeId: input.placeId ?? undefined,
     location: input.location,
     polygon: input.polygon,
-    areaM2: computePolygonArea(input.polygon),
+    buildings: input.buildings ?? [],
+    source: input.source ?? "manual",
+    areaM2: netArea(input.polygon, input.buildings ?? []),
   } as unknown as RequiredDataFromCollectionSlug<"lawns">;
   const doc = await payload.create({ collection: "lawns", data });
   return project(doc);
@@ -94,8 +98,10 @@ export async function updateLawn(
   if (input.location !== undefined) data.location = input.location;
   if (input.polygon !== undefined) {
     data.polygon = input.polygon;
-    data.areaM2 = computePolygonArea(input.polygon);
+    data.buildings = input.buildings ?? [];
+    data.areaM2 = netArea(input.polygon, input.buildings ?? []);
   }
+  if (input.source !== undefined) data.source = input.source;
   const doc = await payload.update({ collection: "lawns", id, data });
   return project(doc);
 }

@@ -15,6 +15,9 @@ export interface LawnInput {
   placeId?: string | null;
   location: LawnPoint;
   polygon: LawnPoint[];
+  /** Clipped building rings to subtract (auto-fill). Omit/[] for manual lawns. */
+  buildings?: LawnPoint[][];
+  source?: "manual" | "auto";
 }
 
 /** The projected, UI-facing shape of a lawn (decoupled from the Payload row). */
@@ -25,5 +28,7 @@ export interface LawnView {
   placeId: string | null;
   location: LawnPoint;
   polygon: LawnPoint[];
+  buildings: LawnPoint[][];
+  source: "manual" | "auto";
   areaM2: number;
 }
