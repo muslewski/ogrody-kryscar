@@ -8,6 +8,7 @@ import { computePolygonArea } from "../src/lib/geo";
 import { buildStaticMapUrl } from "../src/lib/maps";
 import { parseWktPolygon } from "../src/lib/boundary/wkt";
 import { netArea, clipBuildingsToParcel } from "../src/lib/boundary/geo-clip";
+import { runChain } from "../src/lib/boundary/chain";
 
 // A ~1 km square at the equator (0.0089832° ≈ 1000 m of both lat and lng there)
 // must measure ≈ 1,000,000 m² within 2 %.
@@ -80,3 +81,24 @@ const clipped = clipBuildingsToParcel(parcel, [halfOut]);
 assert.ok(clipped.length === 1 && clipped[0].length >= 4, "expected one clipped ring");
 
 console.log("boundary geo OK — wkt + netArea + clip");
+
+// chain failover: throwing/empty providers are skipped; the good one wins.
+const chainProviders = [{ name: "throws" }, { name: "empty" }, { name: "good" }];
+const chainRes = await runChain(
+  chainProviders,
+  async (p) => {
+    if (p.name === "throws") throw new Error("boom");
+    if (p.name === "empty") return [] as number[];
+    return [1, 2, 3];
+  },
+  (v) => v.length > 0,
+  1000,
+);
+assert.ok(chainRes && chainRes.provider === "good", "expected failover to 'good'");
+assert.equal(
+  await runChain([{ name: "x" }], async () => null, (v) => v !== null, 1000),
+  null,
+  "all-fail → null",
+);
+
+console.log("boundary chain OK — failover");
