@@ -12,6 +12,7 @@ type MediaImageProps = Omit<ImageProps, "src" | "blurDataURL" | "placeholder"> &
 };
 
 export function MediaImage({ url, blurDataURL, alt, ...props }: MediaImageProps) {
+  if (!url) return null;
   if (blurDataURL) {
     return (
       <Image
