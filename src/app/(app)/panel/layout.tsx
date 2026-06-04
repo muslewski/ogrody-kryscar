@@ -5,12 +5,12 @@ import { getPayload } from "payload";
 import config from "@payload-config";
 
 import { auth } from "@/lib/auth";
+import { AppShell } from "@/components/app-shell/AppShell";
 
 /**
- * Authoritative gate for the CUSTOMER area. The proxy already did an optimistic
- * cookie check; here we verify the real session and the user's role against
- * Payload (the source of truth). Loop-safe: missing user → /sign-in; wrong role
- * → that role's own area.
+ * Authoritative gate for the CUSTOMER area. The proxy did an optimistic cookie
+ * check; here we verify the real session + role against Payload, then render the
+ * shared app shell. Loop-safe: missing user → /sign-in; wrong role → /zespol.
  */
 export default async function PanelLayout({
   children,
@@ -29,9 +29,13 @@ export default async function PanelLayout({
     limit: 1,
     depth: 0,
   });
-  const role = docs[0]?.role;
-  if (!role) redirect("/sign-in");
-  if (role !== "customer") redirect("/zespol");
+  const me = docs[0];
+  if (!me?.role) redirect("/sign-in");
+  if (me.role !== "customer") redirect("/zespol");
 
-  return <>{children}</>;
+  return (
+    <AppShell role="customer" user={{ name: me.name, email: me.email }}>
+      {children}
+    </AppShell>
+  );
 }
