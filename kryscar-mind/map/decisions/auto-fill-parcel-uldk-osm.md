@@ -62,3 +62,13 @@ manual path (see [[customer-lawns]] / [[lawns-ownership-in-data-layer]]).
 - **Free but third-party.** No new paid key is required, but auto-fill depends on the ULDK
   and Overpass endpoints being reachable; the per-provider timeout + manual floor keep a slow
   or down upstream from blocking the add-flow.
+
+## Runtime gotchas (found during verification)
+- **Overpass needs a `User-Agent`.** `overpass-api.de` returns HTTP **406** to requests
+  with no UA header (Node `fetch` sends none) — silently fails the building chain, so the
+  house never got subtracted. `osm-buildings.ts` sets `User-Agent: ogrody-kryscar/1.0`.
+- **ULDK ignores `srid=4326` for some powiats.** It returns native **EPSG:2180**
+  (`SRID=2180;POLYGON(...)`) for certain counties despite the requested output SRID. Those
+  easting/northing coords parsed as garbage lat/lng. `uldk.ts` now reads the EWKT `SRID=N;`
+  prefix and reprojects 2180 → WGS84 via **proj4** (`src/lib/boundary/crs.ts`); an unknown
+  CRS returns null → manual-draw floor. New dep: `proj4` (+ `@types/proj4`).

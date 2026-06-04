@@ -12,7 +12,7 @@ _22 zones · 31 verification gaps._
 | [[city-landing-pages]] | active | ⚠ stale | Local-SEO /ogrodnik/[miasto] pages and the Payload-migration-ready location data layer. |
 | [[coverage-map]] | active | ✓ fresh | Service-area geography and the static coverage map (Mapbox/OSM). |
 | [[customer-auth]] | active | ⚠ stale | Better Auth as the customer/gardener auth surface, persisting through a custom BA→Payload Local-API adapter so its user/session/account/verification models are Payload collections. |
-| [[customer-lawns]] | active | ✓ fresh | Customer 'My Lawn' (3a): the /panel/ogrody loop where a logged-in customer adds a lawn from satellite imagery (search → draw polygon → live area → save) backed by an owner-scoped Payload lawns collection. |
+| [[customer-lawns]] | active | ⚠ stale | Customer 'My Lawn' (3a): the /panel/ogrody loop where a logged-in customer adds a lawn from satellite imagery (search → draw polygon → live area → save) backed by an owner-scoped Payload lawns collection. |
 | [[homepage-and-variants]] | active | ⚠ stale | The root homepage (re-exports example-9) plus the ten design-variant pages. |
 | [[image-loading]] | active | ⚠ stale | Blur-up image loading: a generated blurDataURL map + the BlurImage next/image wrapper that paints an instant blurred preview, used by the /uslugi hero. |
 | [[layout-chrome]] | active | ✓ fresh | Root layout, header, footer, preloader, and social links — the shared page shell, with a session-aware Zaloguj/Panel button and a mobile nav that is a left-sliding shadcn Sheet drawer. |
