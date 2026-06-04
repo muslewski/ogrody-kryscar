@@ -3,6 +3,7 @@ import config from "@payload-config";
 
 import type { CatalogItem } from "@/components/service-catalog";
 import type { Service } from "@/payload-types";
+import type { ServicePricing } from "./pricing";
 
 function img(image: Service["image"]): string {
   return typeof image === "object" && image ? (image.url ?? "") : "";
@@ -32,4 +33,46 @@ export async function getCatalogServices(): Promise<CatalogItem[]> {
       ? { label: s.badge.label, tone: (s.badge.tone ?? "primary") as "primary" | "accent" }
       : undefined,
   }));
+}
+
+export interface ConfiguratorService {
+  id: string;
+  slug: string;
+  title: string;
+  short: string;
+  icon: string;
+  category: string;
+  priceFrom: string;
+  pricing: ServicePricing;
+}
+
+/** Services + pricing for the panel configurator (the booking source of truth). */
+export async function getConfiguratorServices(): Promise<ConfiguratorService[]> {
+  const payload = await getPayload({ config });
+  const { docs } = await payload.find({
+    collection: "services",
+    sort: "order",
+    depth: 0,
+    limit: 100,
+  });
+  return docs.map((s) => {
+    const p = (s.pricing ?? {}) as ServicePricing;
+    return {
+      id: String(s.id),
+      slug: s.slug,
+      title: s.title,
+      short: s.short,
+      icon: s.icon,
+      category: s.category,
+      priceFrom: s.priceFrom,
+      pricing: {
+        kind: p.kind ?? "custom",
+        basePrice: p.basePrice ?? null,
+        pricePerM2: p.pricePerM2 ?? null,
+        pricePerUnit: p.pricePerUnit ?? null,
+        unitLabel: p.unitLabel ?? null,
+        recurring: p.recurring ?? false,
+      },
+    };
+  });
 }
