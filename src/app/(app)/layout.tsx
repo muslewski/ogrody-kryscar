@@ -21,10 +21,12 @@ export default function AppRootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pl" className="h-full antialiased" suppressHydrationWarning>
-      <body
-        className={`${inter.className} ${manrope.variable} min-h-full bg-white text-neutral-900`}
-      >
+    <html
+      lang="pl"
+      className={`${inter.variable} ${manrope.variable} h-full antialiased`}
+      suppressHydrationWarning
+    >
+      <body className="min-h-full bg-white text-neutral-900 font-[family-name:var(--font-inter)]">
         {children}
       </body>
     </html>
