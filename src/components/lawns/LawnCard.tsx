@@ -39,7 +39,7 @@ export function LawnCard({ lawn }: { lawn: LawnView }) {
         </p>
         <div className="mt-3 flex gap-2">
           <Link
-            href="/panel/uslugi"
+            href={`/panel/ogrody/${lawn.id}/zamow`}
             className="flex-1 rounded-lg bg-emerald-600 px-3 py-2 text-center text-sm font-semibold text-white transition hover:bg-emerald-700"
           >
             Zamów usługi
