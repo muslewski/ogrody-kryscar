@@ -75,6 +75,7 @@ export interface Config {
     tenants: Tenant;
     media: Media;
     services: Service;
+    lawns: Lawn;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -90,6 +91,7 @@ export interface Config {
     tenants: TenantsSelect<false> | TenantsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
+    lawns: LawnsSelect<false> | LawnsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -313,6 +315,34 @@ export interface Service {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lawns".
+ */
+export interface Lawn {
+  id: string;
+  owner: string | User;
+  name: string;
+  address: string;
+  placeId?: string | null;
+  location: {
+    lat: number;
+    lng: number;
+  };
+  polygon:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  areaM2: number;
+  tenant: string | Tenant;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -366,6 +396,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'services';
         value: string | Service;
+      } | null)
+    | ({
+        relationTo: 'lawns';
+        value: string | Lawn;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -588,6 +622,27 @@ export interface ServicesSelect<T extends boolean = true> {
         metaTitle?: T;
         metaDescription?: T;
       };
+  tenant?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lawns_select".
+ */
+export interface LawnsSelect<T extends boolean = true> {
+  owner?: T;
+  name?: T;
+  address?: T;
+  placeId?: T;
+  location?:
+    | T
+    | {
+        lat?: T;
+        lng?: T;
+      };
+  polygon?: T;
+  areaM2?: T;
   tenant?: T;
   updatedAt?: T;
   createdAt?: T;
