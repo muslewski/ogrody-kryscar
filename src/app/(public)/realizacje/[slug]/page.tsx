@@ -58,7 +58,7 @@ export default async function RealizacjaPage({
   const project = await getProjectBySlug(slug);
   if (!project) notFound();
 
-  const service = getCatalogServices().find(
+  const service = (await getCatalogServices()).find(
     (c): c is CatalogItem => c.slug === project.relatedService,
   );
   const others = (await getAllProjects()).filter((p) => p.slug !== project.slug).slice(0, 3);

@@ -1,14 +1,35 @@
-import { SERVICES, IMG } from "@/lib/data";
-import type { CatalogItem } from "@/components/service-catalog";
-import { SERVICE_IMAGES, PRICES } from "@/lib/services-seed-data";
+import { getPayload } from "payload";
+import config from "@payload-config";
 
-/** Build the enriched catalog items used by <ServiceCatalog>. Presentation
- *  data (images + display pricing) — intentionally static, not CMS content. */
-export function getCatalogServices(): CatalogItem[] {
-  return SERVICES.map((s) => ({
-    ...s,
-    img: SERVICE_IMAGES[s.slug] ?? IMG.parkGarden,
-    from: PRICES[s.slug]?.from ?? "wycena",
-    duration: PRICES[s.slug]?.duration ?? "indywidualnie",
+import type { CatalogItem } from "@/components/service-catalog";
+import type { Service } from "@/payload-types";
+
+function img(image: Service["image"]): string {
+  return typeof image === "object" && image ? (image.url ?? "") : "";
+}
+
+/** Catalog projection, now sourced from the Payload `services` collection
+ *  (sorted by `order`). Display image is the media URL. */
+export async function getCatalogServices(): Promise<CatalogItem[]> {
+  const payload = await getPayload({ config });
+  const { docs } = await payload.find({
+    collection: "services",
+    sort: "order",
+    depth: 1,
+    limit: 100,
+  });
+  return docs.map((s) => ({
+    slug: s.slug,
+    category: s.category,
+    title: s.title,
+    short: s.short,
+    description: s.description,
+    icon: s.icon,
+    img: img(s.image),
+    from: s.priceFrom,
+    duration: s.duration,
+    badge: s.badge?.label
+      ? { label: s.badge.label, tone: (s.badge.tone ?? "primary") as "primary" | "accent" }
+      : undefined,
   }));
 }

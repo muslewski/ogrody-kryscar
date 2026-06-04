@@ -60,7 +60,7 @@ export default async function GuidePage({
   const guide = await getGuideBySlug(slug);
   if (!guide) notFound();
 
-  const catalog = getCatalogServices();
+  const catalog = await getCatalogServices();
   const winter = await getWinterServices();
   const relatedServices = guide.relatedServices
     .map((s) => catalog.find((c) => c.slug === s))

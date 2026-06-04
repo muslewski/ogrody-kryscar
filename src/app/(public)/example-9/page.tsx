@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 export const revalidate = 86400;
 
 export default async function Example9() {
-  const services = getCatalogServices();
+  const services = await getCatalogServices();
   const locations = await getAllLocations();
   const winterServices = await getWinterServices();
   const latestGuides = (await getAllGuides()).slice(0, 3);

@@ -53,7 +53,7 @@ export default async function OgrodnikMiastoPage({
   const loc = await getLocationBySlug(miasto);
   if (!loc) notFound();
 
-  const services = getCatalogServices();
+  const services = await getCatalogServices();
   const neighbours = (await getAllLocations())
     .filter((l) => l.slug !== loc.slug)
     .sort((a, b) => Math.abs(a.km - loc.km) - Math.abs(b.km - loc.km))

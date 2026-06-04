@@ -3,15 +3,21 @@
 import { useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { SERVICES, CATEGORIES, SERVICE_BADGES } from "@/lib/data";
+import { CATEGORIES } from "@/lib/data";
 import { HoverCard } from "@/components/motion";
 import { WarpedHoverImage } from "@/components/WarpedHoverImage";
 
-type Service = (typeof SERVICES)[number];
-export type CatalogItem = Service & {
+export type CatalogItem = {
+  slug: string;
+  category: string;
+  title: string;
+  short: string;
+  description: string;
+  icon: string;
   img: string;
   from: string;
   duration: string;
+  badge?: { label: string; tone: "primary" | "accent" };
 };
 
 export function ServiceCatalog({ services }: { services: CatalogItem[] }) {
@@ -64,7 +70,7 @@ export function ServiceCatalog({ services }: { services: CatalogItem[] }) {
           <AnimatePresence mode="popLayout">
             {shown.map((s, i) => {
               const num = services.findIndex((x) => x.slug === s.slug) + 1;
-              const badge = SERVICE_BADGES[s.slug];
+              const badge = s.badge;
               return (
                 <motion.article
                   key={s.slug}
