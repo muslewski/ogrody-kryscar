@@ -2,18 +2,19 @@
 
 # 🧠 kryscar-mind — Map index
 
-_20 zones · 24 verification gaps._
+_21 zones · 26 verification gaps._
 
 | Zone | Status | Freshness | Summary |
 |---|---|---|---|
-| [[auth-portal]] | active | ✓ fresh | The authenticated portal: the proxy cookie-gate, the (app) route group, role-gated /panel (customer) + /zespol (gardener), and the sign-in/sign-up screens. |
+| [[app-shell]] | active | ✓ fresh | The authenticated app shell: a shared shadcn sidebar (AppShell + AppSidebar, role-driven nav) wrapping /panel (customer) and /zespol (gardener), plus the ComingSoon stub pages and the app-map. |
+| [[auth-portal]] | active | ✓ fresh | The authenticated portal: the proxy cookie-gate, sign-in/sign-up screens under (public)/(auth), and the role-gated app shell entry points /panel (customer) + /zespol (gardener). |
 | [[brand-data]] | active | ⚠ stale | Company identity, address/NIP, socials, legal links, image map, and the canonical SITE_URL. |
 | [[city-landing-pages]] | active | ✓ fresh | Local-SEO /ogrodnik/[miasto] pages and the Payload-migration-ready location data layer. |
 | [[coverage-map]] | active | ✓ fresh | Service-area geography and the static coverage map (Mapbox/OSM). |
 | [[customer-auth]] | active | ⚠ stale | Better Auth as the customer/gardener auth surface, persisting through a custom BA→Payload Local-API adapter so its user/session/account/verification models are Payload collections. |
 | [[homepage-and-variants]] | active | ✓ fresh | The root homepage (re-exports example-9) plus the ten design-variant pages. |
 | [[image-loading]] | active | ⚠ stale | Blur-up image loading: a generated blurDataURL map + the BlurImage next/image wrapper that paints an instant blurred preview, used by the /uslugi hero. |
-| [[layout-chrome]] | active | ⚠ stale | Root layout, header, footer, preloader, and social links — the shared page shell, with a session-aware Zaloguj/Panel button and a mobile nav that is a left-sliding shadcn Sheet drawer. |
+| [[layout-chrome]] | active | ✓ fresh | Root layout, header, footer, preloader, and social links — the shared page shell, with a session-aware Zaloguj/Panel button and a mobile nav that is a left-sliding shadcn Sheet drawer. |
 | [[motion-and-3d]] | active | ⚠ stale | Motion primitives (HoverCard), warped-hover image, the 3D section, counters, and the scroll hook. |
 | [[ogrodowe-abc]] | active | ✓ fresh | Ogrodowe ABC — seasonal gardening-guide content section (/ogrodowe-abc + /ogrodowe-abc/[slug]) and its Payload-ready guides data layer; two-way internal links with /uslugi & /zima. |
 | [[payload-backend]] | active | ✓ fresh | Payload CMS as the app backend: the /admin panel (staff/dev auth via the admins collection), the Postgres (Neon) adapter, ESM/withPayload wiring, and the seed. |
@@ -24,11 +25,13 @@ _20 zones · 24 verification gaps._
 | [[service-pages]] | active | ✓ fresh | Per-service landing pages: /uslugi/[usluga] for all 8 catalog services + the Payload-ready service-page data layer that composes SERVICES + catalog price + landing content. |
 | [[tenancy-and-roles]] | active | ✓ fresh | The tenancy seam (a single Kryscar tenant) + the customer/gardener role model on the BA users collection, including the default-tenant assignment hook. |
 | [[the-mind]] | active | ✓ fresh | The knowledge-base system itself — generator, status hook, navigating skill, and /map-sync command. |
-| [[ui-primitives]] | active | ✓ fresh | shadcn/radix UI primitives (new-york): button, checkbox, input, label, radio-group, scroll-area, separator, sidebar, skeleton, slider, tooltip. |
+| [[ui-primitives]] | active | ⚠ stale | shadcn/radix UI primitives (new-york): button, checkbox, input, label, radio-group, scroll-area, separator, sidebar, skeleton, slider, tooltip. |
 | [[winter-services]] | active | ✓ fresh | Winter-services arc: /zima hub + /zima/[usluga] pages, the Payload-ready winter data layer, and the seasonal engine. |
 
 ## ⚠ Verification gaps
 
+- zone app-shell: invariant "AppShell renders the single <main> landmark; pages (dashboards, ComingSoon) render plain bodies — never a nested <main>" has no enforcedBy
+- zone app-shell: invariant "the sidebar nav is role-driven from app-nav NAV[role]; the gate layouts pass the Payload-verified role + user identity into AppShell" has no enforcedBy
 - zone auth-portal: invariant "proxy.ts is OPTIMISTIC (cookie presence only, no DB) — the authoritative session + role check lives in each segment layout (getSession + a Payload role lookup)" has no enforcedBy
 - zone auth-portal: invariant "role gates are loop-safe: missing user → /sign-in; wrong role → that role's own area (/panel ↔ /zespol)" has no enforcedBy
 - zone city-landing-pages: invariant "Components consume locations only via async accessors — no component imports the LOCATIONS array (Payload-migration boundary)" has no enforcedBy
