@@ -21,7 +21,7 @@ import { SignOutButton } from "@/components/sign-out-button";
 import { NAV, ROLE_LABEL, type Role } from "./app-nav";
 
 function initials(name?: string | null): string {
-  if (!name) return "K";
+  if (!name?.trim()) return "K";
   return name
     .trim()
     .split(/\s+/)
@@ -70,13 +70,14 @@ export function AppSidebar({
         <SidebarGroup>
           <SidebarGroupLabel>Menu</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <nav aria-label="Menu nawigacyjne">
+              <SidebarMenu>
               {items.map((item) => {
                 const active =
                   pathname === item.href ||
                   (item.href !== "/panel" &&
                     item.href !== "/zespol" &&
-                    pathname.startsWith(item.href));
+                    pathname.startsWith(item.href + "/"));
                 return (
                   <SidebarMenuItem key={item.href}>
                     <SidebarMenuButton asChild isActive={active} tooltip={item.label}>
@@ -88,7 +89,8 @@ export function AppSidebar({
                   </SidebarMenuItem>
                 );
               })}
-            </SidebarMenu>
+              </SidebarMenu>
+            </nav>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
@@ -103,7 +105,7 @@ export function AppSidebar({
               {user.name ?? "Konto"}
             </span>
             <span className="truncate text-xs text-sidebar-foreground/60">
-              {user.email}
+              {user.email ?? ""}
             </span>
           </span>
         </div>

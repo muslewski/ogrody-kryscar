@@ -35,7 +35,7 @@ export function AppShell({
             {ROLE_LABEL[role]}
           </span>
         </header>
-        <main className="flex-1 p-6">{children}</main>
+        <div className="flex-1 p-6">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );
