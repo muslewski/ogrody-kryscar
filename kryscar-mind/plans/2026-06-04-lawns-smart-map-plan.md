@@ -124,7 +124,9 @@ export function parseWktPolygon(wkt: string): LawnPoint[] | null {
 - [ ] **Step 4: Create `src/lib/boundary/geo-clip.ts`**
 
 ```ts
-import polygonClipping from "polygon-clipping";
+// polygon-clipping@0.15 declares NAMED exports only (no default). A namespace
+// import satisfies both the .d.ts and the CJS runtime (esModuleInterop).
+import * as polygonClipping from "polygon-clipping";
 
 import type { LawnPoint } from "../lawn-types";
 import { computePolygonArea } from "../geo";
