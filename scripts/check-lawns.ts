@@ -32,16 +32,18 @@ assert.equal(computePolygonArea([{ lat: 0, lng: 0 }, { lat: 1, lng: 1 }]), 0);
 
 console.log(`geo OK — 1km² square measured ${area} m²`);
 
-const url = buildStaticMapUrl(square, {}, "FAKE_KEY");
+const url = buildStaticMapUrl(square, { key: "FAKE_KEY" });
 assert.ok(url && url.includes("staticmap"), "expected a static map url");
 assert.ok(url!.includes("maptype=hybrid"), "expected hybrid map type");
 assert.ok(url!.includes("key=FAKE_KEY"), "expected the key in the url");
-assert.equal(buildStaticMapUrl(square, {}, undefined), null, "no key → null");
+assert.equal(buildStaticMapUrl(square, { key: "" }), null, "no key → null");
 assert.equal(
-  buildStaticMapUrl([{ lat: 0, lng: 0 }], {}, "FAKE_KEY"),
+  buildStaticMapUrl([{ lat: 0, lng: 0 }], { key: "FAKE_KEY" }),
   null,
   "<3 points → null",
 );
+const withB = buildStaticMapUrl(square, { key: "FAKE_KEY", buildings: [square] });
+assert.ok(withB!.includes("0xef4444ff"), "expected a red building path");
 
 console.log("maps OK — static url builder");
 

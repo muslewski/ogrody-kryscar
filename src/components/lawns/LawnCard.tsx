@@ -5,7 +5,11 @@ import type { LawnView } from "@/lib/lawn-types";
 import { LawnActionsMenu } from "./LawnActionsMenu";
 
 export function LawnCard({ lawn }: { lawn: LawnView }) {
-  const snapshot = buildStaticMapUrl(lawn.polygon, { width: 480, height: 220 });
+  const snapshot = buildStaticMapUrl(lawn.polygon, {
+    width: 480,
+    height: 220,
+    buildings: lawn.buildings,
+  });
 
   return (
     <div className="overflow-hidden rounded-2xl border border-neutral-200 bg-white">

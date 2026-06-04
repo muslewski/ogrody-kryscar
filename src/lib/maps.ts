@@ -10,28 +10,35 @@ export const LAWN_MAP_TYPE = "hybrid";
 interface StaticMapOpts {
   width?: number;
   height?: number;
+  buildings?: LawnPoint[][];
+  key?: string;
 }
 
 /**
- * Build a Google Static Maps URL showing the lawn outline (emerald fill) over
- * hybrid satellite imagery. The map auto-fits the path (no center/zoom needed).
- * Returns null when there's no key or fewer than 3 vertices. `key` is injectable
- * for the sanity script; defaults to the public env var.
+ * Static Maps URL: emerald parcel outline over hybrid imagery, plus optional red
+ * building overlays (drawn on top). The map auto-fits the paths. Returns null with
+ * no key or fewer than 3 parcel vertices. `key` is injectable for the sanity script.
  */
 export function buildStaticMapUrl(
   polygon: LawnPoint[],
   opts: StaticMapOpts = {},
-  key: string | undefined = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
 ): string | null {
+  const key = opts.key ?? process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
   if (!key || polygon.length < 3) return null;
-  const { width = 600, height = 260 } = opts;
+  const { width = 600, height = 260, buildings = [] } = opts;
   const pts = polygon.map((p) => `${p.lat},${p.lng}`).join("|");
-  const path = `fillcolor:0x10b98144|color:0x10b981ff|weight:2|${pts}`;
+  const parcelPath = `fillcolor:0x10b98144|color:0x10b981ff|weight:2|${pts}`;
   const params = new URLSearchParams({
     size: `${width}x${height}`,
     scale: "2",
     maptype: LAWN_MAP_TYPE,
     key,
   });
-  return `https://maps.googleapis.com/maps/api/staticmap?${params.toString()}&path=${encodeURIComponent(path)}`;
+  let url = `https://maps.googleapis.com/maps/api/staticmap?${params.toString()}&path=${encodeURIComponent(parcelPath)}`;
+  for (const b of buildings) {
+    if (b.length < 3) continue;
+    const bp = `fillcolor:0xef444455|color:0xef4444ff|weight:1|${b.map((p) => `${p.lat},${p.lng}`).join("|")}`;
+    url += `&path=${encodeURIComponent(bp)}`;
+  }
+  return url;
 }
