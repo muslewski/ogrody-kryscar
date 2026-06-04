@@ -76,6 +76,7 @@ export interface Config {
     media: Media;
     services: Service;
     lawns: Lawn;
+    'service-requests': ServiceRequest;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -92,6 +93,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
     lawns: LawnsSelect<false> | LawnsSelect<true>;
+    'service-requests': ServiceRequestsSelect<false> | ServiceRequestsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -364,6 +366,33 @@ export interface Lawn {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "service-requests".
+ */
+export interface ServiceRequest {
+  id: string;
+  owner: string | User;
+  lawn: string | Lawn;
+  items: {
+    service?: (string | null) | Service;
+    serviceSlug: string;
+    serviceTitle: string;
+    frequency?: ('jednorazowo' | 'co_tydzien' | 'co_2_tyg' | 'raz_w_miesiacu' | 'sezonowy') | null;
+    quantity?: number | null;
+    estMin: number;
+    estMax: number;
+    custom?: boolean | null;
+    id?: string | null;
+  }[];
+  estMin: number;
+  estMax: number;
+  note?: string | null;
+  status: 'draft' | 'new' | 'cancelled';
+  tenant: string | Tenant;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -421,6 +450,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'lawns';
         value: string | Lawn;
+      } | null)
+    | ({
+        relationTo: 'service-requests';
+        value: string | ServiceRequest;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -676,6 +709,34 @@ export interface LawnsSelect<T extends boolean = true> {
   areaM2?: T;
   buildings?: T;
   source?: T;
+  tenant?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "service-requests_select".
+ */
+export interface ServiceRequestsSelect<T extends boolean = true> {
+  owner?: T;
+  lawn?: T;
+  items?:
+    | T
+    | {
+        service?: T;
+        serviceSlug?: T;
+        serviceTitle?: T;
+        frequency?: T;
+        quantity?: T;
+        estMin?: T;
+        estMax?: T;
+        custom?: T;
+        id?: T;
+      };
+  estMin?: T;
+  estMax?: T;
+  note?: T;
+  status?: T;
   tenant?: T;
   updatedAt?: T;
   createdAt?: T;

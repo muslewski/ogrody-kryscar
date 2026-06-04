@@ -16,6 +16,7 @@ import { Tenants } from "./collections/Tenants";
 import { Media } from "./collections/Media";
 import { Services } from "./collections/Services";
 import { Lawns } from "./collections/Lawns";
+import { ServiceRequests } from "./collections/ServiceRequests";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -31,7 +32,7 @@ export default buildConfig({
   // Payload-managed; Better Auth writes to them through our custom BA -> Payload
   // Local-API adapter (src/lib/better-auth-payload-adapter.ts). `tenants` is the
   // single-tenant seam (seeded: Kryscar). NO multi-tenant plugin (deferred).
-  collections: [Admins, Users, Sessions, Accounts, Verifications, Tenants, Media, Services, Lawns],
+  collections: [Admins, Users, Sessions, Accounts, Verifications, Tenants, Media, Services, Lawns, ServiceRequests],
   editor: lexicalEditor(),
   plugins: [
     vercelBlobStorage({
