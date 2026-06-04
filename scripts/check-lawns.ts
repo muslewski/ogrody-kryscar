@@ -10,6 +10,7 @@ import { parseWktPolygon } from "../src/lib/boundary/wkt";
 import { netArea, clipBuildingsToParcel } from "../src/lib/boundary/geo-clip";
 import { runChain } from "../src/lib/boundary/chain";
 import { buildUldkUrl, parseUldkResponse } from "../src/lib/boundary/uldk";
+import { buildOverpassQuery, parseOverpassJson } from "../src/lib/boundary/osm-buildings";
 
 // A ~1 km square at the equator (0.0089832° ≈ 1000 m of both lat and lng there)
 // must measure ≈ 1,000,000 m² within 2 %.
@@ -119,3 +120,23 @@ assert.equal(parseUldkResponse("-1\n"), null, "non-zero status → null");
 assert.equal(parseUldkResponse(""), null, "empty → null");
 
 console.log("boundary uldk OK — url + parse");
+
+const oq = buildOverpassQuery({ south: 53.1, west: 18.0, north: 53.2, east: 18.1 });
+assert.ok(oq.includes('way["building"](53.1,18,53.2,18.1)'), "expected building bbox query");
+const oRings = parseOverpassJson({
+  elements: [
+    {
+      type: "way",
+      geometry: [
+        { lat: 53.1, lon: 18.0 },
+        { lat: 53.1, lon: 18.001 },
+        { lat: 53.101, lon: 18.001 },
+        { lat: 53.1, lon: 18.0 },
+      ],
+    },
+    { type: "node", geometry: undefined },
+  ],
+});
+assert.ok(oRings.length === 1 && oRings[0].length === 4, "expected one building ring");
+
+console.log("boundary osm OK — query + parse");
