@@ -6,6 +6,15 @@ import { getMyLawns } from "@/lib/lawns";
 
 export const metadata = { title: "Pulpit" };
 
+/** Polish plural for "ogród": 1 → ogród, 2–4 → ogrody, 5+ / 11–14 → ogrodów. */
+function lawnsLabel(n: number): string {
+  if (n === 1) return "ogród";
+  const ones = n % 10;
+  const tens = n % 100;
+  if (ones >= 2 && ones <= 4 && (tens < 10 || tens >= 20)) return "ogrody";
+  return "ogrodów";
+}
+
 export default async function PanelPage() {
   const session = await auth.api.getSession({ headers: await headers() });
   const name = session?.user?.name;
@@ -29,7 +38,7 @@ export default async function PanelPage() {
           <p className="mt-1 text-2xl font-semibold tracking-tight">
             {lawns.length === 0
               ? "Dodaj swój pierwszy ogród"
-              : `${lawns.length} ${lawns.length === 1 ? "ogród" : "ogrody"}`}
+              : `${lawns.length} ${lawnsLabel(lawns.length)}`}
           </p>
         </div>
         <span aria-hidden className="text-emerald-700">

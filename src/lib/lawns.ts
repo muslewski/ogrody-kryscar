@@ -34,6 +34,9 @@ export async function getMyLawns(userId: string): Promise<LawnView[]> {
     where: { owner: { equals: userId } },
     sort: "-createdAt",
     depth: 0,
+    // MVP cap: a homeowner has a handful of lawns. If a real account ever
+    // exceeds this, the dashboard count + grid would truncate silently — add
+    // pagination then (not built for 3a).
     limit: 100,
   });
   return docs.map(project);
