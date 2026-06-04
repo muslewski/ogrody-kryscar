@@ -6,6 +6,8 @@ import assert from "node:assert/strict";
 
 import { computePolygonArea } from "../src/lib/geo";
 import { buildStaticMapUrl } from "../src/lib/maps";
+import { parseWktPolygon } from "../src/lib/boundary/wkt";
+import { netArea, clipBuildingsToParcel } from "../src/lib/boundary/geo-clip";
 
 // A ~1 km square at the equator (0.0089832° ≈ 1000 m of both lat and lng there)
 // must measure ≈ 1,000,000 m² within 2 %.
@@ -39,3 +41,42 @@ assert.equal(
 );
 
 console.log("maps OK — static url builder");
+
+// WKT parse (lon/lat order, Polish coords)
+const wktRing = parseWktPolygon(
+  "POLYGON((18.000 53.100, 18.001 53.100, 18.001 53.101, 18.000 53.101, 18.000 53.100))",
+);
+assert.ok(wktRing && wktRing.length >= 4, "expected a parsed WKT ring");
+assert.ok(
+  Math.abs(wktRing![0].lat - 53.1) < 1e-6 && Math.abs(wktRing![0].lng - 18.0) < 1e-6,
+  "expected lat/lng order from WKT",
+);
+
+// netArea: a parcel with an interior building subtracts the building area.
+const parcel = [
+  { lat: 0, lng: 0 },
+  { lat: 0.0089832, lng: 0 },
+  { lat: 0.0089832, lng: 0.0089832 },
+  { lat: 0, lng: 0.0089832 },
+]; // ~1,000,000 m²
+const building = [
+  { lat: 0.002, lng: 0.002 },
+  { lat: 0.004, lng: 0.002 },
+  { lat: 0.004, lng: 0.004 },
+  { lat: 0.002, lng: 0.004 },
+]; // interior ~ (0.002 deg)^2 ≈ 49,600 m²
+const net = netArea(parcel, [building]);
+assert.ok(net < 1_000_000 && net > 900_000, `expected net < parcel, got ${net}`);
+assert.equal(netArea(parcel, []), 1000010, "no buildings → parcel area");
+
+// clip: a building straddling the parcel edge only subtracts the inside part.
+const halfOut = [
+  { lat: 0.001, lng: -0.001 },
+  { lat: 0.001, lng: 0.001 },
+  { lat: 0.003, lng: 0.001 },
+  { lat: 0.003, lng: -0.001 },
+];
+const clipped = clipBuildingsToParcel(parcel, [halfOut]);
+assert.ok(clipped.length === 1 && clipped[0].length >= 4, "expected one clipped ring");
+
+console.log("boundary geo OK — wkt + netArea + clip");
