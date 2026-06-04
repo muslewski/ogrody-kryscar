@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { auth } from "@/lib/auth";
 import { getMyLawns } from "@/lib/lawns";
+import { getMyRequests } from "@/lib/requests";
 
 export const metadata = { title: "Pulpit" };
 
@@ -19,6 +20,8 @@ export default async function PanelPage() {
   const session = await auth.api.getSession({ headers: await headers() });
   const name = session?.user?.name;
   const lawns = session ? await getMyLawns(session.user.id) : [];
+  const requests = session ? await getMyRequests(session.user.id) : [];
+  const activeRequests = requests.filter((r) => r.status === "new").length;
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -39,6 +42,21 @@ export default async function PanelPage() {
             {lawns.length === 0
               ? "Dodaj swój pierwszy ogród"
               : `${lawns.length} ${lawnsLabel(lawns.length)}`}
+          </p>
+        </div>
+        <span aria-hidden className="text-emerald-700">
+          →
+        </span>
+      </Link>
+
+      <Link
+        href="/panel/zamowienia"
+        className="mt-3 flex items-center justify-between rounded-2xl border border-neutral-200 bg-white p-5 transition hover:border-emerald-300"
+      >
+        <div>
+          <p className="text-sm text-neutral-500">Zamówienia</p>
+          <p className="mt-1 text-2xl font-semibold tracking-tight">
+            {activeRequests === 0 ? "Brak aktywnych zapytań" : `${activeRequests} aktywne`}
           </p>
         </div>
         <span aria-hidden className="text-emerald-700">
