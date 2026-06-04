@@ -10,7 +10,7 @@ sources: ["[[2026-06-03-service-landing-pages-design]]"]
 owns:
   routes: ["/uslugi/[usluga]"]
   anchors: ["symbol:getAllServices", "symbol:getServiceBySlug", "symbol:getServiceSlugs", "symbol:ServicePage", "symbol:ServiceFaq"]
-  globs: ["src/app/(public)/uslugi/**", "src/lib/services.ts"]
+  globs: ["src/app/(public)/uslugi/**", "src/lib/services.ts", "src/lib/services-seed-data.ts"]
 depends: ["[[service-catalog]]", "[[coverage-map]]", "[[layout-chrome]]", "[[city-landing-pages]]", "[[winter-services]]"]
 invariants:
   - rule: "Components consume service pages only via async accessors — no component imports SERVICE_CONTENT (Payload-migration boundary)"
