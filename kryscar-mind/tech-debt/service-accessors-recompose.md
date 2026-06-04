@@ -2,9 +2,9 @@
 type: debt
 summary: "Each accessor in src/lib/services.ts calls compose() independently, so a page calling both getAllServices() and getServiceBySlug() runs the full composition twice; getAllServices() also returns the internal array without a defensive copy."
 tags: [performance, architecture]
-status: open
+status: resolved
 created: 2026-06-03
-updated: 2026-06-03
+updated: 2026-06-04
 related: ["[[service-pages]]", "[[service-page-data-module]]"]
 sources: []
 severity: low
@@ -20,3 +20,5 @@ Two small changes before the Payload migration:
 2. Return a defensive copy from `getAllServices`: `return [...compose()]`.
 
 Optionally memoize `compose()` behind a module-level `let cache: ServicePage[] | null = null` (reset on hot-reload in dev via `module.hot` or just accept the extra compose on first cold call per worker).
+
+Resolved by the services→Payload migration (2026-06-04) — accessors now read Payload; getServiceBySlug uses a targeted where-query. See [[services-as-payload-collection]].

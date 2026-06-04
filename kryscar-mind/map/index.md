@@ -17,12 +17,12 @@ _21 zones · 27 verification gaps._
 | [[layout-chrome]] | active | ✓ fresh | Root layout, header, footer, preloader, and social links — the shared page shell, with a session-aware Zaloguj/Panel button and a mobile nav that is a left-sliding shadcn Sheet drawer. |
 | [[motion-and-3d]] | active | ⚠ stale | Motion primitives (HoverCard), warped-hover image, the 3D section, counters, and the scroll hook. |
 | [[ogrodowe-abc]] | active | ⚠ stale | Ogrodowe ABC — seasonal gardening-guide content section (/ogrodowe-abc + /ogrodowe-abc/[slug]) and its Payload-ready guides data layer; two-way internal links with /uslugi & /zima. |
-| [[payload-backend]] | active | ⚠ stale | Payload CMS as the app backend: the /admin panel (staff/dev auth via the admins collection), the Postgres (Neon) adapter, ESM/withPayload wiring, Media collection (Vercel Blob + blur hook), and the seed. |
+| [[payload-backend]] | active | ✓ fresh | Payload CMS as the app backend: the /admin panel (staff/dev auth via the admins collection), the Postgres (Neon) adapter, ESM/withPayload wiring, Media collection (Vercel Blob + blur hook), and the seed. |
 | [[pricing-calculator]] | active | ✓ fresh | Pricing algorithm and the interactive area/frequency calculator form. |
 | [[realizacje]] | active | ⚠ stale | Realizacje — before/after project gallery (/realizacje + /realizacje/[slug]) for aranżacja/rabaty, its Payload-ready projects data layer, and the BeforeAfterSlider client island. |
 | [[seo]] | active | ✓ fresh | sitemap.xml, robots.txt, and canonical/metadataBase wiring. |
-| [[service-catalog]] | active | ⚠ stale | Service definitions, categories, catalog enrichment, and the single-select filter + motion reorder island. |
-| [[service-pages]] | active | ⚠ stale | Per-service landing pages: /uslugi/[usluga] for all 8 catalog services + the Payload-ready service-page data layer that composes SERVICES + catalog price + landing content. |
+| [[service-catalog]] | active | ✓ fresh | Service definitions, categories, catalog enrichment, and the single-select filter + motion reorder island. |
+| [[service-pages]] | active | ✓ fresh | Per-service landing pages: /uslugi/[usluga] for all 8 catalog services + the Payload-backed service-page data layer whose accessors read the services collection. |
 | [[tenancy-and-roles]] | active | ✓ fresh | The tenancy seam (a single Kryscar tenant) + the customer/gardener role model on the BA users collection, including the default-tenant assignment hook. |
 | [[the-mind]] | active | ✓ fresh | The knowledge-base system itself — generator, status hook, navigating skill, and /map-sync command. |
 | [[ui-primitives]] | active | ⚠ stale | shadcn/radix UI primitives (new-york): button, checkbox, input, label, radio-group, scroll-area, separator, sidebar, skeleton, slider, tooltip. |
@@ -49,8 +49,8 @@ _21 zones · 27 verification gaps._
 - zone realizacje: invariant "every before/after image path is present in BLUR_DATA so the slider always blurs up" has no enforcedBy
 - zone realizacje: invariant "pages render SiteHeader, so they set revalidate=86400 (site-wide winter banner)" has no enforcedBy
 - zone seo: invariant "every public route has a sitemap entry" has no enforcedBy
-- zone service-catalog: invariant "SERVICES drives both the homepage catalog and the city pages" has no enforcedBy
-- zone service-pages: invariant "Components consume service pages only via async accessors — no component imports SERVICE_CONTENT (Payload-migration boundary)" has no enforcedBy
+- zone service-catalog: invariant "the live catalog + city pages read the Payload services collection via getCatalogServices (async); SERVICES/SERVICE_BADGES stay static for the design-variant pages + as seed source" has no enforcedBy
+- zone service-pages: invariant "Components consume service data only via async accessors (getAllServices, getServiceBySlug, getServiceSlugs) — no component imports SERVICE_CONTENT or services-seed-data directly; the source is the Payload services collection" has no enforcedBy
 - zone tenancy-and-roles: invariant "Single tenant for MVP: exactly one tenants row (slug 'kryscar'); every user is assigned to it by the default-tenant beforeChange hook on the users collection" has no enforcedBy
 - zone tenancy-and-roles: invariant "users.role defaults to 'customer' and is admin-only writable (field access) — BA signup never sets it; only a Payload superadmin promotes to 'gardener'" has no enforcedBy
 - zone ui-primitives: invariant "sidebar tokens are concrete hex values inside the single @theme block in globals.css — no :root or @theme inline layers" has no enforcedBy
