@@ -511,31 +511,50 @@ Expected: both added to `package.json`; no peer-dep errors that block (warnings 
 
 - [ ] **Step 2: Write the loader singleton**
 
-`src/lib/google-maps-loader.ts`:
+`src/lib/google-maps-loader.ts` (js-api-loader **v2 functional API** — the v1 `Loader` class is deprecated):
 ```ts
-import { Loader } from "@googlemaps/js-api-loader";
+import { setOptions, importLibrary } from "@googlemaps/js-api-loader";
 
 /**
- * Singleton Google Maps JS loader for the lawn map screens. Libraries: places
- * (address autocomplete), drawing (polygon), geometry (live area). Client-only —
- * reads the public key directly (env.ts is server-runtime only). Polish locale.
+ * Google Maps JS loader (js-api-loader v2 functional API): setOptions() once,
+ * then importLibrary() per library. Client-only — reads the public key directly
+ * (env.ts is server-runtime only). Polish locale. Returns the typed library
+ * objects so callers use library classes (maps.Map, drawing.DrawingManager,
+ * geometry.spherical, places.Autocomplete) rather than the global namespace.
  */
-let loader: Loader | null = null;
+export interface MapsLibraries {
+  maps: google.maps.MapsLibrary;
+  drawing: google.maps.DrawingLibrary;
+  geometry: google.maps.GeometryLibrary;
+  places: google.maps.PlacesLibrary;
+}
 
-export function getMapsLoader(): Loader {
-  if (!loader) {
-    loader = new Loader({
-      apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? "",
-      libraries: ["places", "drawing", "geometry"],
-      language: "pl",
-      region: "PL",
-    });
-  }
-  return loader;
+let configured = false;
+
+function ensureConfigured(): void {
+  if (configured) return;
+  setOptions({
+    key: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? "",
+    v: "weekly",
+    language: "pl",
+    region: "PL",
+  });
+  configured = true;
 }
 
 export function hasMapsKey(): boolean {
   return Boolean(process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY);
+}
+
+export async function loadMapsLibraries(): Promise<MapsLibraries> {
+  ensureConfigured();
+  const [maps, drawing, geometry, places] = await Promise.all([
+    importLibrary("maps"),
+    importLibrary("drawing"),
+    importLibrary("geometry"),
+    importLibrary("places"),
+  ]);
+  return { maps, drawing, geometry, places };
 }
 ```
 
@@ -719,6 +738,8 @@ git commit -m "feat(lawns): create/update/delete server actions (session-scoped)
 - Create: `src/components/lawns/LawnDrawer.tsx`
 
 This is the core UI. It walks through three phases (`search → draw → ready`) on one map. The map type is hybrid; default Google UI is disabled. The polygon is editable after drawing (drag corners), so "mistakes are cheap" via drag + "Rysuj od nowa" (we don't implement per-vertex undo during drawing).
+
+> **v2 loader correction (applied during implementation):** `@googlemaps/js-api-loader@2` deprecated the `Loader` class. This component uses `loadMapsLibraries()` (Task 5, v2 functional API) instead of `getMapsLoader()`, and uses the returned **library objects** — `maps.Map`, `maps.Polygon`, `maps.LatLngBounds`, `drawing.DrawingManager`, `drawing.OverlayType.POLYGON`, `geometry.spherical.computeArea`, `places.Autocomplete` — rather than the global `google.maps.*` constructors. `geometry` and `drawing` are held in refs (`geometryRef`, `drawingLibRef`) so `recomputeArea()`/`startDrawing()` can reach them from event handlers. Global `google.maps.*` is still used for *type annotations only*. The corrected component is the one dispatched to (and committed by) the implementer.
 
 - [ ] **Step 1: Write the component**
 
