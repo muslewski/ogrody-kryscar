@@ -32,7 +32,11 @@ export const osmBuildingProvider: BuildingProvider = {
   async fetchBuildings(bbox) {
     const res = await fetch(OVERPASS_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        // Overpass rejects requests with no User-Agent (HTTP 406); identify the app.
+        "User-Agent": "ogrody-kryscar/1.0 (+https://kryscar.pl)",
+      },
       body: `data=${encodeURIComponent(buildOverpassQuery(bbox))}`,
       cache: "no-store",
     });

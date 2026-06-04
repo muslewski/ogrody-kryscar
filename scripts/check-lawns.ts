@@ -121,7 +121,28 @@ assert.ok(okRes && okRes.length >= 4, "expected parcel ring from status-0 respon
 assert.equal(parseUldkResponse("-1\n"), null, "non-zero status → null");
 assert.equal(parseUldkResponse(""), null, "empty → null");
 
-console.log("boundary uldk OK — url + parse");
+// ULDK sometimes returns native EPSG:2180 despite srid=4326 — must project to WGS84.
+const res2180 = parseUldkResponse(
+  "0\nSRID=2180;POLYGON((442599.65 579236.04, 442637.39 579236.04, 442637.39 579270.0, 442599.65 579270.0, 442599.65 579236.04))",
+);
+assert.ok(res2180 && res2180.length >= 4, "expected ring from a 2180 response");
+assert.ok(
+  res2180![0].lat > 52 &&
+    res2180![0].lat < 54 &&
+    res2180![0].lng > 17 &&
+    res2180![0].lng < 19,
+  `expected 2180→WGS84 in Bydgoszcz range, got ${JSON.stringify(res2180![0])}`,
+);
+// 4326 with the SRID prefix still parses as lng/lat.
+const res4326 = parseUldkResponse(
+  "0\nSRID=4326;POLYGON((18.003 53.121, 18.0036 53.121, 18.0036 53.1214, 18.003 53.1214, 18.003 53.121))",
+);
+assert.ok(
+  res4326 && Math.abs(res4326[0].lat - 53.121) < 1e-3 && Math.abs(res4326[0].lng - 18.003) < 1e-3,
+  "expected 4326 EWKT to parse as lng/lat",
+);
+
+console.log("boundary uldk OK — url + parse + crs (2180/4326)");
 
 const oq = buildOverpassQuery({ south: 53.1, west: 18.0, north: 53.2, east: 18.1 });
 assert.ok(oq.includes('way["building"](53.1,18,53.2,18.1)'), "expected building bbox query");
