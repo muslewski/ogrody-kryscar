@@ -3,6 +3,7 @@ import { fileURLToPath } from "url";
 
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
 import { buildConfig } from "payload";
 import sharp from "sharp";
 
@@ -12,6 +13,7 @@ import { Sessions } from "./collections/auth/Sessions";
 import { Accounts } from "./collections/auth/Accounts";
 import { Verifications } from "./collections/auth/Verifications";
 import { Tenants } from "./collections/Tenants";
+import { Media } from "./collections/Media";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -27,8 +29,15 @@ export default buildConfig({
   // Payload-managed; Better Auth writes to them through our custom BA -> Payload
   // Local-API adapter (src/lib/better-auth-payload-adapter.ts). `tenants` is the
   // single-tenant seam (seeded: Kryscar). NO multi-tenant plugin (deferred).
-  collections: [Admins, Users, Sessions, Accounts, Verifications, Tenants],
+  collections: [Admins, Users, Sessions, Accounts, Verifications, Tenants, Media],
   editor: lexicalEditor(),
+  plugins: [
+    vercelBlobStorage({
+      enabled: true,
+      collections: { media: true },
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+    }),
+  ],
   // Read process.env directly (NOT src/lib/env.ts): this config is also loaded by
   // `payload generate:types`, where the DB/secret env may be absent.
   secret: process.env.PAYLOAD_SECRET || "",

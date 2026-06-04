@@ -2,7 +2,7 @@
 
 # 🧠 kryscar-mind — Map index
 
-_21 zones · 26 verification gaps._
+_21 zones · 27 verification gaps._
 
 | Zone | Status | Freshness | Summary |
 |---|---|---|---|
@@ -17,7 +17,7 @@ _21 zones · 26 verification gaps._
 | [[layout-chrome]] | active | ✓ fresh | Root layout, header, footer, preloader, and social links — the shared page shell, with a session-aware Zaloguj/Panel button and a mobile nav that is a left-sliding shadcn Sheet drawer. |
 | [[motion-and-3d]] | active | ⚠ stale | Motion primitives (HoverCard), warped-hover image, the 3D section, counters, and the scroll hook. |
 | [[ogrodowe-abc]] | active | ✓ fresh | Ogrodowe ABC — seasonal gardening-guide content section (/ogrodowe-abc + /ogrodowe-abc/[slug]) and its Payload-ready guides data layer; two-way internal links with /uslugi & /zima. |
-| [[payload-backend]] | active | ✓ fresh | Payload CMS as the app backend: the /admin panel (staff/dev auth via the admins collection), the Postgres (Neon) adapter, ESM/withPayload wiring, and the seed. |
+| [[payload-backend]] | active | ✓ fresh | Payload CMS as the app backend: the /admin panel (staff/dev auth via the admins collection), the Postgres (Neon) adapter, ESM/withPayload wiring, Media collection (Vercel Blob + blur hook), and the seed. |
 | [[pricing-calculator]] | active | ✓ fresh | Pricing algorithm and the interactive area/frequency calculator form. |
 | [[realizacje]] | active | ✓ fresh | Realizacje — before/after project gallery (/realizacje + /realizacje/[slug]) for aranżacja/rabaty, its Payload-ready projects data layer, and the BeforeAfterSlider client island. |
 | [[seo]] | active | ✓ fresh | sitemap.xml, robots.txt, and canonical/metadataBase wiring. |
@@ -44,6 +44,7 @@ _21 zones · 26 verification gaps._
 - zone ogrodowe-abc: invariant "every guide img is a path present in BLUR_DATA so the hero always blurs up" has no enforcedBy
 - zone payload-backend: invariant "payload.config.ts reads process.env directly (NOT src/lib/env.ts) — it is loaded by `payload generate:types` where DB/secret env may be absent" has no enforcedBy
 - zone payload-backend: invariant "the project is ESM (package.json type:module) — required for Payload config resolution and `payload generate:types`" has no enforcedBy
+- zone payload-backend: invariant "Media files are stored on Vercel Blob (BLOB_READ_WRITE_TOKEN); when the token is absent the plugin self-disables and falls back to local storage — no build-time token needed" has no enforcedBy
 - zone realizacje: invariant "Components consume projects only via async accessors — no component imports the PROJECTS array (Payload-migration boundary)" has no enforcedBy
 - zone realizacje: invariant "every before/after image path is present in BLUR_DATA so the slider always blurs up" has no enforcedBy
 - zone realizacje: invariant "pages render SiteHeader, so they set revalidate=86400 (site-wide winter banner)" has no enforcedBy

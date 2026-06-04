@@ -5,7 +5,7 @@ tags: [perf, ui, images]
 status: active
 created: 2026-06-03
 updated: 2026-06-03
-related: ["[[brand-data]]", "[[service-pages]]", "[[motion-and-3d]]", "[[winter-services]]", "[[realizacje]]"]
+related: ["[[brand-data]]", "[[service-pages]]", "[[motion-and-3d]]", "[[winter-services]]", "[[realizacje]]", "[[payload-backend]]"]
 sources: ["[[2026-06-03-image-blur-loading-design]]"]
 owns:
   routes: []
