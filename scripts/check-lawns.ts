@@ -9,6 +9,7 @@ import { buildStaticMapUrl } from "../src/lib/maps";
 import { parseWktPolygon } from "../src/lib/boundary/wkt";
 import { netArea, clipBuildingsToParcel } from "../src/lib/boundary/geo-clip";
 import { runChain } from "../src/lib/boundary/chain";
+import { buildUldkUrl, parseUldkResponse } from "../src/lib/boundary/uldk";
 
 // A ~1 km square at the equator (0.0089832° ≈ 1000 m of both lat and lng there)
 // must measure ≈ 1,000,000 m² within 2 %.
@@ -102,3 +103,19 @@ assert.equal(
 );
 
 console.log("boundary chain OK — failover");
+
+const uldkUrl = buildUldkUrl({ lat: 53.123, lng: 18.008 });
+assert.ok(uldkUrl.includes("xy=18.008%2C53.123%2C4326"), "expected lng,lat,4326 xy");
+assert.ok(
+  uldkUrl.includes("result=geom_wkt") && uldkUrl.includes("srid=4326"),
+  "expected wkt+srid",
+);
+
+const okRes = parseUldkResponse(
+  "0\nPOLYGON((18.000 53.100, 18.001 53.100, 18.001 53.101, 18.000 53.101, 18.000 53.100))",
+);
+assert.ok(okRes && okRes.length >= 4, "expected parcel ring from status-0 response");
+assert.equal(parseUldkResponse("-1\n"), null, "non-zero status → null");
+assert.equal(parseUldkResponse(""), null, "empty → null");
+
+console.log("boundary uldk OK — url + parse");
