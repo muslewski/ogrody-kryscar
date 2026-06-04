@@ -1,5 +1,7 @@
 import type { CollectionConfig, FieldAccess } from "payload";
 
+import { assignDefaultTenant } from "../hooks/assign-default-tenant";
+
 /**
  * Better Auth `user` model, as a Payload-managed collection.
  *
@@ -65,23 +67,7 @@ export const Users: CollectionConfig = {
     },
   ],
   hooks: {
-    beforeChange: [
-      async ({ data, operation, req }) => {
-        // Assign the single Kryscar tenant on create when unset. THIS hook is the
-        // designated future home of customer→tenant routing logic — today a
-        // one-liner (everyone → Kryscar), later the assignment system.
-        if (operation === "create" && !data.tenant) {
-          const res = await req.payload.find({
-            collection: "tenants",
-            where: { slug: { equals: "kryscar" } },
-            limit: 1,
-            depth: 0,
-          });
-          if (res.docs[0]) data.tenant = res.docs[0].id;
-        }
-        return data;
-      },
-    ],
+    beforeChange: [assignDefaultTenant],
   },
   timestamps: true,
 };

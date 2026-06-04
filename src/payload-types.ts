@@ -74,6 +74,7 @@ export interface Config {
     verifications: Verification;
     tenants: Tenant;
     media: Media;
+    services: Service;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -88,6 +89,7 @@ export interface Config {
     verifications: VerificationsSelect<false> | VerificationsSelect<true>;
     tenants: TenantsSelect<false> | TenantsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    services: ServicesSelect<false> | ServicesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -267,6 +269,50 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services".
+ */
+export interface Service {
+  id: string;
+  slug: string;
+  order: number;
+  title: string;
+  short: string;
+  description: string;
+  category: 'trawnik' | 'ciecie' | 'sadzenie' | 'porzadki' | 'projekt';
+  icon: 'scissors' | 'leaf' | 'rake' | 'sprout' | 'hedge' | 'broom' | 'compass' | 'flowers';
+  badge?: {
+    label?: string | null;
+    tone?: ('primary' | 'accent') | null;
+  };
+  priceFrom: string;
+  duration: string;
+  image: string | Media;
+  hero: {
+    paragraph: string;
+    id?: string | null;
+  }[];
+  includes: {
+    item: string;
+    id?: string | null;
+  }[];
+  pricingNote: string;
+  faq?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  seo?: {
+    metaTitle?: string | null;
+    metaDescription?: string | null;
+  };
+  tenant: string | Tenant;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -316,6 +362,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: string | Media;
+      } | null)
+    | ({
+        relationTo: 'services';
+        value: string | Service;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -490,6 +540,57 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services_select".
+ */
+export interface ServicesSelect<T extends boolean = true> {
+  slug?: T;
+  order?: T;
+  title?: T;
+  short?: T;
+  description?: T;
+  category?: T;
+  icon?: T;
+  badge?:
+    | T
+    | {
+        label?: T;
+        tone?: T;
+      };
+  priceFrom?: T;
+  duration?: T;
+  image?: T;
+  hero?:
+    | T
+    | {
+        paragraph?: T;
+        id?: T;
+      };
+  includes?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  pricingNote?: T;
+  faq?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  seo?:
+    | T
+    | {
+        metaTitle?: T;
+        metaDescription?: T;
+      };
+  tenant?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
