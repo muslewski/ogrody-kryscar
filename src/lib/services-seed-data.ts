@@ -10,6 +10,19 @@
  * Pure data — no functions, no Payload imports.
  */
 import { IMG } from "@/lib/data";
+import type { ServicePricing } from "./pricing";
+
+/** Pricing metadata seeded onto each service (generalizes calculator.ts). */
+export const SERVICE_PRICING: Record<string, ServicePricing> = {
+  koszenie: { kind: "area", basePrice: 180, pricePerM2: 0.35, recurring: true },
+  pielegnacja: { kind: "area", basePrice: 280, pricePerM2: 0.45, recurring: true },
+  grabienie: { kind: "area", basePrice: 220, pricePerM2: 0.35, recurring: false },
+  sadzenie: { kind: "perUnit", basePrice: 350, pricePerUnit: 130, unitLabel: "roślina", recurring: false },
+  ciecie: { kind: "perUnit", basePrice: 250, pricePerUnit: 18, unitLabel: "mb żywopłotu", recurring: false },
+  porzadki: { kind: "area", basePrice: 400, pricePerM2: 0.5, recurring: false },
+  aranzacja: { kind: "custom", recurring: false },
+  rabaty: { kind: "custom", recurring: false },
+};
 
 export const SERVICE_IMAGES: Record<string, string> = {
   koszenie: IMG.lawnTexture,

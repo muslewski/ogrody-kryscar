@@ -66,6 +66,30 @@ export const Services: CollectionConfig = {
     },
     { name: "priceFrom", type: "text", required: true },
     { name: "duration", type: "text", required: true },
+    {
+      name: "pricing",
+      type: "group",
+      admin: { description: "Drives the panel configurator + live estimate." },
+      fields: [
+        {
+          name: "kind",
+          type: "select",
+          required: true,
+          defaultValue: "custom",
+          options: [
+            { label: "Od powierzchni (m²)", value: "area" },
+            { label: "Od jednostki (szt./mb)", value: "perUnit" },
+            { label: "Stała kwota", value: "fixed" },
+            { label: "Wycena indywidualna", value: "custom" },
+          ],
+        },
+        { name: "basePrice", type: "number" },
+        { name: "pricePerM2", type: "number" },
+        { name: "pricePerUnit", type: "number" },
+        { name: "unitLabel", type: "text" },
+        { name: "recurring", type: "checkbox", defaultValue: false },
+      ],
+    },
     { name: "image", type: "upload", relationTo: "media", required: true },
     {
       name: "hero",

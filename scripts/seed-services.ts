@@ -12,7 +12,12 @@ import type { RequiredDataFromCollectionSlug } from "payload";
 
 import config from "../src/payload.config";
 import { SERVICES, SERVICE_BADGES } from "../src/lib/data";
-import { SERVICE_IMAGES, PRICES, SERVICE_CONTENT } from "../src/lib/services-seed-data";
+import {
+  SERVICE_IMAGES,
+  PRICES,
+  SERVICE_CONTENT,
+  SERVICE_PRICING,
+} from "../src/lib/services-seed-data";
 
 // The SERVICES array is not declared `as const`, so TypeScript widens the
 // `category` and `icon` literal values to `string`. We re-narrow them here
@@ -105,6 +110,7 @@ async function main() {
       badge: badge ? { label: badge.label, tone: badge.tone } : undefined,
       priceFrom: price.from,
       duration: price.duration,
+      pricing: SERVICE_PRICING[s.slug] ?? { kind: "custom", recurring: false },
       image: mediaId,
       hero: content.hero.map((paragraph) => ({ paragraph })),
       includes: content.includes.map((item) => ({ item })),

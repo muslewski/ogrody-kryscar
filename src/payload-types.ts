@@ -288,6 +288,17 @@ export interface Service {
   };
   priceFrom: string;
   duration: string;
+  /**
+   * Drives the panel configurator + live estimate.
+   */
+  pricing: {
+    kind: 'area' | 'perUnit' | 'fixed' | 'custom';
+    basePrice?: number | null;
+    pricePerM2?: number | null;
+    pricePerUnit?: number | null;
+    unitLabel?: string | null;
+    recurring?: boolean | null;
+  };
   image: string | Media;
   hero: {
     paragraph: string;
@@ -605,6 +616,16 @@ export interface ServicesSelect<T extends boolean = true> {
       };
   priceFrom?: T;
   duration?: T;
+  pricing?:
+    | T
+    | {
+        kind?: T;
+        basePrice?: T;
+        pricePerM2?: T;
+        pricePerUnit?: T;
+        unitLabel?: T;
+        recurring?: T;
+      };
   image?: T;
   hero?:
     | T
