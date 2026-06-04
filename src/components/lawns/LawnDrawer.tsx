@@ -6,14 +6,13 @@ import { toast } from "sonner";
 import { loadMapsLibraries, hasMapsKey } from "@/lib/google-maps-loader";
 import { LAWN_FILL, LAWN_STROKE, LAWN_MAP_TYPE } from "@/lib/maps";
 import type { LawnInput, LawnPoint, LawnView } from "@/lib/lawn-types";
+import { playFillPulse } from "./play-fill-pulse";
+import { autoFillLawnAction } from "@/app/(app)/panel/ogrody/actions";
 
 type Phase = "search" | "draw" | "ready";
 
 interface Props {
-  /** Present in edit mode — prefills the map and skips the search phase. */
   initial?: LawnView;
-  /** Called with the assembled input. On success it redirects (never resolves
-   *  with ok); on failure it returns { ok:false, error }. */
   onSave: (input: LawnInput) => Promise<{ ok: false; error: string } | never>;
   submitLabel: string;
 }
@@ -28,35 +27,45 @@ export function LawnDrawer({ initial, onSave, submitLabel }: Props) {
   const mapDivRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const mapRef = useRef<google.maps.Map | null>(null);
+  const mapsLibRef = useRef<google.maps.MapsLibrary | null>(null);
   const managerRef = useRef<google.maps.drawing.DrawingManager | null>(null);
   const polygonRef = useRef<google.maps.Polygon | null>(null);
+  const buildingPolysRef = useRef<google.maps.Polygon[]>([]);
   const geometryRef = useRef<google.maps.GeometryLibrary | null>(null);
   const drawingLibRef = useRef<google.maps.DrawingLibrary | null>(null);
 
   const [phase, setPhase] = useState<Phase>(initial ? "ready" : "search");
   const [area, setArea] = useState<number>(initial?.areaM2 ?? 0);
+  const [parcelArea, setParcelArea] = useState<number>(0);
+  const [buildingArea, setBuildingArea] = useState<number>(0);
   const [name, setName] = useState<string>(initial?.name ?? "");
   const [address, setAddress] = useState<string>(initial?.address ?? "");
   const [placeId, setPlaceId] = useState<string | null>(initial?.placeId ?? null);
+  const [source, setSource] = useState<"manual" | "auto">(initial?.source ?? "manual");
   const [center, setCenter] = useState<LawnPoint>(
-    initial?.location ?? { lat: 53.1235, lng: 18.0084 }, // Bydgoszcz fallback
+    initial?.location ?? { lat: 53.1235, lng: 18.0084 },
   );
-  const [mapsError, setMapsError] = useState<string | null>(() =>
+  const [mapsError] = useState<string | null>(() =>
     hasMapsKey() ? null : "Mapa jest chwilowo niedostępna — brak konfiguracji.",
   );
-  // Mirrors polygonRef presence in state so render (canSave) never reads a ref.
   const [hasPolygon, setHasPolygon] = useState<boolean>(
     (initial?.polygon.length ?? 0) >= 3,
   );
   const [saving, setSaving] = useState(false);
+  const [autoFilling, setAutoFilling] = useState(false);
 
-  // Recompute area from the live polygon path (drag/edit) via Google geometry.
   function recomputeArea() {
     const poly = polygonRef.current;
     const geometry = geometryRef.current;
     if (!poly || !geometry) return;
-    const m2 = geometry.spherical.computeArea(poly.getPath());
-    setArea(Math.round(m2));
+    const ringArea = geometry.spherical.computeArea(poly.getPath());
+    let bArea = 0;
+    for (const b of buildingPolysRef.current) {
+      bArea += geometry.spherical.computeArea(b.getPath());
+    }
+    setParcelArea(Math.round(ringArea));
+    setBuildingArea(Math.round(bArea));
+    setArea(Math.max(0, Math.round(ringArea - bArea)));
   }
 
   function attachPolygon(poly: google.maps.Polygon) {
@@ -77,6 +86,27 @@ export function LawnDrawer({ initial, onSave, submitLabel }: Props) {
     recomputeArea();
   }
 
+  function attachBuildings(rings: LawnPoint[][]) {
+    buildingPolysRef.current.forEach((p) => p.setMap(null));
+    buildingPolysRef.current = [];
+    const maps = mapsLibRef.current;
+    const map = mapRef.current;
+    if (!maps || !map) return;
+    for (const ring of rings) {
+      if (ring.length < 3) continue;
+      const poly = new maps.Polygon({
+        paths: ring,
+        strokeColor: "#ef4444",
+        strokeWeight: 1.5,
+        fillColor: "#ef4444",
+        fillOpacity: 0.35,
+        clickable: false,
+        map,
+      });
+      buildingPolysRef.current.push(poly);
+    }
+  }
+
   function startDrawing() {
     const drawing = drawingLibRef.current;
     if (!drawing) return;
@@ -87,16 +117,58 @@ export function LawnDrawer({ initial, onSave, submitLabel }: Props) {
   function redraw() {
     polygonRef.current?.setMap(null);
     polygonRef.current = null;
+    attachBuildings([]);
+    setSource("manual");
     setHasPolygon(false);
     setArea(0);
+    setParcelArea(0);
+    setBuildingArea(0);
     startDrawing();
   }
 
-  // One-time map init.
+  async function handleAutoFill() {
+    const map = mapRef.current;
+    const maps = mapsLibRef.current;
+    if (!map || !maps) return;
+    const c = map.getCenter();
+    if (!c) return;
+    setAutoFilling(true);
+    const res = await autoFillLawnAction(c.lat(), c.lng());
+    if ("error" in res) {
+      toast.error(
+        res.error === "no-parcel"
+          ? "Nie znaleźliśmy granic działki tutaj — narysuj ręcznie."
+          : "Nie udało się pobrać granic. Spróbuj ponownie lub narysuj ręcznie.",
+      );
+      setAutoFilling(false);
+      return;
+    }
+    managerRef.current?.setDrawingMode(null);
+    polygonRef.current?.setMap(null);
+    const parcel = new maps.Polygon({ paths: res.parcel });
+    parcel.setMap(map);
+    attachPolygon(parcel);
+    attachBuildings(res.buildings);
+    setSource("auto");
+    setPhase("ready");
+    const lats = res.parcel.map((p) => p.lat);
+    const lngs = res.parcel.map((p) => p.lng);
+    map.fitBounds({
+      north: Math.max(...lats),
+      south: Math.min(...lats),
+      east: Math.max(...lngs),
+      west: Math.min(...lngs),
+    });
+    playFillPulse(parcel, maps, map);
+    recomputeArea();
+    setAutoFilling(false);
+    if (!res.buildings.length) {
+      toast.message("Nie wykryto budynku — liczymy całą działkę.");
+    }
+  }
+
   useEffect(() => {
     let cancelled = false;
-    // Missing-key state is set synchronously via the lazy initializer above, so
-    // there's nothing to load here.
     if (!hasMapsKey()) return;
     (async () => {
       try {
@@ -104,6 +176,7 @@ export function LawnDrawer({ initial, onSave, submitLabel }: Props) {
         if (cancelled || !mapDivRef.current) return;
         geometryRef.current = geometry;
         drawingLibRef.current = drawing;
+        mapsLibRef.current = maps;
 
         const map = new maps.Map(mapDivRef.current, {
           center,
@@ -131,18 +204,19 @@ export function LawnDrawer({ initial, onSave, submitLabel }: Props) {
         managerRef.current = manager;
         manager.addListener("polygoncomplete", (poly: google.maps.Polygon) => {
           manager.setDrawingMode(null);
+          attachBuildings([]);
           attachPolygon(poly);
+          setSource("manual");
           setPhase("ready");
+          playFillPulse(poly, maps, map);
         });
 
-        // Edit mode: draw the existing polygon up front.
         if (initial && initial.polygon.length >= 3) {
           const poly = new maps.Polygon({ paths: initial.polygon });
           poly.setMap(map);
           attachPolygon(poly);
-          // LatLngBounds lives in the core library (not the maps library returned
-          // by the loader), so fit a plain LatLngBoundsLiteral derived from the
-          // polygon vertices instead of constructing a LatLngBounds.
+          attachBuildings(initial.buildings);
+          recomputeArea();
           const lats = initial.polygon.map((p) => p.lat);
           const lngs = initial.polygon.map((p) => p.lng);
           map.fitBounds({
@@ -153,7 +227,6 @@ export function LawnDrawer({ initial, onSave, submitLabel }: Props) {
           });
         }
 
-        // Places autocomplete on the search field.
         if (searchInputRef.current) {
           const ac = new places.Autocomplete(searchInputRef.current, {
             fields: ["geometry", "formatted_address", "place_id"],
@@ -173,7 +246,7 @@ export function LawnDrawer({ initial, onSave, submitLabel }: Props) {
           });
         }
       } catch {
-        if (!cancelled) setMapsError("Nie udało się załadować mapy.");
+        if (!cancelled) toast.error("Nie udało się załadować mapy.");
       }
     })();
     return () => {
@@ -193,9 +266,10 @@ export function LawnDrawer({ initial, onSave, submitLabel }: Props) {
       placeId,
       location: center,
       polygon: pathToPoints(polygonRef.current),
+      buildings: buildingPolysRef.current.map(pathToPoints),
+      source,
     };
     const res = await onSave(input);
-    // Only reached on failure (success redirects server-side).
     if (res && !res.ok) {
       toast.error(res.error);
       setSaving(false);
@@ -221,7 +295,6 @@ export function LawnDrawer({ initial, onSave, submitLabel }: Props) {
     <div className="relative h-[calc(100vh-9rem)] min-h-[480px] overflow-hidden rounded-2xl border border-neutral-200">
       <div ref={mapDivRef} className="absolute inset-0 bg-neutral-100" />
 
-      {/* Search (always rendered so Autocomplete can bind; hidden once drawing) */}
       <div
         className={`absolute left-3 right-3 top-3 z-10 transition ${
           phase === "search" ? "" : "pointer-events-none opacity-0"
@@ -235,7 +308,6 @@ export function LawnDrawer({ initial, onSave, submitLabel }: Props) {
         />
       </div>
 
-      {/* Dimmer + prompt during search */}
       {phase === "search" && (
         <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center bg-black/40">
           <p className="rounded-full bg-black/60 px-4 py-2 text-sm text-white">
@@ -244,14 +316,24 @@ export function LawnDrawer({ initial, onSave, submitLabel }: Props) {
         </div>
       )}
 
-      {/* Hint pill while drawing */}
       {phase === "draw" && (
-        <div className="absolute left-1/2 top-3 z-10 -translate-x-1/2 rounded-full bg-black/70 px-4 py-2 text-xs text-white">
-          Klikaj rogi trawnika, aby go obrysować
-        </div>
+        <>
+          <div className="absolute left-1/2 top-3 z-10 -translate-x-1/2 rounded-full bg-black/70 px-4 py-2 text-xs text-white">
+            Klikaj rogi trawnika — albo użyj „Auto wypełnij”
+          </div>
+          <div className="absolute bottom-4 left-1/2 z-10 -translate-x-1/2">
+            <button
+              type="button"
+              onClick={handleAutoFill}
+              disabled={autoFilling}
+              className="rounded-full bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-emerald-700 disabled:opacity-60"
+            >
+              {autoFilling ? "Szukam działki…" : "✨ Auto wypełnij działkę"}
+            </button>
+          </div>
+        </>
       )}
 
-      {/* Result card */}
       {phase === "ready" && (
         <div className="absolute inset-x-3 bottom-3 z-10 rounded-2xl border border-neutral-200 bg-white p-4 shadow-xl sm:left-auto sm:right-3 sm:w-80">
           <div className="flex items-center justify-between">
@@ -260,6 +342,12 @@ export function LawnDrawer({ initial, onSave, submitLabel }: Props) {
               ≈ {area.toLocaleString("pl-PL")} m²
             </span>
           </div>
+          {buildingArea > 0 && (
+            <p className="mt-1 text-[11px] text-neutral-500">
+              działka {parcelArea.toLocaleString("pl-PL")} m² − dom{" "}
+              {buildingArea.toLocaleString("pl-PL")} m²
+            </p>
+          )}
           <input
             type="text"
             value={name}
