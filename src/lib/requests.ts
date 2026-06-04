@@ -96,9 +96,16 @@ export async function createRequest(
   const services = await getConfiguratorServices();
   const idBySlug = new Map(services.map((s) => [s.slug, s.id]));
   const titleBySlug = new Map(services.map((s) => [s.slug, s.title]));
+  const pricingBySlug = new Map(services.map((s) => [s.slug, s.pricing]));
 
-  // Drop any line whose slug isn't a real service (defensive against a bad client).
-  const items = input.items.filter((it) => idBySlug.has(it.serviceSlug));
+  // Drop any line that isn't a real service, or a perUnit line with no quantity —
+  // mirrors the client's save-gate server-side (a crafted request can't bypass it).
+  const items = input.items.filter((it) => {
+    const pricing = pricingBySlug.get(it.serviceSlug);
+    if (!pricing) return false;
+    if (pricing.kind === "perUnit" && (it.quantity ?? 0) <= 0) return false;
+    return true;
+  });
   if (!items.length) throw new Error("No valid services");
 
   const est = estimate(services, items, lawn.areaM2);
