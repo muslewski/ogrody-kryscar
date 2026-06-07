@@ -1,0 +1,75 @@
+# kryscar-mind ledger — debt board · decisions log · spec → plan pipeline.
+# Authored per the obsidian-bases skill (.claude/skills/obsidian-bases/SKILL.md).
+#
+# NOTE on the `type` filter: the property literally named `type` is the one
+# ambiguous case in Bases. Filters below use the bare form (`type == "debt"`),
+# matching the obsidian-bases skill's own examples. If, in Obsidian, a view
+# shows ALL notes or errors on the `type` filter, switch every `type == "..."`
+# to `note.type == "..."` (the always-valid explicit form). Nothing else changes.
+
+formulas:
+  sev_label: 'if(severity == "critical", "1 · critical", if(severity == "high", "2 · high", if(severity == "medium", "3 · medium", "4 · low")))'
+
+properties:
+  severity:
+    displayName: Severity
+  effort:
+    displayName: Effort
+  status:
+    displayName: Status
+  decided:
+    displayName: Decided
+  related:
+    displayName: Zones
+  updated:
+    displayName: Updated
+  summary:
+    displayName: Summary
+  formula.sev_label:
+    displayName: Urgency
+
+views:
+  - type: table
+    name: "Tech-debt board"
+    filters:
+      and:
+        - 'type == "debt"'
+        - 'status != "done"'
+        - 'status != "wontfix"'
+    order:
+      - file.name
+      - severity
+      - effort
+      - status
+      - summary
+    groupBy:
+      property: formula.sev_label
+      direction: ASC
+
+  - type: table
+    name: "Decisions log"
+    filters:
+      and:
+        - 'type == "decision"'
+    order:
+      - file.name
+      - decided
+      - status
+      - related
+      - summary
+
+  - type: table
+    name: "Spec → Plan pipeline"
+    filters:
+      or:
+        - 'type == "spec"'
+        - 'type == "plan"'
+    order:
+      - file.name
+      - type
+      - status
+      - updated
+      - summary
+    groupBy:
+      property: status
+      direction: ASC

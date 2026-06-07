@@ -1,0 +1,39 @@
+# kryscar-mind map — zone atlas.
+# Authored per the obsidian-bases skill (.claude/skills/obsidian-bases/SKILL.md).
+#
+# NOTE on the `type` filter: the property literally named `type` is the one
+# ambiguous case in Bases. The filter below uses the bare form (`type == "zone"`),
+# matching the obsidian-bases skill's own examples. If, in Obsidian, the view
+# shows ALL notes or errors on the `type` filter, switch `type == "zone"` to
+# `note.type == "zone"` (the always-valid explicit form). Nothing else changes.
+#
+# This is deliberately an ATLAS, not a freshness panel: Bases cannot diff
+# `verifiedAt` against git HEAD — staleness stays the generator's job
+# (`npm run mind` → the ✓ fresh / ⚠ stale column in map/index.md).
+
+filters:
+  and:
+    - 'type == "zone"'
+
+properties:
+  status:
+    displayName: Status
+  summary:
+    displayName: Summary
+  depends:
+    displayName: Depends on
+  tags:
+    displayName: Tags
+
+views:
+  - type: table
+    name: "Atlas"
+    order:
+      - file.name
+      - status
+      - summary
+      - depends
+      - tags
+    groupBy:
+      property: status
+      direction: ASC

@@ -1,5 +1,5 @@
 ---
-type: tech-debt
+type: debt
 title: "Lawn auto-fill: client display area can drift after manual parcel edits"
 status: open
 created: 2026-06-04
