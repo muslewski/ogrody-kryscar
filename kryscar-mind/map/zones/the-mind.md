@@ -12,15 +12,17 @@ owns:
   anchors: ["glob:scripts/mind/generate.mjs", "glob:scripts/mind/status.mjs"]
   globs: ["scripts/mind/**", ".claude/commands/map-sync.md", ".claude/skills/navigating-kryscar/SKILL.md"]
 depends: []
+skills: ["[[navigating-kryscar]]", "[[obsidian-markdown]]", "[[obsidian-bases]]", "[[json-canvas]]"]
 invariants:
   - rule: "index.md is generated, never hand-edited"
     enforcedBy: ["[[the-mind]]"]
   - rule: "this zone owns its implementation scripts, not the vault markdown (avoids self-stale)"
     enforcedBy: ["[[the-mind]]"]
-verifiedAt: "9cba57ddb7618ae0dc52283a1783b7e9656d7841"
+verifiedAt: "a08086f026cf10084625021dbfa72ee30b3e3e28"
 ---
 ## Purpose
 Makes the repo agent-native and human-queryable. The generator verifies the Map against code and gates `npm run check`.
+The vault also carries hand-authored Bases dashboards (`kryscar-mind/bases/`) — aggregate, frontmatter-driven views over the structured (`type:`-tagged) corpus. They **complement** the generator (which verifies cards against live code), never replace it; `.base`/`.canvas` files sit outside the generator's globs by design.
 ## Anchors
 `scripts/mind/generate.mjs`, `scripts/mind/status.mjs`, the navigating skill, /map-sync.
 ## Invariants

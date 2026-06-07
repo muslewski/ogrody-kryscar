@@ -17,6 +17,9 @@ This repo has a knowledge base ("the Mind") at `kryscar-mind/`. **Orient there b
 - Framework rules live in `AGENTS.md` (this is a modified Next.js 16 — read `node_modules/next/dist/docs/` before writing Next code).
 - Intent docs: brainstorming → `kryscar-mind/specs/`; plans → `kryscar-mind/plans/`.
 
+## Authoring the vault
+For file-format syntax — Obsidian Flavored Markdown, `.base` dashboards (`kryscar-mind/bases/`), `.canvas` maps — use the `obsidian-markdown` / `obsidian-bases` / `json-canvas` skills (third-party craft; they describe syntax, never a zone).
+
 ## On finish
 Update touched zone cards, re-stamp `verifiedAt` to HEAD, add decision records for non-obvious "why", file tech-debt for deferrals, then `npm run mind` and commit `index.md`. (Full rule in CLAUDE.md.)
 
