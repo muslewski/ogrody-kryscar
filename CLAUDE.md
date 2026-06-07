@@ -29,4 +29,14 @@ never owns, replaces, or clobbers `.claude/skills/`. Add/update with
 `npx skills add <pkg> --copy -y`; restore from the lock with `npx skills experimental_install`.
 Rationale: `kryscar-mind/map/decisions/external-skills-coexist.md`.
 
+**File-format craft:** the Mind *is* an Obsidian vault, so the five kepano obsidian-skills
+(`obsidian-markdown`, `obsidian-bases`, `json-canvas`, `obsidian-cli`, `defuddle`) live
+under `.claude/skills/` as third-party practice for the vault's *own* file formats — reach
+for them when authoring any Mind note or a `.base`/`.canvas` dashboard. They are vendored
+verbatim (provenance in `.claude/skills/obsidian-skills.NOTICE.md`), not via
+`npx skills add`, so they are **not** in `skills-lock.json`. Guardrail: the generator
+verifies code; Bases aggregate frontmatter — **Bases never replace the generator, and
+`.base`/`.canvas` files live in `kryscar-mind/bases/`, outside `map/` and outside every
+generator glob** (the same Ouroboros rule that keeps vault markdown out of the-mind's globs).
+
 @AGENTS.md
