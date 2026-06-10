@@ -19,7 +19,7 @@ invariants:
     enforcedBy: []
   - rule: "status is the customer↔team handoff: draft|new|cancelled (customer) + accepted|declined|done (gardener, via [[team-schedule]]). Transitions are guarded by canTransitionRequest; declineReason is shown to the customer. Customer cancel (new|accepted) cascades to cancel the request's planned visits."
     enforcedBy: ["scripts/check-visits.ts (npm run check)"]
-verifiedAt: "7a99c4fe689b975026565e3d16b7bf98a6028ba5"
+verifiedAt: "1675f1ffa35a49dcc6592bd5e9e0039269b5caef"
 ---
 ## Purpose
 The customer's "what should be done on my lawn" flow, built on top of [[customer-lawns]].

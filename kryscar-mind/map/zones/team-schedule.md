@@ -23,7 +23,7 @@ invariants:
     enforcedBy: ["scripts/check-visits.ts (npm run check)"]
   - rule: "Visit ownership: getUpcomingVisitsForCustomer filters customer==userId (owner-scoped); getTeamVisits + setVisitStatus filter by tenant. The visits collection access is closed (mcpOnly admin carve-out only) — see [[mcp-principal-is-admins]]."
     enforcedBy: []
-verifiedAt: "7a99c4fe689b975026565e3d16b7bf98a6028ba5"
+verifiedAt: "1675f1ffa35a49dcc6592bd5e9e0039269b5caef"
 ---
 ## Purpose
 Closes the order loop. A customer's `service-request` ([[service-requests]]) lands as
