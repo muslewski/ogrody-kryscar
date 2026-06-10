@@ -2,11 +2,11 @@
 
 # 🧠 kryscar-mind — Map index
 
-_23 zones · 35 verification gaps._
+_24 zones · 38 verification gaps._
 
 | Zone | Status | Freshness | Summary |
 |---|---|---|---|
-| [[app-shell]] | active | ⚠ stale | The authenticated app shell: a shared shadcn sidebar (AppShell + AppSidebar, role-driven nav) wrapping /panel (customer) and /zespol (gardener), plus the ComingSoon stub pages and the app-map. |
+| [[app-shell]] | active | ✓ fresh | The authenticated app shell: a shared shadcn sidebar (AppShell + AppSidebar, role-driven nav) wrapping /panel (customer) and /zespol (gardener), plus the ComingSoon stub pages and the app-map. |
 | [[auth-portal]] | active | ✓ fresh | The authenticated portal: the proxy cookie-gate, sign-in/sign-up screens under (public)/(auth), and the role-gated app shell entry points /panel (customer) + /zespol (gardener). |
 | [[brand-data]] | active | ⚠ stale | Company identity, address/NIP, socials, legal links, image map, and the canonical SITE_URL. |
 | [[city-landing-pages]] | active | ⚠ stale | Local-SEO /ogrodnik/[miasto] pages and the Payload-migration-ready location data layer. |
@@ -18,13 +18,14 @@ _23 zones · 35 verification gaps._
 | [[layout-chrome]] | active | ✓ fresh | Root layout, header, footer, preloader, and social links — the shared page shell, with a session-aware Zaloguj/Panel button and a mobile nav that is a left-sliding shadcn Sheet drawer. |
 | [[motion-and-3d]] | active | ⚠ stale | Motion primitives (HoverCard), warped-hover image, the 3D section, counters, and the scroll hook. |
 | [[ogrodowe-abc]] | active | ⚠ stale | Ogrodowe ABC — seasonal gardening-guide content section (/ogrodowe-abc + /ogrodowe-abc/[slug]) and its Payload-ready guides data layer; two-way internal links with /uslugi & /zima. |
-| [[payload-backend]] | active | ✓ fresh | Payload CMS as the app backend: the /admin panel (staff/dev auth via the admins collection), the Postgres (Neon) adapter, ESM/withPayload wiring, Media collection (Vercel Blob + blur hook), and the seed. |
+| [[payload-backend]] | active | ⚠ stale | Payload CMS as the app backend: the /admin panel (staff/dev auth via the admins collection), the Postgres (Neon) adapter, ESM/withPayload wiring, Media collection (Vercel Blob + blur hook), and the seed. |
 | [[pricing-calculator]] | active | ✓ fresh | Pricing algorithm and the interactive area/frequency calculator form. |
 | [[realizacje]] | active | ⚠ stale | Realizacje — before/after project gallery (/realizacje + /realizacje/[slug]) for aranżacja/rabaty, its Payload-ready projects data layer, and the BeforeAfterSlider client island. |
 | [[seo]] | active | ✓ fresh | sitemap.xml, robots.txt, and canonical/metadataBase wiring. |
 | [[service-catalog]] | active | ✓ fresh | Service definitions, categories, catalog enrichment, and the single-select filter + motion reorder island. |
 | [[service-pages]] | active | ⚠ stale | Per-service landing pages: /uslugi/[usluga] for all 8 catalog services + the Payload-backed service-page data layer whose accessors read the services collection. |
 | [[service-requests]] | active | ✓ fresh | Service Selection & Pricing (3b.1): the customer 'what should be done' flow — a smart-catalog ServiceConfigurator at /panel/ogrody/[id]/zamow that prices a basket live via the data-driven lib/pricing.estimate, saved as owner-scoped service-requests (server-recomputed snapshot) and listed at /panel/zamowienia. |
+| [[team-schedule]] | active | ✓ fresh | Gardener panel (3b.2): /zespol/zlecenia request triage (accept→schedule / decline / done) and a shared team schedule /zespol/grafik backed by a new visits collection — single dated visits, optional assignee. The team boundary is role==gardener (requireGardener), every query tenant-scoped. |
 | [[tenancy-and-roles]] | active | ✓ fresh | The tenancy seam (a single Kryscar tenant) + the customer/gardener role model on the BA users collection, including the default-tenant assignment hook. |
 | [[the-mind]] | active | ✓ fresh | The knowledge-base system itself — generator, status hook, navigating skill, and /map-sync command. |
 | [[ui-primitives]] | active | ⚠ stale | shadcn/radix UI primitives (new-york): button, checkbox, input, label, radio-group, scroll-area, separator, sidebar, skeleton, slider, tooltip. |
@@ -61,6 +62,9 @@ _23 zones · 35 verification gaps._
 - zone service-pages: invariant "Components consume service data only via async accessors (getAllServices, getServiceBySlug, getServiceSlugs) — no component imports SERVICE_CONTENT or services-seed-data directly; the source is the Payload services collection" has no enforcedBy
 - zone service-requests: invariant "Pricing is data-driven from the services collection `pricing` group via lib/pricing.estimate (pure); no hardcoded service list or price table in the panel. A new service in /admin appears in the configurator, priced." has no enforcedBy
 - zone service-requests: invariant "Request ownership is enforced in src/lib/requests.ts (every query filtered by owner == userId); estMin/estMax are recomputed server-side via estimate on create — client values are display-only. The service-requests collection access denies every customer (`mcpOnly` — admin principal only, for /admin + the MCP plugin; see [[mcp-principal-is-admins]])." has no enforcedBy
+- zone team-schedule: invariant "The team boundary is role == gardener, re-verified server-side per call via requireGardener (src/lib/team-auth.ts) — every /zespol server action calls it FIRST; the layout gate is not trusted by directly-callable actions. Team queries are tenant-scoped." has no enforcedBy
+- zone team-schedule: invariant "acceptRequest flips new→accepted as a conditional CAS (id+tenant+status==new) BEFORE creating the visit, reverting on visit-create failure — concurrent accepts collapse to one winner (the Local API has no transaction primitive)." has no enforcedBy
+- zone team-schedule: invariant "Visit ownership: getUpcomingVisitsForCustomer filters customer==userId (owner-scoped); getTeamVisits + setVisitStatus filter by tenant. The visits collection access is closed (mcpOnly admin carve-out only) — see [[mcp-principal-is-admins]]." has no enforcedBy
 - zone tenancy-and-roles: invariant "Single tenant for MVP: exactly one tenants row (slug 'kryscar'); every user is assigned to it by the default-tenant beforeChange hook on the users collection" has no enforcedBy
 - zone tenancy-and-roles: invariant "users.role defaults to 'customer' and is admin-only writable (field access) — BA signup never sets it; only a Payload superadmin promotes to 'gardener'" has no enforcedBy
 - zone ui-primitives: invariant "sidebar tokens are concrete hex values inside the single @theme block in globals.css — no :root or @theme inline layers" has no enforcedBy

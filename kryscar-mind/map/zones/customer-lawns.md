@@ -23,7 +23,7 @@ invariants:
     enforcedBy: []
   - rule: "autoFillLawnAction rejects NaN/out-of-Poland coords via isLikelyInPoland BEFORE any provider fetch (abuse guard for ULDK/Overpass; same 49–55/14–25 box as wkt.ts axis detection)"
     enforcedBy: ["scripts/check-lawns.ts (npm run check)"]
-verifiedAt: "383f3fe15cf4e30a8df0da88b2a5ba1eb7c9838b"
+verifiedAt: "7a99c4fe689b975026565e3d16b7bf98a6028ba5"
 ---
 ## Purpose
 The customer's first owned object in the app. A logged-in customer maps their lawn

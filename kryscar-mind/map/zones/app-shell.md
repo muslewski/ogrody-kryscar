@@ -4,11 +4,11 @@ summary: "The authenticated app shell: a shared shadcn sidebar (AppShell + AppSi
 tags: [ui, app-shell, auth]
 status: active
 created: 2026-06-04
-updated: 2026-06-04
-related: ["[[auth-portal]]", "[[layout-chrome]]", "[[ui-primitives]]", "[[tenancy-and-roles]]"]
+updated: 2026-06-10
+related: ["[[auth-portal]]", "[[layout-chrome]]", "[[ui-primitives]]", "[[tenancy-and-roles]]", "[[team-schedule]]"]
 sources: ["[[2026-06-04-app-shell-and-auth-placement-design]]"]
 owns:
-  routes: ["/panel", "/panel/ogrody", "/panel/uslugi", "/panel/zamowienia", "/panel/historia", "/panel/ustawienia", "/zespol", "/zespol/zlecenia", "/zespol/klienci", "/zespol/ustawienia"]
+  routes: ["/panel", "/panel/ogrody", "/panel/uslugi", "/panel/zamowienia", "/panel/historia", "/panel/ustawienia", "/zespol", "/zespol/zlecenia", "/zespol/grafik", "/zespol/klienci", "/zespol/ustawienia"]
   anchors: ["symbol:AppShell", "symbol:AppSidebar", "symbol:NAV", "symbol:ComingSoon"]
   globs: ["src/components/app-shell/**", "src/components/ui/sidebar.tsx"]
 depends: ["[[auth-portal]]", "[[ui-primitives]]"]
@@ -17,7 +17,7 @@ invariants:
     enforcedBy: []
   - rule: "the sidebar nav is role-driven from app-nav NAV[role]; the gate layouts pass the Payload-verified role + user identity into AppShell"
     enforcedBy: []
-verifiedAt: "3c19f5f930f1abc0d84c63b2c4b0ef9b140ad7e0"
+verifiedAt: "7a99c4fe689b975026565e3d16b7bf98a6028ba5"
 ---
 ## Purpose
 One shared shell for the authed app. `panel/layout.tsx` + `zespol/layout.tsx` run the
@@ -35,8 +35,11 @@ here (that's [[layout-chrome]], used by the public site + the auth screens).
   the [[service-requests]] zone (the customer request list; the configurator lives at
   `/panel/ogrody/[id]/zamow`). **Usługi** (`/panel/uslugi`) remains a `ComingSoon` stub. The
   remaining non-dashboard routes are still `ComingSoon` stubs.
-- Gardener `/zespol`: Pulpit `/zespol` · Zlecenia `/zespol/zlecenia` · Klienci
-  `/zespol/klienci` · Ustawienia `/zespol/ustawienia`. Non-dashboard routes are stubs.
+- Gardener `/zespol`: Pulpit `/zespol` · Zlecenia `/zespol/zlecenia` · Grafik
+  `/zespol/grafik` · Klienci `/zespol/klienci` · Ustawienia `/zespol/ustawienia`.
+  **Zlecenia** + **Grafik** are now REAL — owned by the [[team-schedule]] zone (request
+  triage + the team schedule); the dashboard shows live counts. **Klienci** and
+  **Ustawienia** remain `ComingSoon` stubs.
 - Sign out: the sidebar footer `SignOutButton` ("Wyloguj się").
 ## Anchors
 `AppShell`, `AppSidebar`, `NAV` (app-nav), `ComingSoon`.
