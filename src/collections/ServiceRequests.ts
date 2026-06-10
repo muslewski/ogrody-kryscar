@@ -46,13 +46,17 @@ export const ServiceRequests: CollectionConfig = {
     { name: "estMin", type: "number", required: true },
     { name: "estMax", type: "number", required: true },
     { name: "note", type: "textarea" },
-    { name: "declineReason", type: "text" },
     {
       name: "status",
       type: "select",
       required: true,
       defaultValue: "new",
       options: ["draft", "new", "accepted", "declined", "cancelled", "done"],
+    },
+    {
+      name: "declineReason",
+      type: "text",
+      admin: { condition: (data) => data?.status === "declined" },
     },
     { name: "tenant", type: "relationship", relationTo: "tenants", required: true },
   ],
