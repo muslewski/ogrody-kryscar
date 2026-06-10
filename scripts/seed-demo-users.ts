@@ -88,6 +88,20 @@ async function main() {
       depth: 0,
     });
 
+    // Identity guard: this script resets passwords and flips roles. If the
+    // email exists but the profile doesn't match our demo user (e.g. a REAL
+    // customer registered it), refuse to touch the account.
+    if (existing.docs[0] && existing.docs[0].name !== d.name) {
+      out.push({
+        label: d.label,
+        email: d.email,
+        password: "(unchanged)",
+        role: d.role,
+        status: "exists but is NOT the demo profile (name mismatch) — SKIPPED",
+      });
+      continue;
+    }
+
     let status: string;
     if (!existing.docs[0]) {
       await auth.api.signUpEmail({
