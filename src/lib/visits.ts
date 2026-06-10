@@ -124,6 +124,9 @@ export async function createVisit(input: {
   customerId: string;
   scheduledAt: string;
   note?: string;
+  /** The request's tenant — pass it through so multi-tenant stays sound; the
+   *  default-tenant hook only covers the single-tenant fallback. */
+  tenantId?: string;
 }): Promise<VisitView> {
   const payload = await getPayload({ config });
   const doc = await payload.create({
@@ -135,6 +138,7 @@ export async function createVisit(input: {
       scheduledAt: input.scheduledAt,
       status: "planned",
       note: input.note ?? undefined,
+      tenant: input.tenantId ?? undefined,
     } as unknown as RequiredDataFromCollectionSlug<"visits">,
     depth: 1,
   });

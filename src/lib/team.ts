@@ -78,14 +78,45 @@ export async function acceptRequest(
 ): Promise<void> {
   const req = await getTenantRequest(tenantId, id);
   if (!req) throw new Error("Request not found");
-  if (!canTransitionRequest(req.status, "accepted")) throw new Error("Illegal transition");
-  const lawnId =
-    typeof req.lawn === "object" && req.lawn ? String(req.lawn.id) : String(req.lawn);
-  const customerId =
-    typeof req.owner === "object" && req.owner ? String(req.owner.id) : String(req.owner);
-  await createVisit({ requestId: String(req.id), lawnId, customerId, scheduledAt });
+  const lawnId = typeof req.lawn === "object" && req.lawn ? String(req.lawn.id) : String(req.lawn);
+  const customerId = typeof req.owner === "object" && req.owner ? String(req.owner.id) : String(req.owner);
+  const reqTenantId = typeof req.tenant === "object" && req.tenant ? String(req.tenant.id) : String(req.tenant);
+
+  // CAS: flip new→accepted conditionally so concurrent accepts collapse to one
+  // winner (Payload's Local API has no transaction primitive to lean on).
   const payload = await getPayload({ config });
-  await payload.update({ collection: "service-requests", id, data: { status: "accepted" } });
+  const flipped = await payload.update({
+    collection: "service-requests",
+    where: {
+      and: [
+        { id: { equals: id } },
+        { tenant: { equals: tenantId } },
+        { status: { equals: "new" } },
+      ],
+    },
+    data: { status: "accepted" },
+  });
+  if (flipped.docs.length !== 1) throw new Error("Illegal transition");
+
+  try {
+    await createVisit({ requestId: String(req.id), lawnId, customerId, scheduledAt, tenantId: reqTenantId });
+  } catch (err) {
+    // Best-effort revert so the request doesn't strand as accepted-without-visit.
+    await payload
+      .update({
+        collection: "service-requests",
+        where: {
+          and: [
+            { id: { equals: id } },
+            { tenant: { equals: tenantId } },
+            { status: { equals: "accepted" } },
+          ],
+        },
+        data: { status: "new" },
+      })
+      .catch(() => {});
+    throw err;
+  }
 }
 
 export async function declineRequest(
