@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 import { authClient } from "@/lib/auth-client";
+import { safeInternalPath } from "@/lib/safe-internal-path";
 
 /**
  * Minimal email+password auth form for the customer portal. Shared by /sign-in
@@ -13,7 +14,8 @@ import { authClient } from "@/lib/auth-client";
  */
 export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
   const router = useRouter();
-  const next = useSearchParams().get("next") || "/panel";
+  // Sanitized: `?next=` is attacker-influenceable — internal paths only.
+  const next = safeInternalPath(useSearchParams().get("next"), "/panel");
   const isSignUp = mode === "sign-up";
 
   const [name, setName] = useState("");

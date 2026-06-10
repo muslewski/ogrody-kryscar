@@ -29,6 +29,7 @@ const EnvSchema = z.object({
   NEXT_PUBLIC_APP_URL: z.url().optional(),
   VERCEL_PROJECT_PRODUCTION_URL: z.string().min(1).optional(),
   VERCEL_URL: z.string().min(1).optional(),
+  VERCEL_BRANCH_URL: z.string().min(1).optional(),
 
   NODE_ENV: z
     .enum(["development", "test", "production"])

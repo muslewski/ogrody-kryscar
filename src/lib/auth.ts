@@ -20,16 +20,21 @@ const baseURL = getServerBaseURL();
 
 // Origins Better Auth will accept a (same-origin) request from. We trust our own
 // known domains explicitly so a stale/placeholder env var can never reject a real
-// login; `*.vercel.app` covers preview/prod Vercel deployments; localhost covers
-// dev; the resolved baseURL covers anything else.
+// login; localhost covers dev; the resolved baseURL covers anything else. Preview
+// deployments are covered by THIS deployment's own Vercel URLs (deployment +
+// branch alias) — deliberately NOT a `https://*.vercel.app` wildcard, which would
+// trust every Vercel deployment on the platform as a CSRF origin.
 const trustedOrigins = [
-  ...new Set([
-    baseURL,
-    "http://localhost:1111",
-    "https://kryscar.pl",
-    "https://www.kryscar.pl",
-    "https://*.vercel.app",
-  ]),
+  ...new Set(
+    [
+      baseURL,
+      "http://localhost:1111",
+      "https://kryscar.pl",
+      "https://www.kryscar.pl",
+      env.VERCEL_URL ? `https://${env.VERCEL_URL}` : null,
+      env.VERCEL_BRANCH_URL ? `https://${env.VERCEL_BRANCH_URL}` : null,
+    ].filter((o): o is string => Boolean(o)),
+  ),
 ];
 
 export const auth = betterAuth({
