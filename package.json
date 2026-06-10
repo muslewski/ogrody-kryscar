@@ -12,7 +12,8 @@
     "mind": "node scripts/mind/generate.mjs",
     "generate:types": "payload generate:types",
     "seed": "tsx scripts/seed.ts",
-    "check": "tsc --noEmit && eslint && payload generate:types && node scripts/mind/generate.mjs"
+    "check:logic": "tsx scripts/check-pricing.ts && tsx scripts/check-lawns.ts && tsx scripts/check-safe-next.ts",
+    "check": "tsc --noEmit && eslint && payload generate:types && node scripts/mind/generate.mjs && npm run check:logic"
   },
   "browserslist": [
     "> 0.5%",
