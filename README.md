@@ -34,3 +34,20 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+### Payload MCP
+
+The ops collections (`services`, `service-requests`, `lawns`, `visits`, `tenants`) are
+exposed for full CRUD over the Model Context Protocol at `/api/mcp`, via
+[`@payloadcms/plugin-mcp`](https://www.npmjs.com/package/@payloadcms/plugin-mcp). The
+Better Auth customer collections, `admins`, and `media` are NOT exposed.
+
+Access is gated by Bearer API keys. Mint one in `/admin` → **MCP → API Keys**, pick which
+collections/capabilities it may use, and copy the generated key. **Treat the key like an
+admin password** — it resolves to the `admins` principal and reaches customer data.
+
+Connect an MCP client (dev server runs on port 1111):
+
+```
+claude mcp add --transport http payload http://localhost:1111/api/mcp --header "Authorization: Bearer <YOUR_KEY>"
+```

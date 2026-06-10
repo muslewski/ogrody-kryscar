@@ -4,7 +4,7 @@ summary: "Service Selection & Pricing (3b.1): the customer 'what should be done'
 tags: [feature, app, data, pricing]
 status: active
 created: 2026-06-04
-updated: 2026-06-04
+updated: 2026-06-10
 related: ["[[service-catalog]]", "[[pricing-calculator]]", "[[customer-lawns]]", "[[payload-backend]]", "[[app-shell]]"]
 sources: ["[[2026-06-04-service-selection-3b1-design]]"]
 owns:
@@ -15,9 +15,9 @@ depends: ["[[customer-lawns]]", "[[payload-backend]]", "[[ui-primitives]]"]
 invariants:
   - rule: "Pricing is data-driven from the services collection `pricing` group via lib/pricing.estimate (pure); no hardcoded service list or price table in the panel. A new service in /admin appears in the configurator, priced."
     enforcedBy: []
-  - rule: "Request ownership is enforced in src/lib/requests.ts (every query filtered by owner == userId); estMin/estMax are recomputed server-side via estimate on create — client values are display-only."
+  - rule: "Request ownership is enforced in src/lib/requests.ts (every query filtered by owner == userId); estMin/estMax are recomputed server-side via estimate on create — client values are display-only. The service-requests collection access denies every customer (`mcpOnly` — admin principal only, for /admin + the MCP plugin; see [[mcp-principal-is-admins]])."
     enforcedBy: []
-verifiedAt: "3c19f5f930f1abc0d84c63b2c4b0ef9b140ad7e0"
+verifiedAt: "383f3fe15cf4e30a8df0da88b2a5ba1eb7c9838b"
 ---
 ## Purpose
 The customer's "what should be done on my lawn" flow, built on top of [[customer-lawns]].

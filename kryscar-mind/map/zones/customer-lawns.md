@@ -13,7 +13,7 @@ owns:
   globs: ["src/lib/lawns.ts", "src/lib/lawn-types.ts", "src/lib/geo.ts", "src/lib/maps.ts", "src/lib/google-maps-loader.ts", "src/lib/boundary/**", "src/collections/Lawns.ts", "src/components/lawns/**", "src/components/lawns/play-fill-pulse.ts", "src/app/(app)/panel/ogrody/**"]
 depends: ["[[auth-portal]]", "[[payload-backend]]", "[[ui-primitives]]"]
 invariants:
-  - rule: "Lawn ownership is enforced in src/lib/lawns.ts (every query filtered by owner == userId) — the Local API runs as admin via the Better Auth adapter, so the Lawns collection access is closed and components/actions never query lawns directly."
+  - rule: "Lawn ownership is enforced in src/lib/lawns.ts (every query filtered by owner == userId) — the Local API runs as admin via the Better Auth adapter, so the Lawns collection access denies every customer (`mcpOnly` admits only the `admins` principal, for /admin + the MCP plugin — see [[mcp-principal-is-admins]]) and components/actions never query lawns directly."
     enforcedBy: []
   - rule: "areaM2 is recomputed server-side from the polygon via computePolygonArea on create/update — the client value is never persisted as-is."
     enforcedBy: []
@@ -23,7 +23,7 @@ invariants:
     enforcedBy: []
   - rule: "autoFillLawnAction rejects NaN/out-of-Poland coords via isLikelyInPoland BEFORE any provider fetch (abuse guard for ULDK/Overpass; same 49–55/14–25 box as wkt.ts axis detection)"
     enforcedBy: ["scripts/check-lawns.ts (npm run check)"]
-verifiedAt: "1e7004c83b4af24b9f0e27fe35a046607ccd20ee"
+verifiedAt: "383f3fe15cf4e30a8df0da88b2a5ba1eb7c9838b"
 ---
 ## Purpose
 The customer's first owned object in the app. A logged-in customer maps their lawn
@@ -31,8 +31,10 @@ once, and the system holds its location, outline, and area so later flows ("Zam�
 usługi") can quote against it. The loop: open `/panel/ogrody` → add a lawn from the
 guided satellite map → see it as a card (static-map snapshot + area chip) → rename,
 re-draw, or delete. Data lives in a `lawns` Payload collection (owner, name, address,
-placeId, location{lat,lng}, polygon json, areaM2, tenant) with closed access; security
-lives in the data layer, not Payload field access.
+placeId, location{lat,lng}, polygon json, areaM2, tenant) whose access denies every
+customer (`mcpOnly` — admin principal only); security lives in the data layer, not
+Payload field access. The MCP plugin reaches lawns through that admin carve-out (see
+[[payload-backend]], [[mcp-principal-is-admins]]).
 ## Add-lawn flow
 `LawnDrawer` (client) drives one guided map: **search** an address via Google Places →
 recenters the satellite/hybrid map; **draw** the lawn outline via the Drawing library →

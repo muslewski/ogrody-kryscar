@@ -4,6 +4,7 @@ import { fileURLToPath } from "url";
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
+import { mcpPlugin } from "@payloadcms/plugin-mcp";
 import { buildConfig } from "payload";
 import sharp from "sharp";
 
@@ -42,6 +43,26 @@ export default buildConfig({
       // If BLOB_READ_WRITE_TOKEN is absent the plugin self-disables and falls
       // back to local disk (files lost on redeploy). Set it in ALL prod envs.
       token: process.env.BLOB_READ_WRITE_TOKEN,
+    }),
+    // MCP server at /api/mcp. Exposes ONLY the ops collections, full CRUD, behind
+    // Bearer API keys minted in /admin (MCP > API Keys, collection
+    // `payload-mcp-api-keys`). Auth keys resolve to the `admins` principal
+    // (userCollection below) and run with overrideAccess:false, so the closed ops
+    // collections gate on `mcpOnly` (collection === "admins"); auth collections
+    // (users/sessions/accounts/verifications), admins, and media are NOT listed,
+    // so they have no MCP surface. See src/collections/access/mcp.ts.
+    mcpPlugin({
+      // API-key principal is an `admins` row — the same privileged identity that
+      // sees these collections in /admin. (Default is config.admin.user = admins;
+      // pinned explicitly so the access carve-out stays true if that ever changes.)
+      userCollection: "admins",
+      collections: {
+        services: { enabled: true },
+        "service-requests": { enabled: true },
+        lawns: { enabled: true },
+        visits: { enabled: true },
+        tenants: { enabled: true },
+      },
     }),
   ],
   // Read process.env directly (NOT src/lib/env.ts): this config is also loaded by

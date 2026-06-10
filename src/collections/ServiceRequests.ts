@@ -1,11 +1,13 @@
 import type { CollectionConfig } from "payload";
 
 import { assignDefaultTenant } from "./hooks/assign-default-tenant";
+import { mcpOnly } from "./access/mcp";
 
 /**
  * A customer's service request for a lawn: a basket of configured line items + a
  * snapshot price range. Owner-scoped, but access is enforced in src/lib/requests.ts
- * (the Local API runs as admin); access here is fully closed. Multiple per lawn (a
+ * (the Local API runs as admin); collection access is `mcpOnly` (admin principal
+ * only — the /admin superadmin and the MCP API-key principal). Multiple per lawn (a
  * history). Scheduling fields are added in 3b.2.
  */
 export const ServiceRequests: CollectionConfig = {
@@ -16,10 +18,10 @@ export const ServiceRequests: CollectionConfig = {
     defaultColumns: ["lawn", "status", "estMin", "estMax", "owner"],
   },
   access: {
-    read: () => false,
-    create: () => false,
-    update: () => false,
-    delete: () => false,
+    read: mcpOnly,
+    create: mcpOnly,
+    update: mcpOnly,
+    delete: mcpOnly,
   },
   fields: [
     { name: "owner", type: "relationship", relationTo: "users", required: true, index: true },
