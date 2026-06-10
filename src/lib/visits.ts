@@ -112,7 +112,12 @@ export async function getUpcomingVisitsForCustomer(
   return docs.map(project);
 }
 
-/** Create a visit (called by team.acceptRequest and the schedule-next action). */
+/**
+ * Create a visit linked to a service request. Called by team.acceptRequest and
+ * the schedule-next action. CALLER RESPONSIBILITY: customerId/lawnId must be
+ * derived from the request row (never from user-supplied input) — this function
+ * does not re-verify that customer matches request.owner.
+ */
 export async function createVisit(input: {
   requestId: string;
   lawnId: string;
