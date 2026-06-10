@@ -11,6 +11,7 @@ import type { ServiceRequest, Lawn } from "@/payload-types";
 import { estimate, type Frequency, type RequestLineInput } from "./pricing";
 import { getConfiguratorServices } from "./catalog";
 import { getLawn } from "./lawns";
+import { cancelVisitsForRequest } from "./visits";
 
 export interface CreateRequestInput {
   lawnId: string;
@@ -141,6 +142,9 @@ export async function createRequest(
 export async function cancelRequest(userId: string, id: string): Promise<void> {
   const existing = await getRequest(userId, id);
   if (!existing) return; // no-op for non-owners / missing
+  // Only new/accepted are cancellable; declined/done/cancelled are terminal.
+  if (existing.status !== "new" && existing.status !== "accepted") return;
   const payload = await getPayload({ config });
   await payload.update({ collection: "service-requests", id, data: { status: "cancelled" } });
+  await cancelVisitsForRequest(id);
 }
