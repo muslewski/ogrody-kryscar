@@ -10,7 +10,7 @@ sources: ["[[2026-06-03-payload-better-auth-foundation-design]]"]
 owns:
   routes: ["/admin"]
   anchors: ["symbol:Admins", "symbol:Media", "symbol:Services", "symbol:generateBlurDataURL"]
-  globs: ["src/payload.config.ts", "src/collections/Admins.ts", "src/collections/Media.ts", "src/collections/Services.ts", "src/collections/access/**", "src/collections/hooks/**", "src/app/(payload)/**", "scripts/seed.ts", "next.config.ts"]
+  globs: ["src/payload.config.ts", "src/collections/Admins.ts", "src/collections/Media.ts", "src/collections/Services.ts", "src/collections/access/**", "src/collections/hooks/**", "src/app/(payload)/**", "src/migrations/**", "scripts/seed.ts", "next.config.ts"]
 depends: []
 invariants:
   - rule: "payload.config.ts reads process.env directly (NOT src/lib/env.ts) — it is loaded by `payload generate:types` where DB/secret env may be absent"
@@ -21,7 +21,9 @@ invariants:
     enforcedBy: []
   - rule: "@payloadcms/plugin-mcp exposes ONLY services/service-requests/lawns/visits/tenants at /api/mcp; auth collections (users/sessions/accounts/verifications), admins, and media are never listed. MCP keys resolve to the `admins` principal (overrideAccess:false), so the closed ops collections gate on `mcpOnly` — see [[mcp-principal-is-admins]]"
     enforcedBy: []
-verifiedAt: "383f3fe15cf4e30a8df0da88b2a5ba1eb7c9838b"
+  - rule: "Schema reaches prod via committed SQL migrations (src/migrations), NOT push — the adapter sets push:false when NODE_ENV==production; the prod build is `payload migrate && next build`. Dev still pushes. See [[prod-migrations]]"
+    enforcedBy: []
+verifiedAt: "c1bbc97c27b2ed0c973994d869a90975eafe97d2"
 ---
 ## Purpose
 Payload owns the Postgres database (Neon, `idType: 'uuid'`) and the `/admin` panel. Staff/devs log in via the `admins` collection (Payload-native `auth: true`). `next.config.ts` is wrapped with `withPayload` so the admin bundles (incl. its CSS); the `(payload)` route group holds `/admin` + Payload REST/GraphQL. `scripts/seed.ts` idempotently seeds the single Kryscar tenant and the 8 catalog services (with images uploaded to Blob).
@@ -31,6 +33,8 @@ The `services` collection stores the full service record (slug, name, category, 
 The `media` collection handles image uploads with two sizes (thumbnail 400px, card 768px). Files land on Vercel Blob (via `@payloadcms/storage-vercel-blob`). The `generateBlurDataURL` beforeChange hook mirrors `scripts/gen-blur.mjs`: resizes to 16px, encodes as WebP quality-40, stores `"data:image/webp;base64,…"` on `blurDataURL` — enabling `placeholder="blur"` for Payload-served images via the `MediaImage` wrapper (see [[image-loading]]).
 
 `@payloadcms/plugin-mcp` (pinned `3.85.0`, exact peer-match to payload) adds an MCP server at `/api/mcp` exposing the ops collections (services, service-requests, lawns, visits, tenants) for full CRUD, behind Bearer API keys minted in /admin (MCP → API Keys, collection `payload-mcp-api-keys`). Keys resolve to the `admins` principal and run with `overrideAccess:false`, so the closed ops collections (lawns/service-requests/visits) gate on `src/collections/access/mcp.ts` `mcpOnly` (`req.user.collection === "admins"`) — never a customer. See [[mcp-principal-is-admins]].
+
+**Migrations:** the adapter sets `push: NODE_ENV !== "production"`, so dev iterates with schema push but prod runs the committed SQL migrations in `src/migrations` (baseline `20260610_171222` covers every collection). `npm run migrate` / `migrate:create` / `migrate:status` wrap the Payload CLI; the prod build is `payload migrate && next build` so Vercel applies pending migrations before building. Generated, applied, and lifecycle-smoke-tested against a real Postgres. See [[prod-migrations]].
 ## Anchors
 `Admins` (the admin auth collection), `Services` (catalog service collection), `Media` (uploads collection), `generateBlurDataURL` (blur hook), `src/payload.config.ts` (collections + storage plugin + postgres adapter), `src/app/(payload)/**` (admin + API), `scripts/seed.ts`.
 ## Lineage
