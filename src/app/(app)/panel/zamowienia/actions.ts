@@ -42,6 +42,10 @@ export async function cancelRequestAction(
   } catch {
     return { ok: false, error: "Nie udało się anulować zapytania." };
   }
+  // Cancelling also cancels the request's planned visits → refresh the panel
+  // dashboard ("najbliższa wizyta") and the team's schedule.
   revalidatePath("/panel/zamowienia");
+  revalidatePath("/panel");
+  revalidatePath("/zespol/grafik");
   return { ok: true };
 }

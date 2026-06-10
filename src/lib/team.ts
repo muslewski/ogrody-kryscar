@@ -9,7 +9,7 @@ import config from "@payload-config";
 import type { ServiceRequest, Lawn, User } from "@/payload-types";
 import type { RequestView } from "./requests";
 import type { Frequency } from "./pricing";
-import { canTransitionRequest, createVisit } from "./visits";
+import { canTransitionRequest, createVisit, cancelVisitsForRequest } from "./visits";
 
 export interface TeamRequestView extends RequestView {
   customerName: string;
@@ -161,4 +161,7 @@ export async function completeRequest(tenantId: string, id: string): Promise<voi
   if (!canTransitionRequest(req.status, "done")) throw new Error("Illegal transition");
   const payload = await getPayload({ config });
   await payload.update({ collection: "service-requests", id, data: { status: "done" } });
+  // Close out any still-planned visits so a finished job stops showing on the
+  // grafik and in the customer's "najbliższa wizyta".
+  await cancelVisitsForRequest(id);
 }

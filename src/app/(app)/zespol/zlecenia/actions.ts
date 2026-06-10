@@ -47,7 +47,11 @@ export async function completeRequestAction(id: string): Promise<Result> {
     console.error("completeRequestAction failed:", err);
     return { ok: false, error: "Nie udało się zakończyć zlecenia." };
   }
+  // completeRequest also cancels lingering planned visits → refresh grafik + the
+  // customer's panel ("najbliższa wizyta").
   revalidatePath("/zespol/zlecenia");
+  revalidatePath("/zespol/grafik");
   revalidatePath("/zespol");
+  revalidatePath("/panel");
   return { ok: true };
 }
