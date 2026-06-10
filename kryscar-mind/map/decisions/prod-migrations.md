@@ -52,7 +52,21 @@ still-running old code.
    (the new delta diffs against the latest committed snapshot).
 3. Push/deploy → the prod build runs `payload migrate` (applies it) then `next build`.
 
+## The dev-push-marker trap (why prod-migrate.mjs deletes a row)
+A DB created by Payload schema-push carries a `batch = -1` row in `payload_migrations`.
+When `payload migrate` sees it, it shows an interactive *"you've run in dev mode… data
+loss will occur. Proceed? (y/N)"* prompt. In a CI build there's no TTY, so `prompts`
+auto-cancels (`onCancel → process.exit(0)`) and the migration is **silently skipped** —
+the build still succeeds and promotes a deploy running new code on the old schema (this
+bit the first prod deploy). `scripts/prod-migrate.mjs` therefore `DELETE FROM
+payload_migrations WHERE batch = -1` before migrating (equivalent to answering yes; the
+adapter ignores batch −1 regardless), then **verifies** the expected migration name is in
+the ledger and `exit(1)`s if not — so a skipped migration fails the build instead of
+shipping a broken prod.
+
 ## Caveats
 - The migrate guard skips `VERCEL_ENV=preview`. If previews ever need schema changes,
   point them at a disposable Neon branch DB and adjust the guard.
+- `prod-migrate.mjs` pins the expected migration name (`DELTA`) for its post-check; update
+  it (or generalize the check) when the newest migration changes.
 - Migrations are forward-only here.
