@@ -386,7 +386,8 @@ export interface ServiceRequest {
   estMin: number;
   estMax: number;
   note?: string | null;
-  status: 'draft' | 'new' | 'cancelled';
+  declineReason?: string | null;
+  status: 'draft' | 'new' | 'accepted' | 'declined' | 'cancelled' | 'done';
   tenant: string | Tenant;
   updatedAt: string;
   createdAt: string;
@@ -736,6 +737,7 @@ export interface ServiceRequestsSelect<T extends boolean = true> {
   estMin?: T;
   estMax?: T;
   note?: T;
+  declineReason?: T;
   status?: T;
   tenant?: T;
   updatedAt?: T;

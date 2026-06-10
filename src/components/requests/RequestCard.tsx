@@ -5,7 +5,10 @@ import { RequestActions } from "./RequestActions";
 const STATUS_LABEL: Record<RequestView["status"], { label: string; cls: string }> = {
   draft: { label: "Szkic", cls: "bg-neutral-100 text-neutral-600" },
   new: { label: "Nowe", cls: "bg-emerald-100 text-emerald-700" },
+  accepted: { label: "Przyjęte", cls: "bg-blue-100 text-blue-700" },
+  declined: { label: "Odrzucone", cls: "bg-orange-100 text-orange-700" },
   cancelled: { label: "Anulowane", cls: "bg-red-100 text-red-700" },
+  done: { label: "Zrealizowane", cls: "bg-neutral-100 text-neutral-600" },
 };
 
 export function RequestCard({ request }: { request: RequestView }) {

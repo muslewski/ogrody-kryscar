@@ -36,7 +36,7 @@ export interface RequestView {
   estMin: number;
   estMax: number;
   note: string | null;
-  status: "draft" | "new" | "cancelled";
+  status: "draft" | "new" | "accepted" | "declined" | "cancelled" | "done";
   createdAt: string;
 }
 
