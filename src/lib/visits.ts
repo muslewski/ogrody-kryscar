@@ -168,3 +168,16 @@ export async function cancelVisitsForRequest(requestId: string): Promise<void> {
     data: { status: "cancelled" },
   });
 }
+
+/** All non-cancelled visits for a tenant, soonest first (the team agenda). */
+export async function getTeamVisits(tenantId: string): Promise<VisitView[]> {
+  const payload = await getPayload({ config });
+  const { docs } = await payload.find({
+    collection: "visits",
+    where: { and: [{ tenant: { equals: tenantId } }, { status: { not_equals: "cancelled" } }] },
+    sort: "scheduledAt",
+    depth: 1,
+    limit: 300,
+  });
+  return docs.map(project);
+}
