@@ -11,6 +11,7 @@ import { netArea, clipBuildingsToParcel } from "../src/lib/boundary/geo-clip";
 import { runChain } from "../src/lib/boundary/chain";
 import { buildUldkUrl, parseUldkResponse } from "../src/lib/boundary/uldk";
 import { buildOverpassQuery, parseOverpassJson } from "../src/lib/boundary/osm-buildings";
+import { isLikelyInPoland } from "../src/lib/boundary";
 
 // A ~1 km square at the equator (0.0089832° ≈ 1000 m of both lat and lng there)
 // must measure ≈ 1,000,000 m² within 2 %.
@@ -163,3 +164,11 @@ const oRings = parseOverpassJson({
 assert.ok(oRings.length === 1 && oRings[0].length === 4, "expected one building ring");
 
 console.log("boundary osm OK — query + parse");
+
+// Poland gate (autoFillLawnAction abuse guard): in-bounds passes, junk rejected.
+assert.ok(isLikelyInPoland({ lat: 53.12, lng: 18.0 }), "Bydgoszcz in bounds");
+assert.ok(!isLikelyInPoland({ lat: 35.68, lng: 139.69 }), "Tokyo out of bounds");
+assert.ok(!isLikelyInPoland({ lat: NaN, lng: 18 }), "NaN rejected");
+assert.ok(!isLikelyInPoland({ lat: 999, lng: -999 }), "absurd coords rejected");
+
+console.log("boundary poland-gate OK — bounds + NaN rejection");

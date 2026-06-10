@@ -7,7 +7,7 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { createLawn, updateLawn, deleteLawn } from "@/lib/lawns";
 import type { LawnInput } from "@/lib/lawn-types";
-import { autoFillLawn } from "@/lib/boundary";
+import { autoFillLawn, isLikelyInPoland } from "@/lib/boundary";
 import type { AutoFillResult, AutoFillError } from "@/lib/boundary/types";
 
 type ActionError = { ok: false; error: string };
@@ -71,6 +71,9 @@ export async function autoFillLawnAction(
 ): Promise<AutoFillResult | AutoFillError> {
   const userId = await requireUserId();
   if (!userId) return { error: "failed" };
+  // ULDK/OSM cover Poland only — reject NaN/out-of-range coords BEFORE any
+  // outbound fetch, so crafted calls can't hammer the providers via our IP.
+  if (!isLikelyInPoland({ lat, lng })) return { error: "no-parcel" };
   try {
     return await autoFillLawn({ lat, lng });
   } catch {

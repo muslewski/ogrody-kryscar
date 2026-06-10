@@ -22,6 +22,23 @@ const PARCEL_TIMEOUT_MS = 5000;
 const BUILDING_TIMEOUT_MS = 6000;
 
 /**
+ * True when the point is plausibly inside Poland — the only area ULDK covers.
+ * The abuse gate for autoFillLawnAction: junk/foreign coords are rejected
+ * before any provider fetch. Same magnitude box wkt.ts uses for axis-order
+ * detection (lat 49–55, lng 14–25) — keep them in sync.
+ */
+export function isLikelyInPoland(point: LawnPoint): boolean {
+  return (
+    Number.isFinite(point.lat) &&
+    Number.isFinite(point.lng) &&
+    point.lat >= 49 &&
+    point.lat <= 55 &&
+    point.lng >= 14 &&
+    point.lng <= 25
+  );
+}
+
+/**
  * Resolve a lawn from a point: parcel (ULDK chain) − buildings (OSM chain, clipped
  * to the parcel). Degrades gracefully: parcel chain fails → no-parcel (manual);
  * building chain fails/empty → whole parcel.
