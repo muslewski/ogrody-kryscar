@@ -145,13 +145,18 @@ export async function createVisit(input: {
   return project(doc as Visit);
 }
 
-/** Set a visit's status (done/cancelled). Tenant-checked by the caller. */
+/** Set a visit's status (done/cancelled), scoped to the gardener's tenant. */
 export async function setVisitStatus(
+  tenantId: string,
   id: string,
   status: "done" | "cancelled",
 ): Promise<void> {
   const payload = await getPayload({ config });
-  await payload.update({ collection: "visits", id, data: { status } });
+  await payload.update({
+    collection: "visits",
+    where: { and: [{ id: { equals: id } }, { tenant: { equals: tenantId } }] },
+    data: { status },
+  });
 }
 
 /** Cancel every planned visit of a request (used when a customer cancels). */

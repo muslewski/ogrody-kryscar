@@ -119,6 +119,25 @@ export async function acceptRequest(
   }
 }
 
+/**
+ * Schedule a follow-up visit for an ACTIVE (accepted) request. lawn/customer/
+ * tenant are re-derived server-side from the request row — the client supplies
+ * only requestId + the date (see createVisit's caller contract).
+ */
+export async function scheduleNextVisit(
+  tenantId: string,
+  requestId: string,
+  scheduledAt: string,
+): Promise<void> {
+  const req = await getTenantRequest(tenantId, requestId);
+  if (!req) throw new Error("Request not found");
+  if (req.status !== "accepted") throw new Error("Request not active");
+  const lawnId = typeof req.lawn === "object" && req.lawn ? String(req.lawn.id) : String(req.lawn);
+  const customerId = typeof req.owner === "object" && req.owner ? String(req.owner.id) : String(req.owner);
+  const reqTenantId = typeof req.tenant === "object" && req.tenant ? String(req.tenant.id) : String(req.tenant);
+  await createVisit({ requestId: String(req.id), lawnId, customerId, scheduledAt, tenantId: reqTenantId });
+}
+
 export async function declineRequest(
   tenantId: string,
   id: string,

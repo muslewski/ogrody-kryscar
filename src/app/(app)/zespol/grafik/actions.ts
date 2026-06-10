@@ -3,7 +3,8 @@
 import { revalidatePath } from "next/cache";
 
 import { requireGardener } from "@/lib/team-auth";
-import { setVisitStatus, createVisit } from "@/lib/visits";
+import { setVisitStatus } from "@/lib/visits";
+import { scheduleNextVisit } from "@/lib/team";
 
 type Result = { ok: true } | { ok: false; error: string };
 
@@ -14,7 +15,7 @@ export async function setVisitStatusAction(
   const ctx = await requireGardener();
   if (!ctx) return { ok: false, error: "Brak uprawnień." };
   try {
-    await setVisitStatus(id, status);
+    await setVisitStatus(ctx.tenantId, id, status);
   } catch (err) {
     console.error("setVisitStatusAction failed:", err);
     return { ok: false, error: "Nie udało się zaktualizować wizyty." };
@@ -26,8 +27,6 @@ export async function setVisitStatusAction(
 
 export async function scheduleNextVisitAction(input: {
   requestId: string;
-  lawnId: string;
-  customerId: string;
   scheduledAt: string;
 }): Promise<Result> {
   const ctx = await requireGardener();
@@ -35,7 +34,7 @@ export async function scheduleNextVisitAction(input: {
   if (!input.scheduledAt || Number.isNaN(Date.parse(input.scheduledAt)))
     return { ok: false, error: "Wybierz poprawną datę wizyty." };
   try {
-    await createVisit({ ...input, tenantId: ctx.tenantId });
+    await scheduleNextVisit(ctx.tenantId, input.requestId, input.scheduledAt);
   } catch (err) {
     console.error("scheduleNextVisitAction failed:", err);
     return { ok: false, error: "Nie udało się zaplanować wizyty." };
