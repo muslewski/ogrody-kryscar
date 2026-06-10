@@ -30,9 +30,11 @@ passed end-to-end with the prod command.
 build is `payload migrate && next build`, so Vercel applies pending migrations before
 building. Rationale + the future-change workflow: decision [[prod-migrations]].
 
-## First-deploy note (carried forward)
-The prod Neon DB may still hold tables from earlier dev-pushes WITHOUT a
-`payload_migrations` ledger. Because the baseline does `CREATE TABLE`, it must run
-against a clean schema: drop the prod public schema (the team confirmed no real prod
-data yet) — or point at a fresh Neon branch — then `payload migrate` baselines it.
-The exact steps live in the deploy runbook (decision [[prod-migrations]]).
+## How it shipped
+Prod was already live (deployed from `main`) with a dev-pushed schema and no
+`payload_migrations` ledger. Rather than reset it, the committed migration is the
+**additive delta** (`src/migrations/20260610_174309.ts`) — it only ADDs the visits +
+mcp-api-keys tables, the new status enum values, and `decline_reason` on top of the
+existing schema (no DROP). On prod's first `payload migrate` (run by the Vercel build)
+the ledger is created and this one delta applies. Verified against a prod-shaped
+Postgres before deploy. Full rationale: decision [[prod-migrations]].
