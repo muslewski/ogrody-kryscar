@@ -23,7 +23,7 @@ invariants:
     enforcedBy: ["scripts/check-visits.ts (npm run check)"]
   - rule: "Visit ownership: getUpcomingVisitsForCustomer filters customer==userId (owner-scoped); getTeamVisits + setVisitStatus filter by tenant. The visits collection access is closed (mcpOnly admin carve-out only) — see [[mcp-principal-is-admins]]."
     enforcedBy: []
-verifiedAt: "1675f1ffa35a49dcc6592bd5e9e0039269b5caef"
+verifiedAt: "a7f9a66ab8e297a9f49b7a562b9d1d69f2a14ce2"
 ---
 ## Purpose
 Closes the order loop. A customer's `service-request` ([[service-requests]]) lands as
@@ -60,6 +60,14 @@ carve-out ([[mcp-principal-is-admins]]).
 "najbliższe wizyty" queries) · `scheduledAt` · `assignee` (optional, informational) ·
 `status` (planned/done/cancelled) · `note` · `tenant`. `service-requests.status` gained
 `accepted/declined/done` and a `declineReason` ([[service-requests]]).
+
+## Navigation feedback
+Both `/zespol/zlecenia` and `/zespol/grafik` ship a route-level `loading.tsx`
+(plus a generic one at the segment root) — the AppShell chrome persists, so on a
+nav click the skeleton paints instantly while the dynamic auth + Neon queries
+stream in (the same loading-boundary pattern as `panel/loading.tsx`). Each fallback
+mirrors its page's real shape: zlecenia = a 2-col grid of map-snapshot cards,
+grafik = day-grouped visit rows.
 
 ## Anchors
 `Visits` (collection), `requireGardener` (team gate), `getTenantRequests` + `acceptRequest`

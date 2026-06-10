@@ -23,7 +23,7 @@ invariants:
     enforcedBy: []
   - rule: "autoFillLawnAction rejects NaN/out-of-Poland coords via isLikelyInPoland BEFORE any provider fetch (abuse guard for ULDK/Overpass; same 49–55/14–25 box as wkt.ts axis detection)"
     enforcedBy: ["scripts/check-lawns.ts (npm run check)"]
-verifiedAt: "7a99c4fe689b975026565e3d16b7bf98a6028ba5"
+verifiedAt: "a7f9a66ab8e297a9f49b7a562b9d1d69f2a14ce2"
 ---
 ## Purpose
 The customer's first owned object in the app. A logged-in customer maps their lawn
@@ -76,8 +76,14 @@ buildings), recomputed server-side like the manual path.
 ## Anchors
 `getMyLawns`, `createLawn`, `computePolygonArea`, `buildStaticMapUrl`, `LawnDrawer`,
 `autoFillLawn`, `playFillPulse`, `LawnSnapshot`. `LawnSnapshot` is the shared
-Static-Maps lawn image (outline + buildings) rendered by both the lawn card and the
-`/panel/ogrody/[id]/zamow` order-page header (so they never drift).
+Static-Maps lawn image (outline + buildings) rendered by the lawn card, the
+`/panel/ogrody/[id]/zamow` order-page header, and the gardener triage card
+([[team-schedule]] `RequestTriageCard`) — so they never drift. It is a **client**
+component so it can catch the `<img>` `onError` and degrade to a `MapPinOff` icon
+placeholder ("Podgląd mapy niedostępny") instead of a broken-image glyph. The same
+placeholder shows when no URL can be built — missing key, fewer than 3 vertices, or
+polygon data lost in a migration (the snapshot is generated from coords, never a
+stored screenshot, so an empty polygon is the only "lost photo" case).
 ## Lineage
 sources → [[2026-06-04-customer-lawns-3a-design]], [[2026-06-04-lawns-smart-map-design]];
 ownership rationale → [[lawns-ownership-in-data-layer]]; maps rationale →
