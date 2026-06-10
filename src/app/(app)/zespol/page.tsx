@@ -17,11 +17,17 @@ export default async function ZespolPage() {
     : [[], []];
 
   const newCount = requests.filter((r) => r.status === "new").length;
+  // Window: start of today → +7 days. Overdue (older planned) visits are the
+  // grafik's "Zaległe" section, not this counter.
+  const startOfToday = new Date();
+  startOfToday.setHours(0, 0, 0, 0);
   const weekAhead = new Date();
   weekAhead.setDate(weekAhead.getDate() + 7);
-  const upcoming = visits.filter(
-    (v) => v.status === "planned" && new Date(v.scheduledAt) <= weekAhead,
-  ).length;
+  const upcoming = visits.filter((v) => {
+    if (v.status !== "planned") return false;
+    const at = new Date(v.scheduledAt);
+    return at >= startOfToday && at <= weekAhead;
+  }).length;
 
   return (
     <div className="mx-auto max-w-3xl">
