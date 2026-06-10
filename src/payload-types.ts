@@ -77,6 +77,7 @@ export interface Config {
     services: Service;
     lawns: Lawn;
     'service-requests': ServiceRequest;
+    visits: Visit;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -94,6 +95,7 @@ export interface Config {
     services: ServicesSelect<false> | ServicesSelect<true>;
     lawns: LawnsSelect<false> | LawnsSelect<true>;
     'service-requests': ServiceRequestsSelect<false> | ServiceRequestsSelect<true>;
+    visits: VisitsSelect<false> | VisitsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -386,8 +388,25 @@ export interface ServiceRequest {
   estMin: number;
   estMax: number;
   note?: string | null;
-  declineReason?: string | null;
   status: 'draft' | 'new' | 'accepted' | 'declined' | 'cancelled' | 'done';
+  declineReason?: string | null;
+  tenant: string | Tenant;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "visits".
+ */
+export interface Visit {
+  id: string;
+  request: string | ServiceRequest;
+  lawn: string | Lawn;
+  customer: string | User;
+  scheduledAt: string;
+  assignee?: (string | null) | User;
+  status: 'planned' | 'done' | 'cancelled';
+  note?: string | null;
   tenant: string | Tenant;
   updatedAt: string;
   createdAt: string;
@@ -455,6 +474,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'service-requests';
         value: string | ServiceRequest;
+      } | null)
+    | ({
+        relationTo: 'visits';
+        value: string | Visit;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -737,8 +760,24 @@ export interface ServiceRequestsSelect<T extends boolean = true> {
   estMin?: T;
   estMax?: T;
   note?: T;
-  declineReason?: T;
   status?: T;
+  declineReason?: T;
+  tenant?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "visits_select".
+ */
+export interface VisitsSelect<T extends boolean = true> {
+  request?: T;
+  lawn?: T;
+  customer?: T;
+  scheduledAt?: T;
+  assignee?: T;
+  status?: T;
+  note?: T;
   tenant?: T;
   updatedAt?: T;
   createdAt?: T;
