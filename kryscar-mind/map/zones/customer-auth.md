@@ -4,7 +4,7 @@ summary: "Better Auth as the customer/gardener auth surface, persisting through 
 tags: [feature, auth, data]
 status: active
 created: 2026-06-03
-updated: 2026-06-03
+updated: 2026-06-10
 related: ["[[payload-backend]]", "[[tenancy-and-roles]]", "[[auth-portal]]"]
 sources: ["[[2026-06-03-payload-better-auth-foundation-design]]"]
 owns:
@@ -17,7 +17,9 @@ invariants:
     enforcedBy: []
   - rule: "BA model collections (users/sessions/accounts/verifications) mirror Better Auth's exact camelCase field names so the adapter maps 1:1; they do NOT set auth:true (BA owns credentials, on accounts)"
     enforcedBy: []
-verifiedAt: "f51a2305c2c1052a667a67ee2c10e0458843d733"
+  - rule: "trustedOrigins never includes a platform-wide wildcard — only our explicit domains + THIS deployment's own VERCEL_URL/VERCEL_BRANCH_URL (see [[scoped-trusted-origins]])"
+    enforcedBy: []
+verifiedAt: "1e7004c83b4af24b9f0e27fe35a046607ccd20ee"
 ---
 ## Purpose
 Customers (and gardeners) authenticate via Better Auth at `/api/auth/*` (email+password; no email verification this slice). BA persists through `payloadBetterAuthAdapter` (built on `createAdapterFactory`, `disableIdGeneration`, `depth:0` reads, `transaction:false`), so `users/sessions/accounts/verifications` are Payload-managed collections — one database, customers visible in `/admin`. Cookies don't collide: Payload `payload-token` vs BA `better-auth.session_token`.

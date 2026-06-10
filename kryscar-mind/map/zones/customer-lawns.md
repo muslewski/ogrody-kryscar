@@ -4,7 +4,7 @@ summary: "Customer 'My Lawn' (3a): the /panel/ogrody loop where a logged-in cust
 tags: [feature, app, maps, data]
 status: active
 created: 2026-06-04
-updated: 2026-06-04
+updated: 2026-06-10
 related: ["[[app-shell]]", "[[auth-portal]]", "[[tenancy-and-roles]]", "[[payload-backend]]"]
 sources: ["[[2026-06-04-customer-lawns-3a-design]]", "[[2026-06-04-lawns-smart-map-design]]"]
 owns:
@@ -21,7 +21,9 @@ invariants:
     enforcedBy: []
   - rule: "Auto-fill is server-only: ULDK/OSM fetch + polygon-clipping run in src/lib/boundary/* behind a failover chain (runChain, per-provider timeout, manual floor); the client calls autoFillLawnAction and computes only its display area via Google geometry. areaM2 is net (parcel − buildings), recomputed server-side."
     enforcedBy: []
-verifiedAt: "1f8f010b5bc250be9f6cd121eabcb1e0fec2eec8"
+  - rule: "autoFillLawnAction rejects NaN/out-of-Poland coords via isLikelyInPoland BEFORE any provider fetch (abuse guard for ULDK/Overpass; same 49–55/14–25 box as wkt.ts axis detection)"
+    enforcedBy: ["scripts/check-lawns.ts (npm run check)"]
+verifiedAt: "1e7004c83b4af24b9f0e27fe35a046607ccd20ee"
 ---
 ## Purpose
 The customer's first owned object in the app. A logged-in customer maps their lawn

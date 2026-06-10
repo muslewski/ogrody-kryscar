@@ -2,7 +2,7 @@
 
 # 🧠 kryscar-mind — Map index
 
-_23 zones · 33 verification gaps._
+_23 zones · 34 verification gaps._
 
 | Zone | Status | Freshness | Summary |
 |---|---|---|---|
@@ -11,7 +11,7 @@ _23 zones · 33 verification gaps._
 | [[brand-data]] | active | ⚠ stale | Company identity, address/NIP, socials, legal links, image map, and the canonical SITE_URL. |
 | [[city-landing-pages]] | active | ⚠ stale | Local-SEO /ogrodnik/[miasto] pages and the Payload-migration-ready location data layer. |
 | [[coverage-map]] | active | ✓ fresh | Service-area geography and the static coverage map (Mapbox/OSM). |
-| [[customer-auth]] | active | ⚠ stale | Better Auth as the customer/gardener auth surface, persisting through a custom BA→Payload Local-API adapter so its user/session/account/verification models are Payload collections. |
+| [[customer-auth]] | active | ✓ fresh | Better Auth as the customer/gardener auth surface, persisting through a custom BA→Payload Local-API adapter so its user/session/account/verification models are Payload collections. |
 | [[customer-lawns]] | active | ✓ fresh | Customer 'My Lawn' (3a): the /panel/ogrody loop where a logged-in customer adds a lawn from satellite imagery (search → draw polygon → live area → save) backed by an owner-scoped Payload lawns collection. |
 | [[homepage-and-variants]] | active | ⚠ stale | The root homepage (re-exports example-9) plus the ten design-variant pages. |
 | [[image-loading]] | active | ⚠ stale | Blur-up image loading: a generated blurDataURL map + the BlurImage next/image wrapper that paints an instant blurred preview, used by the /uslugi hero. |
@@ -39,6 +39,7 @@ _23 zones · 33 verification gaps._
 - zone city-landing-pages: invariant "Components consume locations only via async accessors — no component imports the LOCATIONS array (Payload-migration boundary)" has no enforcedBy
 - zone customer-auth: invariant "Better Auth never touches Postgres directly — all reads/writes go through Payload's Local API via the custom adapter" has no enforcedBy
 - zone customer-auth: invariant "BA model collections (users/sessions/accounts/verifications) mirror Better Auth's exact camelCase field names so the adapter maps 1:1; they do NOT set auth:true (BA owns credentials, on accounts)" has no enforcedBy
+- zone customer-auth: invariant "trustedOrigins never includes a platform-wide wildcard — only our explicit domains + THIS deployment's own VERCEL_URL/VERCEL_BRANCH_URL (see [[scoped-trusted-origins]])" has no enforcedBy
 - zone customer-lawns: invariant "Lawn ownership is enforced in src/lib/lawns.ts (every query filtered by owner == userId) — the Local API runs as admin via the Better Auth adapter, so the Lawns collection access is closed and components/actions never query lawns directly." has no enforcedBy
 - zone customer-lawns: invariant "areaM2 is recomputed server-side from the polygon via computePolygonArea on create/update — the client value is never persisted as-is." has no enforcedBy
 - zone customer-lawns: invariant "Client components import only src/lib/lawn-types.ts, the google-maps-loader, and the server actions — never src/lib/lawns.ts (which pulls in Payload)." has no enforcedBy
