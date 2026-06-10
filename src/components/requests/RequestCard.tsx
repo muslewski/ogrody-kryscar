@@ -36,11 +36,14 @@ export function RequestCard({ request }: { request: RequestView }) {
           </li>
         ))}
       </ul>
+      {request.status === "declined" && request.declineReason && (
+        <p className="mt-2 text-xs text-red-600">Powód: {request.declineReason}</p>
+      )}
       <div className="mt-3 flex items-center justify-between border-t border-neutral-100 pt-3">
         <span className="text-sm font-bold text-emerald-700">
           {request.estMin > 0 ? formatRange(request.estMin, request.estMax) : "Wycena indywidualna"}
         </span>
-        {request.status === "new" && <RequestActions id={request.id} />}
+        {(request.status === "new" || request.status === "accepted") && <RequestActions id={request.id} />}
       </div>
     </div>
   );

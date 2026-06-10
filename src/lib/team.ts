@@ -41,6 +41,7 @@ function projectTeam(doc: ServiceRequest): TeamRequestView {
     estMin: doc.estMin,
     estMax: doc.estMax,
     note: doc.note ?? null,
+    declineReason: doc.declineReason ?? null,
     status: doc.status,
     createdAt: doc.createdAt,
   };

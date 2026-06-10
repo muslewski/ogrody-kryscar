@@ -4,6 +4,7 @@ import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { getMyLawns } from "@/lib/lawns";
 import { getMyRequests } from "@/lib/requests";
+import { getUpcomingVisitsForCustomer } from "@/lib/visits";
 
 export const metadata = { title: "Pulpit" };
 
@@ -21,7 +22,9 @@ export default async function PanelPage() {
   const name = session?.user?.name;
   const lawns = session ? await getMyLawns(session.user.id) : [];
   const requests = session ? await getMyRequests(session.user.id) : [];
-  const activeRequests = requests.filter((r) => r.status === "new").length;
+  const activeRequests = requests.filter((r) => r.status === "new" || r.status === "accepted").length;
+  const upcomingVisits = session ? await getUpcomingVisitsForCustomer(session.user.id, 1) : [];
+  const nextVisit = upcomingVisits[0] ?? null;
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -63,6 +66,20 @@ export default async function PanelPage() {
           →
         </span>
       </Link>
+
+      {nextVisit && (
+        <div className="mt-3 rounded-2xl border border-emerald-200 bg-emerald-50/50 p-5">
+          <p className="text-sm text-neutral-500">Najbliższa wizyta</p>
+          <p className="mt-1 text-lg font-semibold tracking-tight">
+            {nextVisit.lawnName} ·{" "}
+            {new Date(nextVisit.scheduledAt).toLocaleDateString("pl-PL", {
+              weekday: "long",
+              day: "numeric",
+              month: "long",
+            })}
+          </p>
+        </div>
+      )}
     </div>
   );
 }

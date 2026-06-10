@@ -36,6 +36,7 @@ export interface RequestView {
   estMin: number;
   estMax: number;
   note: string | null;
+  declineReason: string | null;
   status: "draft" | "new" | "accepted" | "declined" | "cancelled" | "done";
   createdAt: string;
 }
@@ -58,6 +59,7 @@ function project(doc: ServiceRequest): RequestView {
     estMin: doc.estMin,
     estMax: doc.estMax,
     note: doc.note ?? null,
+    declineReason: doc.declineReason ?? null,
     status: doc.status,
     createdAt: doc.createdAt,
   };

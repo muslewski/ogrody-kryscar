@@ -3,6 +3,7 @@ import {
   MapPin,
   Leaf,
   ClipboardList,
+  CalendarDays,
   History,
   Settings,
   Users,
@@ -32,6 +33,7 @@ export const NAV: Record<Role, NavItem[]> = {
   gardener: [
     { label: "Pulpit", href: "/zespol", icon: LayoutDashboard },
     { label: "Zlecenia", href: "/zespol/zlecenia", icon: ClipboardList },
+    { label: "Grafik", href: "/zespol/grafik", icon: CalendarDays },
     { label: "Klienci", href: "/zespol/klienci", icon: Users },
     { label: "Ustawienia", href: "/zespol/ustawienia", icon: Settings },
   ],
