@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev -p 1111",
-    "build": "next build",
+    "build": "payload migrate && next build",
     "start": "next start -p 1111",
     "lint": "eslint",
     "blur": "node scripts/gen-blur.mjs",
@@ -13,7 +13,10 @@
     "generate:types": "payload generate:types",
     "seed": "tsx scripts/seed.ts",
     "check:logic": "tsx scripts/check-pricing.ts && tsx scripts/check-lawns.ts && tsx scripts/check-safe-next.ts && tsx scripts/check-visits.ts",
-    "check": "tsc --noEmit && eslint && payload generate:types && node scripts/mind/generate.mjs && npm run check:logic"
+    "check": "tsc --noEmit && eslint && payload generate:types && node scripts/mind/generate.mjs && npm run check:logic",
+    "migrate": "payload migrate",
+    "migrate:create": "payload migrate:create",
+    "migrate:status": "payload migrate:status"
   },
   "browserslist": [
     "> 0.5%",

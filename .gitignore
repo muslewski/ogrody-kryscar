@@ -53,3 +53,6 @@ kryscar-mind/.obsidian/workspace*.json
 
 # Playwright MCP artifacts
 .playwright-mcp/
+
+# Payload local-disk media fallback (when BLOB_READ_WRITE_TOKEN is unset in dev)
+/media/

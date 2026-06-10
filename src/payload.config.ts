@@ -82,6 +82,11 @@ export default buildConfig({
     // disableIdGeneration, so Payload owns id generation end to end and BA reads
     // the uuid back (incl. relation fields like account.userId).
     idType: "uuid",
+    // Dev iterates with schema push (fast, no migration churn); production NEVER
+    // pushes — it runs the committed SQL migrations in src/migrations via
+    // `payload migrate` (wired into the Vercel build, before next build). This is
+    // the prod-migrations-needed seam. See kryscar-mind decision [[prod-migrations]].
+    push: process.env.NODE_ENV !== "production",
   }),
   sharp,
 });
