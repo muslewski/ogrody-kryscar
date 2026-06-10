@@ -119,8 +119,9 @@ export function RequestTriageCard({ request }: { request: TeamRequestView }) {
 
       {mode === "accept" && (
         <div className="mt-3 rounded-xl border border-emerald-200 bg-emerald-50/50 p-3">
-          <label className="block text-xs font-medium text-neutral-700">Termin wizyty</label>
+          <label htmlFor={`slot-${request.id}`} className="block text-xs font-medium text-neutral-700">Termin wizyty</label>
           <input
+            id={`slot-${request.id}`}
             type="datetime-local"
             value={slot}
             onChange={(e) => setSlot(e.target.value)}
@@ -138,8 +139,9 @@ export function RequestTriageCard({ request }: { request: TeamRequestView }) {
       )}
       {mode === "decline" && (
         <div className="mt-3 rounded-xl border border-red-200 bg-red-50/50 p-3">
-          <label className="block text-xs font-medium text-neutral-700">Powód (widoczny dla klienta)</label>
+          <label htmlFor={`reason-${request.id}`} className="block text-xs font-medium text-neutral-700">Powód (widoczny dla klienta)</label>
           <textarea
+            id={`reason-${request.id}`}
             value={reason}
             onChange={(e) => setReason(e.target.value)}
             rows={2}
