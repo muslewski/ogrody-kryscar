@@ -10,6 +10,7 @@ import type { ServiceRequest, Lawn, User } from "@/payload-types";
 import type { RequestView } from "./requests";
 import type { Frequency } from "./pricing";
 import { canTransitionRequest, createVisit, cancelVisitsForRequest } from "./visits";
+import { notifyRequestDecision, notifyVisitScheduled } from "./email/notifications";
 
 export interface TeamRequestView extends RequestView {
   customerName: string;
@@ -101,6 +102,14 @@ export async function acceptRequest(
 
   try {
     await createVisit({ requestId: String(req.id), lawnId, customerId, scheduledAt, tenantId: reqTenantId });
+    const lawnName =
+      typeof req.lawn === "object" && req.lawn ? (req.lawn.name ?? "Ogród") : "Ogród";
+    void notifyRequestDecision({
+      customerId,
+      lawnName,
+      decision: "accepted",
+      visitDateIso: scheduledAt,
+    }).catch((err) => console.error("[email] notifyRequestDecision(accept):", err));
   } catch (err) {
     // Best-effort revert so the request doesn't strand as accepted-without-visit.
     await payload
@@ -137,6 +146,13 @@ export async function scheduleNextVisit(
   const customerId = typeof req.owner === "object" && req.owner ? String(req.owner.id) : String(req.owner);
   const reqTenantId = typeof req.tenant === "object" && req.tenant ? String(req.tenant.id) : String(req.tenant);
   await createVisit({ requestId: String(req.id), lawnId, customerId, scheduledAt, tenantId: reqTenantId });
+  const lawnName =
+    typeof req.lawn === "object" && req.lawn ? (req.lawn.name ?? "Ogród") : "Ogród";
+  void notifyVisitScheduled({
+    customerId,
+    lawnName,
+    scheduledAtIso: scheduledAt,
+  }).catch((err) => console.error("[email] notifyVisitScheduled:", err));
 }
 
 export async function declineRequest(
@@ -153,6 +169,16 @@ export async function declineRequest(
     id,
     data: { status: "declined", declineReason: reason || undefined },
   });
+  const customerId =
+    typeof req.owner === "object" && req.owner ? String(req.owner.id) : String(req.owner);
+  const lawnName =
+    typeof req.lawn === "object" && req.lawn ? (req.lawn.name ?? "Ogród") : "Ogród";
+  void notifyRequestDecision({
+    customerId,
+    lawnName,
+    decision: "declined",
+    reason: reason || undefined,
+  }).catch((err) => console.error("[email] notifyRequestDecision(decline):", err));
 }
 
 export async function completeRequest(tenantId: string, id: string): Promise<void> {

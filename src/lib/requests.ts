@@ -12,6 +12,7 @@ import { estimate, type Frequency, type RequestLineInput } from "./pricing";
 import { getConfiguratorServices } from "./catalog";
 import { getLawn } from "./lawns";
 import { cancelVisitsForRequest } from "./visits";
+import { notifyNewRequest } from "./email/notifications";
 
 export interface CreateRequestInput {
   lawnId: string;
@@ -136,7 +137,21 @@ export async function createRequest(
       status: "new",
     } as unknown as RequiredDataFromCollectionSlug<"service-requests">,
   });
-  return project(doc);
+  const view = project(doc);
+  const tenantId =
+    typeof doc.tenant === "object" && doc.tenant ? String(doc.tenant.id) : String(doc.tenant);
+  if (tenantId && tenantId !== "undefined") {
+    void notifyNewRequest({
+      tenantId,
+      customerId: userId, // notifyNewRequest resolves the name (LawnView has none)
+      lawnName: view.lawnName,
+      address: lawn.address, // LawnView.address is a required string
+      serviceTitles: view.items.map((it) => it.serviceTitle),
+      note: view.note,
+      estRange: view.estMin > 0 ? `${view.estMin}–${view.estMax} zł` : "Wycena indywidualna",
+    }).catch((err) => console.error("[email] notifyNewRequest:", err));
+  }
+  return view;
 }
 
 export async function cancelRequest(userId: string, id: string): Promise<void> {
