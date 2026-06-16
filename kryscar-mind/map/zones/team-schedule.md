@@ -5,7 +5,7 @@ tags: [feature, app, schedule, team]
 status: active
 created: 2026-06-10
 updated: 2026-06-10
-related: ["[[service-requests]]", "[[customer-lawns]]", "[[app-shell]]", "[[tenancy-and-roles]]", "[[payload-backend]]"]
+related: ["[[service-requests]]", "[[customer-lawns]]", "[[app-shell]]", "[[tenancy-and-roles]]", "[[payload-backend]]", "[[transactional-email]]"]
 sources: ["[[2026-06-10-team-schedule-mvp-design]]"]
 owns:
   routes: ["/zespol/zlecenia", "/zespol/grafik"]
@@ -23,7 +23,7 @@ invariants:
     enforcedBy: ["scripts/check-visits.ts (npm run check)"]
   - rule: "Visit ownership: getUpcomingVisitsForCustomer filters customer==userId (owner-scoped); getTeamVisits + setVisitStatus filter by tenant. The visits collection access is closed (mcpOnly admin carve-out only) — see [[mcp-principal-is-admins]]."
     enforcedBy: []
-verifiedAt: "a7f9a66ab8e297a9f49b7a562b9d1d69f2a14ce2"
+verifiedAt: "5050826c95fe7a590270965e69d6e333da807665"
 ---
 ## Purpose
 Closes the order loop. A customer's `service-request` ([[service-requests]]) lands as
@@ -68,6 +68,13 @@ nav click the skeleton paints instantly while the dynamic auth + Neon queries
 stream in (the same loading-boundary pattern as `panel/loading.tsx`). Each fallback
 mirrors its page's real shape: zlecenia = a 2-col grid of map-snapshot cards,
 grafik = day-grouped visit rows.
+
+## Notifications
+Each transition fire-and-forgets a customer email (AFTER the write) via
+[[transactional-email]]: `acceptRequest` → "przyjęte" + the first visit date,
+`declineRequest` → "odrzucone" + reason, `scheduleNextVisit` → "zaplanowano wizytę".
+Accept sends ONE email (the decision carries the date), not also a visit-scheduled one.
+A send failure can never roll back a transition (`sendEmail` never throws).
 
 ## Anchors
 `Visits` (collection), `requireGardener` (team gate), `getTenantRequests` + `acceptRequest`

@@ -2,17 +2,17 @@
 
 # 🧠 kryscar-mind — Map index
 
-_24 zones · 39 verification gaps._
+_25 zones · 42 verification gaps._
 
 | Zone | Status | Freshness | Summary |
 |---|---|---|---|
 | [[app-shell]] | active | ✓ fresh | The authenticated app shell: a shared shadcn sidebar (AppShell + AppSidebar, role-driven nav) wrapping /panel (customer) and /zespol (gardener), plus the ComingSoon stub pages and the app-map. |
-| [[auth-portal]] | active | ✓ fresh | The authenticated portal: the proxy cookie-gate, sign-in/sign-up screens under (public)/(auth), and the role-gated app shell entry points /panel (customer) + /zespol (gardener). |
+| [[auth-portal]] | active | ⚠ stale | The authenticated portal: the proxy cookie-gate, sign-in/sign-up screens under (public)/(auth), and the role-gated app shell entry points /panel (customer) + /zespol (gardener). |
 | [[brand-data]] | active | ⚠ stale | Company identity, address/NIP, socials, legal links, image map, and the canonical SITE_URL. |
 | [[city-landing-pages]] | active | ⚠ stale | Local-SEO /ogrodnik/[miasto] pages and the Payload-migration-ready location data layer. |
 | [[coverage-map]] | active | ✓ fresh | Service-area geography and the static coverage map (Mapbox/OSM). |
 | [[customer-auth]] | active | ✓ fresh | Better Auth as the customer/gardener auth surface, persisting through a custom BA→Payload Local-API adapter so its user/session/account/verification models are Payload collections. |
-| [[customer-lawns]] | active | ✓ fresh | Customer 'My Lawn' (3a): the /panel/ogrody loop where a logged-in customer adds a lawn from satellite imagery (search → draw polygon → live area → save) backed by an owner-scoped Payload lawns collection. |
+| [[customer-lawns]] | active | ⚠ stale | Customer 'My Lawn' (3a): the /panel/ogrody loop where a logged-in customer adds a lawn from satellite imagery (search → draw polygon → live area → save) backed by an owner-scoped Payload lawns collection. |
 | [[homepage-and-variants]] | active | ⚠ stale | The root homepage (re-exports example-9) plus the ten design-variant pages. |
 | [[image-loading]] | active | ⚠ stale | Blur-up image loading: a generated blurDataURL map + the BlurImage next/image wrapper that paints an instant blurred preview, used by the /uslugi hero. |
 | [[layout-chrome]] | active | ✓ fresh | Root layout, header, footer, preloader, and social links — the shared page shell, with a session-aware Zaloguj/Panel button and a mobile nav that is a left-sliding shadcn Sheet drawer. |
@@ -28,6 +28,7 @@ _24 zones · 39 verification gaps._
 | [[team-schedule]] | active | ✓ fresh | Gardener panel (3b.2): /zespol/zlecenia request triage (accept→schedule / decline / done) and a shared team schedule /zespol/grafik backed by a new visits collection — single dated visits, optional assignee. The team boundary is role==gardener (requireGardener), every query tenant-scoped. |
 | [[tenancy-and-roles]] | active | ✓ fresh | The tenancy seam (a single Kryscar tenant) + the customer/gardener role model on the BA users collection, including the default-tenant assignment hook. |
 | [[the-mind]] | active | ✓ fresh | The knowledge-base system itself — generator, status hook, navigating skill, and /map-sync command. |
+| [[transactional-email]] | active | ✓ fresh | Transactional email via Resend + React Email: Better Auth password reset + soft (non-blocking) email verification, plus order/visit notifications (new request → team + ops inbox; accepted/declined/visit-scheduled → customer). Self-disables without RESEND_API_KEY; sends are fire-and-forget and never roll back a DB write. |
 | [[ui-primitives]] | active | ⚠ stale | shadcn/radix UI primitives (new-york): button, checkbox, input, label, radio-group, scroll-area, separator, sidebar, skeleton, slider, tooltip. |
 | [[winter-services]] | active | ✓ fresh | Winter-services arc: /zima hub + /zima/[usluga] pages, the Payload-ready winter data layer, and the seasonal engine. |
 
@@ -68,6 +69,9 @@ _24 zones · 39 verification gaps._
 - zone team-schedule: invariant "Visit ownership: getUpcomingVisitsForCustomer filters customer==userId (owner-scoped); getTeamVisits + setVisitStatus filter by tenant. The visits collection access is closed (mcpOnly admin carve-out only) — see [[mcp-principal-is-admins]]." has no enforcedBy
 - zone tenancy-and-roles: invariant "Single tenant for MVP: exactly one tenants row (slug 'kryscar'); every user is assigned to it by the default-tenant beforeChange hook on the users collection" has no enforcedBy
 - zone tenancy-and-roles: invariant "users.role defaults to 'customer' and is admin-only writable (field access) — BA signup never sets it; only a Payload superadmin promotes to 'gardener'" has no enforcedBy
+- zone transactional-email: invariant "sendEmail NEVER throws or rejects — render + Resend errors are caught and logged. Notifications are fire-and-forget at the call site (void notify…().catch) AFTER the DB write, so an email failure can never roll back a transition or break a flow." has no enforcedBy
+- zone transactional-email: invariant "Email self-disables when RESEND_API_KEY is absent — getResend() returns null (one warn) and sendEmail no-ops, so dev, `next build`, `payload generate:types`, and preview deploys never require the key (same self-disable pattern as Vercel Blob storage)." has no enforcedBy
+- zone transactional-email: invariant "Email verification is SOFT — emailVerification.sendOnSignUp is on but there is NO requireEmailVerification, so login is never blocked (existing prod accounts can't be locked out). See [[transactional-email-resend]]." has no enforcedBy
 - zone ui-primitives: invariant "sidebar tokens are concrete hex values inside the single @theme block in globals.css — no :root or @theme inline layers" has no enforcedBy
 - zone ui-primitives: invariant "sidebar.tsx and use-mobile.ts are vendored as-is from shadcn CLI except for two lint fixes (Math.random in useState lazy init; onChange() replaces inline setIsMobile in useEffect)" has no enforcedBy
 - zone winter-services: invariant "Components consume winter services only via async accessors — no component imports the WINTER_SERVICES array (Payload-migration boundary)" has no enforcedBy

@@ -5,7 +5,7 @@ tags: [feature, app, data, pricing]
 status: active
 created: 2026-06-04
 updated: 2026-06-10
-related: ["[[service-catalog]]", "[[pricing-calculator]]", "[[customer-lawns]]", "[[payload-backend]]", "[[app-shell]]", "[[team-schedule]]"]
+related: ["[[service-catalog]]", "[[pricing-calculator]]", "[[customer-lawns]]", "[[payload-backend]]", "[[app-shell]]", "[[team-schedule]]", "[[transactional-email]]"]
 sources: ["[[2026-06-04-service-selection-3b1-design]]"]
 owns:
   routes: ["/panel/ogrody/[id]/zamow", "/panel/zamowienia"]
@@ -17,9 +17,9 @@ invariants:
     enforcedBy: []
   - rule: "Request ownership is enforced in src/lib/requests.ts (every query filtered by owner == userId); estMin/estMax are recomputed server-side via estimate on create — client values are display-only. The service-requests collection access denies every customer (`mcpOnly` — admin principal only, for /admin + the MCP plugin; see [[mcp-principal-is-admins]])."
     enforcedBy: []
-  - rule: "status is the customer↔team handoff: draft|new|cancelled (customer) + accepted|declined|done (gardener, via [[team-schedule]]). Transitions are guarded by canTransitionRequest; declineReason is shown to the customer. Customer cancel (new|accepted) cascades to cancel the request's planned visits."
+  - rule: "status is the customer↔team handoff: draft|new|cancelled (customer) + accepted|declined|done (gardener, via [[team-schedule]]). Transitions are guarded by canTransitionRequest; declineReason is shown to the customer. Customer cancel (new|accepted) cascades to cancel the request's planned visits. Creating a request fire-and-forget emails the team (gardeners + ops inbox) via [[transactional-email]] (notifyNewRequest), after the write."
     enforcedBy: ["scripts/check-visits.ts (npm run check)"]
-verifiedAt: "1675f1ffa35a49dcc6592bd5e9e0039269b5caef"
+verifiedAt: "5050826c95fe7a590270965e69d6e333da807665"
 ---
 ## Purpose
 The customer's "what should be done on my lawn" flow, built on top of [[customer-lawns]].

@@ -5,7 +5,7 @@ tags: [feature, auth, data]
 status: active
 created: 2026-06-03
 updated: 2026-06-10
-related: ["[[payload-backend]]", "[[tenancy-and-roles]]", "[[auth-portal]]"]
+related: ["[[payload-backend]]", "[[tenancy-and-roles]]", "[[auth-portal]]", "[[transactional-email]]"]
 sources: ["[[2026-06-03-payload-better-auth-foundation-design]]"]
 owns:
   routes: ["/api/auth"]
@@ -19,10 +19,10 @@ invariants:
     enforcedBy: []
   - rule: "trustedOrigins never includes a platform-wide wildcard — only our explicit domains + THIS deployment's own VERCEL_URL/VERCEL_BRANCH_URL (see [[scoped-trusted-origins]])"
     enforcedBy: []
-verifiedAt: "1e7004c83b4af24b9f0e27fe35a046607ccd20ee"
+verifiedAt: "5050826c95fe7a590270965e69d6e333da807665"
 ---
 ## Purpose
-Customers (and gardeners) authenticate via Better Auth at `/api/auth/*` (email+password; no email verification this slice). BA persists through `payloadBetterAuthAdapter` (built on `createAdapterFactory`, `disableIdGeneration`, `depth:0` reads, `transaction:false`), so `users/sessions/accounts/verifications` are Payload-managed collections — one database, customers visible in `/admin`. Cookies don't collide: Payload `payload-token` vs BA `better-auth.session_token`.
+Customers (and gardeners) authenticate via Better Auth at `/api/auth/*` (email+password; **password reset + SOFT email verification** are now wired — `sendResetPassword` + `emailVerification.sendOnSignUp`, no `requireEmailVerification` so login is never blocked — through [[transactional-email]]). BA persists through `payloadBetterAuthAdapter` (built on `createAdapterFactory`, `disableIdGeneration`, `depth:0` reads, `transaction:false`), so `users/sessions/accounts/verifications` are Payload-managed collections — one database, customers visible in `/admin`. Cookies don't collide: Payload `payload-token` vs BA `better-auth.session_token`.
 ## Anchors
 `auth` (BA instance), `authClient` (React client), `payloadBetterAuthAdapter` (the adapter), `Users` (BA user collection + the role/tenant seam fields).
 ## Lineage
