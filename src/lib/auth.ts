@@ -3,8 +3,9 @@
  *
  * Persists through the custom BA -> Payload Local-API adapter, so every BA model
  * (user/session/account/verification) is a Payload-managed collection. BA never
- * touches Postgres directly. NO organization plugin and NO email verification in
- * this slice (deferred); `role`/`tenant` live on the `users` collection.
+ * touches Postgres directly. NO organization plugin (single-tenant MVP). Email verification is SOFT (sent on
+ * signup, never blocks login); password reset + verification email go through
+ * src/lib/email. `role`/`tenant` live on the `users` collection.
  *
  * Coexists with Payload: Payload admin is /admin (its own `admins` auth,
  * `payload-token` cookie); this instance is /api/auth/* (`better-auth.session_token`
@@ -15,6 +16,9 @@ import { betterAuth } from "better-auth";
 import { env } from "./env";
 import { getServerBaseURL } from "./base-url";
 import { payloadBetterAuthAdapter } from "./better-auth-payload-adapter";
+import { sendEmail } from "./email/send";
+import { ResetPassword } from "./email/templates/ResetPassword";
+import { VerifyEmail } from "./email/templates/VerifyEmail";
 
 const baseURL = getServerBaseURL();
 
@@ -42,6 +46,28 @@ export const auth = betterAuth({
   trustedOrigins,
   secret: env.BETTER_AUTH_SECRET,
   database: payloadBetterAuthAdapter,
-  emailAndPassword: { enabled: true },
-  // NO organization plugin (single-tenant MVP). NO email verification (slice 1).
+  emailAndPassword: {
+    enabled: true,
+    sendResetPassword: async ({ user, url }) => {
+      await sendEmail({
+        to: user.email,
+        subject: "Reset hasła — Ogrody Kryscar",
+        react: ResetPassword({ name: user.name ?? "", url }),
+      });
+    },
+  },
+  // Soft email verification: send on signup, mark verified on click, but do NOT
+  // block sign-in (no requireEmailVerification) — existing prod accounts keep
+  // working. See spec 2026-06-16-transactional-email-design.
+  emailVerification: {
+    sendOnSignUp: true,
+    sendVerificationEmail: async ({ user, url }) => {
+      await sendEmail({
+        to: user.email,
+        subject: "Potwierdź adres e-mail — Ogrody Kryscar",
+        react: VerifyEmail({ name: user.name ?? "", url }),
+      });
+    },
+  },
+  // NO organization plugin (single-tenant MVP).
 });
