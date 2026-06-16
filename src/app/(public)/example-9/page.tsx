@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { COMPANY, PROCESS, TESTIMONIALS, STATS, FAQ, TEAM, IMG } from "@/lib/data";
 import { COVERAGE_HEADLINE, COVERAGE_INTRO, COVERAGE_NOTE } from "@/lib/coverage";
@@ -45,8 +46,18 @@ export default async function Example9() {
       variant="slide"
       duration={1400}
       bgColor="#064e3b"
-      iconColor="#a7f3d0"
-      iconSize={48}
+      icon={
+        <span className="inline-flex items-center justify-center rounded-2xl bg-white p-3 shadow-lg">
+          <Image
+            src="/logo.png"
+            alt={`${COMPANY.name} logo`}
+            width={64}
+            height={64}
+            priority
+            className="h-14 w-14 md:h-16 md:w-16"
+          />
+        </span>
+      }
       brandClassName="text-3xl md:text-5xl font-semibold tracking-tight text-emerald-50"
       taglineClassName="text-[10px] uppercase tracking-[0.4em] font-medium text-emerald-200/80"
       tagline="Katalog usług ogrodniczych"
