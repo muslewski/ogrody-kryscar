@@ -24,6 +24,13 @@ const EnvSchema = z.object({
     .string()
     .min(16, "BETTER_AUTH_SECRET must be at least 16 chars"),
 
+  // Transactional email (Resend). Optional: when RESEND_API_KEY is absent the
+  // email module self-disables (logged no-op), so dev/build never require it.
+  RESEND_API_KEY: z.string().min(1).optional(),
+  // Verified sender. Defaults (in email/config.ts) to Resend's onboarding sender
+  // until the kryscar.pl domain is verified; then set to the kryscar.pl address.
+  EMAIL_FROM: z.string().min(1).optional(),
+
   // Public app origin override. Optional: the client is same-origin and the
   // server derives it from VERCEL_* when unset (see base-url.ts).
   NEXT_PUBLIC_APP_URL: z.url().optional(),
