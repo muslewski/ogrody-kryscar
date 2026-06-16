@@ -140,7 +140,7 @@ export async function createRequest(
   const view = project(doc);
   const tenantId =
     typeof doc.tenant === "object" && doc.tenant ? String(doc.tenant.id) : String(doc.tenant);
-  if (tenantId && tenantId !== "undefined") {
+  if (tenantId && tenantId !== "undefined" && tenantId !== "null") {
     void notifyNewRequest({
       tenantId,
       customerId: userId, // notifyNewRequest resolves the name (LawnView has none)
