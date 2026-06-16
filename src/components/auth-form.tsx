@@ -83,6 +83,14 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
           minLength={8}
           autoComplete={isSignUp ? "new-password" : "current-password"}
         />
+        {!isSignUp && (
+          <Link
+            href="/forgot-password"
+            className="self-end text-xs text-emerald-700 hover:underline"
+          >
+            Nie pamiętasz hasła?
+          </Link>
+        )}
         {error && <p className="text-sm text-red-600">{error}</p>}
         <button
           type="submit"
