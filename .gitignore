@@ -53,3 +53,10 @@ kryscar-mind/.obsidian/workspace*.json
 
 # Playwright MCP artifacts
 .playwright-mcp/
+
+# context-mode nav index (machine-local; content lives in ~/.claude/context-mode)
+.navidx-code/
+.navidx-mind/
+.navidx.log
+.navidx.lock
+.navidx.stamp
