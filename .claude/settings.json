@@ -3,7 +3,14 @@
     "SessionStart": [
       {
         "hooks": [
-          { "type": "command", "command": "node scripts/mind/status.mjs" }
+          {
+            "type": "command",
+            "command": "node scripts/mind/status.mjs"
+          },
+          {
+            "type": "command",
+            "command": "node scripts/nav-refresh-index.mjs"
+          }
         ]
       }
     ]
