@@ -1,8 +1,8 @@
 <div align="center">
 
-![Ogrody Kryścar](./.github/banner.png)
+![Ogrody Kryscar](./.github/banner.png)
 
-# Ogrody Kryścar
+# Ogrody Kryscar
 
 **Marketing site + customer portal for a garden & lawn-care company near Bydgoszcz.**
 Browse services and pricing, then draw your lawn on satellite imagery, order work, and track visits — all in one panel.
@@ -21,7 +21,7 @@ Browse services and pricing, then draw your lawn on satellite imagery, order wor
 
 ## What it is
 
-A production web platform for **Ogrody Kryścar** (*Ogrodnictwo z pasją*, est. 2014). Two surfaces share one codebase and one backend:
+A production web platform for **Ogrody Kryscar** (*Ogrodnictwo z pasją*, est. 2014). Two surfaces share one codebase and one backend:
 
 - **Public site** — services, pricing, project gallery, seasonal guides, and local-SEO city pages that turn visitors into leads.
 - **Customer portal** — a logged-in space where a customer maps their lawn from satellite imagery, configures services against live pricing, and follows the work; gardeners get a role-scoped view of the same data.
@@ -136,4 +136,4 @@ This repo carries its own knowledge base — **the Mind**, at [`kryscar-mind/`](
 
 ## License
 
-Private and proprietary — © Ogrody Kryścar. All rights reserved.
+Private and proprietary — © Ogrody Kryscar. All rights reserved.
