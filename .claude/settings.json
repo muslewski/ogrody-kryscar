@@ -12,6 +12,14 @@
             "command": "node scripts/nav-refresh-index.mjs"
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx --no-install atlas status --hook"
+          }
+        ]
       }
     ]
   }
